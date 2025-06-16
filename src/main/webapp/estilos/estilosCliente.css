@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+.cuenta-section{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
+ .cuenta-container {
+ 			margin-top: 60px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+
+        .cuenta-body {
+            padding: 30px;
+        }
+
+        .info-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+            border-left-color: #27ae60;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e8 100%);
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .saldo-value {
+            font-size: 28px;
+            color: #777;
+            font-weight: bold;
+        }
+
+        .currency {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .copy-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #2980b9;
+        }
