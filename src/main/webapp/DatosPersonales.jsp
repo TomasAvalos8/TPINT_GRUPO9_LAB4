@@ -138,21 +138,7 @@ li a:hover:not(.active) {
 
 
 <body>
-<nav>
-    <ul>
-        <li><a href="#">Historial de Movimientos</a></li>
-        <li><a href="#">Transferencias</a></li>
-        <li><a href="#">Solicitud de Préstamo</a></li>
-        <li><a href="#">Mis Préstamos</a></li>
-        <li><a href="DatosPersonales.jsp">Información Personal</a></li>
-         <li style="float:right" >
-  			<ul>
-  				<li ><a style="background-color:#ec0000 " class="active" href="Inicio.jsp">Cerrar Sesion</a></li>
-  			</ul>
-  		</li>
-    </ul>
-</nav>
-
+<jsp:include page="MenuCliente.html"></jsp:include>
 <h2 class="Titulo">Datos personal</h2>
 
 <div class="ContenedorPersonal">

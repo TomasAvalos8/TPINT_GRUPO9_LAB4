@@ -12,6 +12,12 @@
 <body>
 <div class = "main-contanier">
 <jsp:include page="MenuCliente.html"></jsp:include>
+<header>
+    <h1>Bienvenido al Banco UTN</h1>
+    <div class="user-info">
+       <h4>¡Hola!, Nombre Usuario</h4>
+        </div>
+</header>
 <section class = "cuenta-section">
  <div class="cuenta-container">
         <div class="cuenta-body">
