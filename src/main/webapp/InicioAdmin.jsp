@@ -11,5 +11,8 @@
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <h1>Bienvenido, Usuario</h1>
+
+
+<jsp:include page="Footer.html"></jsp:include>
 </body>
 </html>
