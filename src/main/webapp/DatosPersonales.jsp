@@ -8,37 +8,6 @@
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilosCliente.css">
 <style>
-ul {
-  height: 60px;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  text-align: center;
-  
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color: #333;
-}
-
-.active {
-  background-color: #04AA6D;
-  
-}
 
 .ContenedorPersonal {
   display: flex;
