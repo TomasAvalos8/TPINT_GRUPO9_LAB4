@@ -95,14 +95,65 @@
 
 </div>
 
-</div>
-
 <div class="botonContainer">
   <button class="btnRegistrar">Registrar</button>
 </div>
 
+<div class="formulariosWrapper listadoContainer">
+<h2>Listado de Clientes</h2>
+<div class="tablaCuentasContainer">
+<div class="filtrosContainer">
+ <p> <b>Busqueda:</b> <input type="text" name="search">  
+ <input type="submit" value="Buscar" class="btnBuscar">
+ </p>
+ <p>
+   
+     <p> DNI: <input type="text" name="idCliente">  </p>
+     <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
+     </p>
+</div>
+
+	<table>
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre y Apellido</th>
+                <th>Sexo y Nacionalidad</th>
+                <th>Fecha de nacimiento</th>
+            </tr>
+        </thead>
+        <tbody >
+             <tr>
+                 <td>123421555</td>
+                 <td>Pedro gonzales</td>
+                 <td>Masculino/ Argentino</td>
+                 <td>17/20/1990</td>
+             </tr>
+             <tr>
+                 <td>42652311</td>
+                 <td>Pechito Martinez perez</td>
+                 <td>No binario/ Uruguayo</td>
+                 <td><button class="btnEliminar">Eliminar</button></td>
+             </tr>
+         
+        </tbody>
+          <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="paginado">
+                    <button class="btnAnterior"><</button>
+                        <span> Pagina 1 de 10 </span>
+                        <button class="btnSiguiente">></button>
+                    </div>
+                </td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+</div>
 
 
+</div>
 
 
 
