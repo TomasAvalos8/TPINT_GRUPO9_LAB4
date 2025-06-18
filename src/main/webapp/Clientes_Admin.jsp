@@ -55,7 +55,6 @@
                 Correo electrónico: <input type="email" name="email" required>
                 Teléfono: <input type="number" name="telefono" required>
             </p>           
-
         </fieldset>
     </form>
 </div>
