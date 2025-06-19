@@ -27,7 +27,7 @@
      <p> ID Cliente: <input type="text" name="idCliente">  </p>
      <p> ID Cuenta a depositar: <input type="text" name="idCuenta">  </p>
      <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
-     </p>
+     
 </div>
 
 	<table>
@@ -69,8 +69,7 @@
         </table>
         </div>
 </div>
-
-
+</div>
 
 
 
