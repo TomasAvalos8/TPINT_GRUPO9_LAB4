@@ -10,7 +10,7 @@ public class Conexion {
 	private String host = "jdbc:mysql://localhost:3306/";
 	private String user = "root";
 	private String pass = "root";
-	private String dbName = "bancoUTN";
+	private String dbName = "BancoDB";
 	
 	protected Connection connection;
 	
@@ -74,5 +74,17 @@ public class Conexion {
 		}
 		return ok;
 	}
+	//modificacion del execute
+	public ResultSet executeQuery(String query) {
+	    ResultSet rs = null;
+	    try {
+	        Statement stmt = connection.createStatement();
+	        rs = stmt.executeQuery(query);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return rs;
+	}
+
 	
 }

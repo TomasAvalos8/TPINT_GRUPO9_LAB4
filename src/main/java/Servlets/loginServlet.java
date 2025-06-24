@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DatosImpl.UsuarioDaoImpl;
+import Dominio.Usuario;
+
 /**
  * Servlet implementation class loginServlet
  */
@@ -34,7 +37,24 @@ public class loginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("InicioAdmin.jsp");
+		 String user = request.getParameter("usuario").trim();
+	        String pass = request.getParameter("pass").trim();
+	        
+	        System.out.println("Usuario ingresado: " + user);
+	        System.out.println("Contraseña ingresada: " + pass);
+
+	        UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
+	        Usuario usuario = usuarioDao.login(user, pass);
+
+	        if (usuario != null) {
+	            if (usuario.getTipoUsuario().getIdTipoUsuario() == 1) {
+	                response.sendRedirect("InicioAdmin.jsp");
+	            } else {
+	                response.sendRedirect("InicioCliente.jsp");
+	            }
+	        } else {
+	        	response.sendRedirect("Inicio.jsp?error=1");
+	        }
 	}
 
 }

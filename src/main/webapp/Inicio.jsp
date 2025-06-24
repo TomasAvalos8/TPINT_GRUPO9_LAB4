@@ -9,13 +9,17 @@
 </head>
 <body class="login">
 
+<% if (request.getParameter("error") != null) { %>
+    <p style="color:red;">Usuario o contraseña incorrectos.</p>
+<% } %>
+
 <form action="loginServlet" method="post" >
 <h1>Login</h1>
 <label for="usuario">Usuario</label><br>
 <input type="text" id="usuario" name="usuario" required><br><br>
 
 <label for="contraseña">Contraseña</label><br>
-<input type="password" id="contraseña" name="contraseña"required><br><br>
+<input type="password" id="pass" name="pass"required><br><br>
 
 <input type="submit" value="Ingresar">
 </form>
