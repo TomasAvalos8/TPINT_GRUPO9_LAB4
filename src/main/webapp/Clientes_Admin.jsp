@@ -13,12 +13,12 @@
 
 <div class="contenedorFormularios">
 
+    <form class="formCliente" method="post" action="ServletClientes">
 <div class="formulariosWrapper">
 
 <div class="parteDer">
     <h2>Formulario de Cliente</h2>
 
-    <form class="formCliente" method="post" action="ServletCliente">
         <fieldset>
             <p>
                 DNI: <input type="number" name="dni" required>
@@ -56,24 +56,14 @@
                 Teléfono: <input type="number" name="telefono" required>
             </p>           
         </fieldset>
-    </form>
 </div>
 
 <div class="parteDer">
     <h2>Formulario Usuario</h2>
 
-    <form class="formUsuario" method="post" action="ServletUsuario">
+    
         <fieldset>
-            <p>
-  				ID de usuario:
-  				<input type="number" name="numUsuario" readonly value="1">
-			</p>
-            <p>
-                Tipo de usuario:
-                <select name="tipoUsuario" required>
-                    <option value="">Seleccione</option>
-                </select>
-            </p>
+           
             <p>
                 Usuario: <input type="text" name="usuario" required>
             </p>
@@ -89,14 +79,15 @@
             </p>
          
         </fieldset>
-    </form>
+    
 </div>
 
 </div>
 
 <div class="botonContainer">
-  <button class="btnRegistrar">Registrar</button>
+  <button name="btnRegistrar" class="btnRegistrar">Registrar</button>
 </div>
+    </form>
 
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Clientes</h2>
