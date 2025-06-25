@@ -1,18 +1,21 @@
 package Dominio;
 
+import java.time.LocalDate;
 
 public class Usuario {
 	private int id_usuario;
 	private String Usuario;
 	private String contraseña;
+	private LocalDate fechaAlta;
 	private TipoUsuario tipoUsuario; //1=admin, 2=cliente;
 	
 	// CONSTRUCTORES
 	
-	 public Usuario (String usuario, String contraseña, TipoUsuario tipoUsuario) {
+	 public Usuario (String usuario, String contraseña, TipoUsuario tipoUsuario,LocalDate fechaAlta) {
 	        this.Usuario = usuario;
 	        this.contraseña = contraseña;
 	        this.tipoUsuario = tipoUsuario;
+	        this.fechaAlta = fechaAlta;
 	    }
 	    
 	 public Usuario() {}
@@ -49,6 +52,14 @@ public class Usuario {
 
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
+	}
+
+	public LocalDate getFechaAlta() {
+		return fechaAlta;
+	}
+	
+	public void setFechaAlta(LocalDate fechaAlta) {
+		this.fechaAlta = fechaAlta;
 	}
 
 	// Metodo ToString

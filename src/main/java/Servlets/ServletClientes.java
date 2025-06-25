@@ -1,6 +1,9 @@
 package Servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,9 +43,35 @@ public class ServletClientes extends HttpServlet {
 			Cliente cliente = new Cliente();
 			TipoUsuario tipo= new TipoUsuario(2, "cliente");
 			usuario.setUsuario(request.getParameter("usuario"));
-			usuario.setContraseña(request.getParameter("contraseña"));
+			usuario.setContraseña(request.getParameter("password"));
 			usuario.setTipoUsuario(tipo);
-			cliente.setUsuario(usuario);
+			LocalDate fechaActual = LocalDate.now();
+			usuario.setFechaAlta(fechaActual);
+			int IdGuardado = 0;
+			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
+			if(IdGuardado!=0) {
+			cliente.setIdUsuario(IdGuardado);
+			cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+			cliente.setCuil(Integer.parseInt(request.getParameter("cuil")));
+			cliente.setNombre(request.getParameter("nombre"));
+			cliente.setApellido(request.getParameter("apellido"));
+			cliente.setSexo(request.getParameter("sexo"));
+			cliente.setNacionalidad(request.getParameter("nacionalidad"));
+			cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+			cliente.setDireccion(request.getParameter("direccion"));
+			cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
+			cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+			cliente.setCorreo_electronico(request.getParameter("email"));
+			cliente.setTelefono(request.getParameter("telefono"));
+			cliente.setActivo(true);
+			boolean estado= true;
+			estado=clienteNeg.insertar(cliente);
+			if (estado) {
+				request.setAttribute("estadoCliente", estado);
+			}
+			}
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
+			dispatcher.forward(request, response);
 			
 		}
 	}

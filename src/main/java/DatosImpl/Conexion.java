@@ -2,6 +2,7 @@ package DatosImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -85,6 +86,26 @@ public class Conexion {
 	    }
 	    return rs;
 	}
+	
+	//Devuelve el id del usuario generado
+	
+	public int executeDevuelveIdUsuario(String query) {
+	    int idGenerado = -1;
+	    try {
+	        PreparedStatement pst = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+	        pst.executeUpdate();
+	        ResultSet rs = pst.getGeneratedKeys();
+	        if (rs.next()) {
+	            idGenerado = rs.getInt(1); 
+	        }
+	        rs.close();
+	        pst.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return idGenerado;
+	}
+
 
 	
 }

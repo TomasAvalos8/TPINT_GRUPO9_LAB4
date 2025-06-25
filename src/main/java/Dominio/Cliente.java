@@ -1,6 +1,6 @@
 package Dominio;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Cliente {
 	private int dni;
@@ -9,18 +9,18 @@ public class Cliente {
 	private String apellido;
 	private String sexo;
 	private String nacionalidad ;
-	private Date fecha_nacimiento;
+	private LocalDate fecha_nacimiento;
 	private String direccion;
 	private int id_localidad;
 	private int id_provincia;
 	private String correo_electronico;
 	private String telefono;
-	private Usuario usuario;
+	private int IdUsuario;
 	private boolean activo;
 	
 	public Cliente(int dni, int cuil, String nombre, String apellido, String sexo, String nacionalidad,
-			Date fecha_nacimiento, String direccion, int id_localidad, int id_provincia, String correo_electronico,
-			String telefono, Usuario usuario, boolean activo) {
+			LocalDate fecha_nacimiento, String direccion, int id_localidad, int id_provincia, String correo_electronico,
+			String telefono, int  IdUsuario, boolean activo) {
 		super();
 		this.dni = dni;
 		this.cuil = cuil;
@@ -34,7 +34,7 @@ public class Cliente {
 		this.id_provincia = id_provincia;
 		this.correo_electronico = correo_electronico;
 		this.telefono = telefono;
-		this.usuario = usuario;
+		this.IdUsuario = IdUsuario;
 		this.activo = activo;
 	}
 	public Cliente() {}
@@ -87,11 +87,11 @@ public class Cliente {
 		this.nacionalidad = nacionalidad;
 	}
 
-	public Date getFecha_nacimiento() {
+	public LocalDate getFecha_nacimiento() {
 		return fecha_nacimiento;
 	}
 
-	public void setFecha_nacimiento(Date fecha_nacimiento) {
+	public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
 		this.fecha_nacimiento = fecha_nacimiento;
 	}
 
@@ -135,12 +135,12 @@ public class Cliente {
 		this.telefono = telefono;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public int getIdUsuario() {
+		return IdUsuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setIdUsuario(int IdUsuario) {
+		this.IdUsuario = IdUsuario;
 	}
 	
 	public boolean getActivo() {

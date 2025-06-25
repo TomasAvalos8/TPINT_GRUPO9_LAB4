@@ -45,10 +45,12 @@
                 ID Localidad:
                 <select name="idLocalidad" required>
                     <option value="">Seleccione</option>
+                    <option value="1">Pacheco</option>
                 </select>
                 ID Provincia:
                 <select name="idProvincia" required>
                     <option value="">Seleccione</option>
+                    <option value="1">buenos aires</option>
                 </select>
             </p>
             <p>
@@ -85,6 +87,7 @@
 </div>
 
 <div class="botonContainer">
+
   <button name="btnRegistrar" class="btnRegistrar">Registrar</button>
 </div>
     </form>

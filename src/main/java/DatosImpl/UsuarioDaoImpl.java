@@ -17,9 +17,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		boolean estado = true;
 		conexion = new Conexion();
 		conexion.Open();
-		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"') ";
+		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"','"+usuario.getFechaAlta()+"') ";
 		
 		try {
+			
 			estado = conexion.execute(query);
 				
 			
@@ -33,6 +34,32 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		}
 		
 		return estado;
+		
+	}
+	
+	public int insertarUsuarioYDevuelveId(Usuario usuario) {
+		// TODO Auto-generated method stub
+		
+		int idGuardado = 0;
+		conexion = new Conexion();
+		conexion.Open();
+		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"','"+usuario.getFechaAlta()+"') ";
+		
+		try {
+			
+			idGuardado = conexion.executeDevuelveIdUsuario(query);
+				
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		finally {
+			conexion.close();
+		}
+		
+		return idGuardado;
 		
 	}
 	
