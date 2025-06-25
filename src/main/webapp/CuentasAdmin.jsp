@@ -22,17 +22,32 @@
 
     <form class="formCliente" method="post" action="ServletCuenta">
         <fieldset>
-         <p>
-             Tipo de cuenta:
-             <select name="tipoCuenta" required>
-                 <option value="">Seleccione</option>
-                 <option value="cajaAhorro">Caja de ahorro</option>
-                 <option value="cuentaCorriente">Cuenta corriente</option>
-             </select>
-              ID Cliente: <input type="number" name="dni" required>
-            
-         </p>
-         
+            <p>
+                <label for="id">ID Cuenta:</label>
+                <input type="number" id="id" name="id" value="00001" readonly>
+                          
+                <label for="dni">DNI del Cliente:</label>
+                <input type="number" name="dni" id="dni" required>
+                
+                <label for="cbu">CBU:</label>
+                <input type="number" name="cbu" id="cbu" required>
+            </p>
+
+            <p>
+
+                <label for="fecha">Fecha de Creación:</label>
+                <input type="date" name="fecha" id="fecha" required>
+
+                <label for="tipoCuenta">Tipo de cuenta:</label>
+                <select name="tipoCuenta" id="tipoCuenta" required>
+                    <option value="">Seleccione</option>
+                    <option value="cajaAhorro">Caja de ahorro</option>
+                    <option value="cuentaCorriente">Cuenta corriente</option>
+                </select>
+
+                <label for="saldo">Saldo inicial:</label>
+                <input type="number" name="saldo" id="saldo" step="0.01" required>
+            </p>
 
         </fieldset>
     </form>
