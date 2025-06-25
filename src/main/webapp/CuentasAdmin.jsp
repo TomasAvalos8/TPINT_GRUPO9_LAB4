@@ -54,7 +54,7 @@
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
-                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "" %>" />
+                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
             </p>
 
 
