@@ -28,7 +28,7 @@ CREATE TABLE Usuarios (
     usuario VARCHAR(50) NOT NULL UNIQUE,
     contraseña VARCHAR(255) NOT NULL,
     fecha_alta DATE NOT NULL,
-    activo BOOLEAN,
+    activo BOOL,
     FOREIGN KEY (id_tipo_usuario) REFERENCES TiposUsuarios(id_tipo_usuario)
 );
 
@@ -47,10 +47,10 @@ CREATE TABLE Cliente (
     correo_electronico VARCHAR(100),
     telefono VARCHAR(50),
     id_usuario INT,
-    activo BOOLEAN,
+    activo BOOL,
     FOREIGN KEY (id_localidad) REFERENCES Localidad(id_localidad),
     FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia),
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
     
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE Cuenta (
     tipo_cuenta INT NOT NULL,
     CBU VARCHAR(22) NOT NULL UNIQUE,
     saldo DECIMAL(15,2) NOT NULL DEFAULT 0,
-    activo BOOLEAN,
+    activo BOOL,
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (tipo_cuenta) REFERENCES TipoCuenta(id_tipo_cuenta)
 );
