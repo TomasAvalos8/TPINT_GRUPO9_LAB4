@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import Negocio.CuentaNeg;
 import NegocioImpl.CuentaNegImpl;
 import Dominio.Cuenta;
+import Dominio.TipoCuenta;
 import Excepciones.ClienteNoExisteException;
 import java.util.List;
+import Datos.TipoCuentaDao;
+import DatosImpl.TipoCuentaDaoImpl;
 
 
 @WebServlet("/CuentasAdminServlet")
@@ -36,6 +39,11 @@ public class CuentasAdminServlet extends HttpServlet {
        
         List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
         request.setAttribute("listaCuentas", listaCuentas);
+
+        TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
+        List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
+        request.setAttribute("tiposCuenta", tiposCuenta);
+
         request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
     }
 
@@ -44,6 +52,9 @@ public class CuentasAdminServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CuentaNeg cuentaNeg = new CuentaNegImpl();
+        TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
+        List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
+        request.setAttribute("tiposCuenta", tiposCuenta);
         // Eliminar cuenta
         String eliminarId = request.getParameter("eliminarId");
         if (eliminarId != null) {
@@ -88,7 +99,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 int dni = Integer.parseInt(request.getParameter("dni"));
                 String cbu = request.getParameter("cbu");
                 String fechaStr = request.getParameter("fecha");
-                int tipo = Integer.parseInt(request.getParameter("tipoCuenta"));
+                int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
                 java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
                 Cuenta cuenta = new Cuenta();
@@ -96,7 +107,9 @@ public class CuentasAdminServlet extends HttpServlet {
                 cuenta.setDni(dni);
                 cuenta.setCBU(cbu);
                 cuenta.setCreacion(fecha);
-                cuenta.setTipo(tipo);
+                TipoCuenta tipoCuenta = new TipoCuenta();
+                tipoCuenta.setIdTipoCuenta(tipoId);
+                cuenta.setTipo(tipoCuenta);
                 cuenta.setSaldo(saldo);
                 cuenta.setEstado(true);
                 boolean actualizado = cuentaNeg.actualizarCuenta(cuenta);
@@ -123,7 +136,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 int dni = Integer.parseInt(request.getParameter("dni"));
                 String cbu = request.getParameter("cbu");
                 String fechaStr = request.getParameter("fecha");
-                int tipo = Integer.parseInt(request.getParameter("tipoCuenta"));
+                int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
                 java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
                 Cuenta cuenta = new Cuenta();
@@ -131,7 +144,9 @@ public class CuentasAdminServlet extends HttpServlet {
                 cuenta.setDni(dni);
                 cuenta.setCBU(cbu);
                 cuenta.setCreacion(fecha);
-                cuenta.setTipo(tipo);
+                TipoCuenta tipoCuenta = new TipoCuenta();
+                tipoCuenta.setIdTipoCuenta(tipoId);
+                cuenta.setTipo(tipoCuenta);
                 cuenta.setSaldo(saldo);
                 cuenta.setEstado(true);
                 try {

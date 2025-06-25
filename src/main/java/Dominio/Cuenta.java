@@ -7,7 +7,7 @@ public class Cuenta {
 	private int dni;
 	private String CBU;
 	private Date creacion;
-	private int tipo;
+	private TipoCuenta tipo;
 	private float saldo;
 	private boolean estado;
 	
@@ -15,7 +15,7 @@ public class Cuenta {
 		this.estado = true;
 	}
 
-	public Cuenta(int id, int dni, String CBU, Date creacion, int tipo, float saldo, boolean estado) {
+	public Cuenta(int id, int dni, String CBU, Date creacion, TipoCuenta tipo, float saldo, boolean estado) {
 		this.id = id;
 		this.dni = dni;
 		this.CBU = CBU;
@@ -57,11 +57,11 @@ public class Cuenta {
 		this.creacion = creacion;
 	}
 
-	public int getTipo() {
+	public TipoCuenta getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(int tipo) {
+	public void setTipo(TipoCuenta tipo) {
 		this.tipo = tipo;
 	}
 
@@ -86,9 +86,4 @@ public class Cuenta {
 		return "Cuenta [id=" + id + ", dni=" + dni + ", CBU=" + CBU + ", creacion=" + creacion + ", tipo=" + tipo
 				+ ", saldo=" + saldo + ", estado=" + estado + "]";
 	}
-	
-	
-	
-	
-	
 }

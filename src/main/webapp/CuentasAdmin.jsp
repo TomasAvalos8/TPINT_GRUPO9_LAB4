@@ -44,8 +44,13 @@
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <option value="1" <%= cuentaModificar != null && cuentaModificar.getTipo() == 1 ? "selected" : "" %>>Caja de ahorro</option>
-                    <option value="2" <%= cuentaModificar != null && cuentaModificar.getTipo() == 2 ? "selected" : "" %>>Cuenta corriente</option>
+                    <% java.util.List<Dominio.TipoCuenta> tiposCuenta = (java.util.List<Dominio.TipoCuenta>) request.getAttribute("tiposCuenta");
+                       if (tiposCuenta != null) {
+                           for (Dominio.TipoCuenta tipo : tiposCuenta) { %>
+                               <option value="<%= tipo.getIdTipoCuenta() %>" <%= cuentaModificar != null && cuentaModificar.getTipo() != null && cuentaModificar.getTipo().getIdTipoCuenta() == tipo.getIdTipoCuenta() ? "selected" : "" %>><%= tipo.getDescripcion() %></option>
+                    <%     }
+                       }
+                    %>
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
@@ -115,7 +120,7 @@
         %>
             <tr>
                 <td><%= cuenta.getId() %></td>
-                <td><%= cuenta.getTipo() == 1 ? "Caja de ahorro" : cuenta.getTipo() == 2 ? "Cuenta corriente" : "" %></td>
+                <td><%= cuenta.getTipo() != null ? cuenta.getTipo().getDescripcion() : "" %></td>
                 <td><%= cuenta.getDni() %></td>
                 <td>
                     <form method="post" action="CuentasAdminServlet" style="display:inline;">
