@@ -139,4 +139,64 @@ public class CuentaDaoImpl implements CuentaDao {
             }
         }
     }
+
+    @Override
+    public java.util.List<Cuenta> obtenerTodasLasCuentas() {
+        java.util.List<Cuenta> lista = new java.util.ArrayList<>();
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo FROM Cuenta";
+            ps = conexion.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Cuenta cuenta = new Cuenta();
+                cuenta.setId(rs.getInt("id"));
+                cuenta.setDni(rs.getInt("dni_cliente"));
+                cuenta.setCreacion(rs.getDate("fecha_creacion"));
+                cuenta.setTipo(rs.getInt("tipo_cuenta"));
+                cuenta.setCBU(rs.getString("CBU"));
+                cuenta.setSaldo(rs.getFloat("saldo"));
+                cuenta.setEstado(true); // O ajustar según tu modelo
+                lista.add(cuenta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return lista;
+    }
+
+    @Override
+    public boolean eliminarCuenta(int id) {
+        PreparedStatement ps = null;
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        boolean eliminado = false;
+        try {
+            String sql = "DELETE FROM Cuenta WHERE id = ?";
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id);
+            eliminado = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return eliminado;
+    }
 }

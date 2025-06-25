@@ -101,19 +101,25 @@
             </tr>
         </thead>
         <tbody >
-             <tr>
-                 <td>123</td>
-                 <td>Cuenta corriente</td>
-                 <td>343243</td>
-                 <td><button class="btnEliminar">Eliminar</button></td>
-             </tr>
-             <tr>
-                 <td>222</td>
-                 <td>Caja de ahorro</td>
-                 <td>2222</td>
-                 <td><button class="btnEliminar">Eliminar</button></td>
-             </tr>
-         
+        <% 
+            java.util.List<Dominio.Cuenta> listaCuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("listaCuentas");
+            if (listaCuentas != null) {
+                for (Dominio.Cuenta cuenta : listaCuentas) { 
+        %>
+            <tr>
+                <td><%= cuenta.getId() %></td>
+                <td><%= cuenta.getTipo() == 1 ? "Caja de ahorro" : cuenta.getTipo() == 2 ? "Cuenta corriente" : "" %></td>
+                <td><%= cuenta.getDni() %></td>
+                <td>
+                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                        <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
+                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Estas seguro que queres eliminar esta cuenta?');">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        <%      }
+            }
+        %>
         </tbody>
           <tfoot>
             <tr>
