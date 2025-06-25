@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Creacion de cuentas</title>
-<link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 </head>
 <body>
@@ -123,11 +122,11 @@
                 <td><%= cuenta.getTipo() != null ? cuenta.getTipo().getDescripcion() : "" %></td>
                 <td><%= cuenta.getDni() %></td>
                 <td>
-                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form   class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
                         <button class="btnEliminar" type="submit" onclick="return confirm('¿Estas seguro que queres eliminar esta cuenta?');">Eliminar</button>
                     </form>
-                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="modificarId" value="<%= cuenta.getId() %>" />
                         <button class="btnModificar" type="submit">Modificar</button>
                     </form>
