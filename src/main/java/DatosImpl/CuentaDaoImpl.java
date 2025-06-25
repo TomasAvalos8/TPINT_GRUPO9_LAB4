@@ -81,65 +81,6 @@ public class CuentaDaoImpl implements CuentaDao {
 	}
 	
 	
-    public String crearCuentaConMensaje(Cuenta cuenta) {
-        PreparedStatement statement = null;
-        Conexion cn = new Conexion();
-        Connection conexion = cn.Open();
-        try {
-            
-            String checkCliente = "SELECT 1 FROM Cliente WHERE dni = ?";
-            PreparedStatement psCliente = conexion.prepareStatement(checkCliente);
-            psCliente.setInt(1, cuenta.getDni());
-            ResultSet rsCliente = psCliente.executeQuery();
-            if (!rsCliente.next()) {
-                rsCliente.close();
-                psCliente.close();
-                return "El cliente no existe";
-            }
-            rsCliente.close();
-            psCliente.close();
-
-            
-            String checkTipo = "SELECT 1 FROM TipoCuenta WHERE id_tipo_cuenta = ?";
-            PreparedStatement psTipo = conexion.prepareStatement(checkTipo);
-            psTipo.setInt(1, cuenta.getTipo());
-            ResultSet rsTipo = psTipo.executeQuery();
-            if (!rsTipo.next()) {
-                rsTipo.close();
-                psTipo.close();
-                return "El tipo de cuenta no existe";
-            }
-            rsTipo.close();
-            psTipo.close();
-
-            
-            statement = conexion.prepareStatement(insertar);
-            statement.setLong(1, cuenta.getId());
-            statement.setInt(2, cuenta.getDni());
-            statement.setDate(3, new java.sql.Date(cuenta.getCreacion().getTime()));
-            statement.setInt(4, cuenta.getTipo());
-            statement.setString(5, cuenta.getCBU());
-            statement.setFloat(6, cuenta.getSaldo());
-
-            int filas = statement.executeUpdate();
-            if (filas > 0) {
-                return null; 
-            } else {
-                return "No se pudo registrar la cuenta";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "Error en la base de datos: " + e.getMessage();
-        } finally {
-            try {
-                if (statement != null) statement.close();
-                if (conexion != null) conexion.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @Override
     public java.util.List<Cuenta> obtenerTodasLasCuentas() {
         java.util.List<Cuenta> lista = new java.util.ArrayList<>();
