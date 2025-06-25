@@ -11,6 +11,9 @@
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
+<%
+    Dominio.Cuenta cuentaModificar = (Dominio.Cuenta) request.getAttribute("cuentaModificar");
+%>
 
 <p class="userLoguedText">usuario logueado </p>
 <div class="contenedorFormularios">
@@ -24,29 +27,29 @@
         <fieldset>
             <p>
                 <label for="id">ID Cuenta:</label>
-                <input type="number" id="id" name="id" value="${siguienteIdCuenta}" readonly>
+                <input type="number" id="id" name="id" value="<%= cuentaModificar != null ? cuentaModificar.getId() : (request.getAttribute("siguienteIdCuenta") != null ? request.getAttribute("siguienteIdCuenta") : "") %>" readonly>
                           
                 <label for="dni">DNI del Cliente:</label>
-                <input type="number" name="dni" id="dni" required>
-                
+                <input type="number" name="dni" id="dni" required value="<%= cuentaModificar != null ? cuentaModificar.getDni() : "" %>" />
+
                 <label for="cbu">CBU:</label>
-                <input type="number" name="cbu" id="cbu" required>
+                <input type="number" name="cbu" id="cbu" required value="<%= cuentaModificar != null ? cuentaModificar.getCBU() : "" %>" />
             </p>
 
             <p>
 
                 <label for="fecha">Fecha de Creación:</label>
-                <input type="date" name="fecha" id="fecha" required>
+                <input type="date" name="fecha" id="fecha" required value="<%= cuentaModificar != null && cuentaModificar.getCreacion() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(cuentaModificar.getCreacion()) : "" %>" />
 
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <option value="1">Caja de ahorro</option>
-                    <option value="2">Cuenta corriente</option>
+                    <option value="1" <%= cuentaModificar != null && cuentaModificar.getTipo() == 1 ? "selected" : "" %>>Caja de ahorro</option>
+                    <option value="2" <%= cuentaModificar != null && cuentaModificar.getTipo() == 2 ? "selected" : "" %>>Cuenta corriente</option>
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
-                <input type="number" name="saldo" id="saldo" step="0.01" required>
+                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "" %>" />
             </p>
 
 
@@ -61,8 +64,12 @@
 
 
         <div class="botonContainer">
-  		<button class="btnRegistrar" type="submit" name="registrar">Registrar</button>
-		</div>
+        <% if (cuentaModificar != null) { %>
+            <button class="btnActualizar" type="submit" name="actualizar">Actualizar</button>
+        <% } else { %>
+            <button class="btnRegistrar" type="submit" name="registrar">Registrar</button>
+        <% } %>
+        </div>
     </form>
 </div>
 
@@ -114,6 +121,10 @@
                     <form method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
                         <button class="btnEliminar" type="submit" onclick="return confirm('¿Estas seguro que queres eliminar esta cuenta?');">Eliminar</button>
+                    </form>
+                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                        <input type="hidden" name="modificarId" value="<%= cuenta.getId() %>" />
+                        <button class="btnModificar" type="submit">Modificar</button>
                     </form>
                 </td>
             </tr>

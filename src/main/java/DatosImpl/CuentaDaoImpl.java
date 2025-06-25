@@ -159,7 +159,7 @@ public class CuentaDaoImpl implements CuentaDao {
                 cuenta.setTipo(rs.getInt("tipo_cuenta"));
                 cuenta.setCBU(rs.getString("CBU"));
                 cuenta.setSaldo(rs.getFloat("saldo"));
-                cuenta.setEstado(true); // O ajustar según tu modelo
+                cuenta.setEstado(true); 
                 lista.add(cuenta);
             }
         } catch (Exception e) {
@@ -198,5 +198,34 @@ public class CuentaDaoImpl implements CuentaDao {
             }
         }
         return eliminado;
+    }
+
+    @Override
+    public boolean actualizarCuenta(Cuenta cuenta) {
+        PreparedStatement ps = null;
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        boolean actualizado = false;
+        try {
+            String sql = "UPDATE Cuenta SET dni_cliente=?, fecha_creacion=?, tipo_cuenta=?, CBU=?, saldo=? WHERE id=?";
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, cuenta.getDni());
+            ps.setDate(2, new java.sql.Date(cuenta.getCreacion().getTime()));
+            ps.setInt(3, cuenta.getTipo());
+            ps.setString(4, cuenta.getCBU());
+            ps.setFloat(5, cuenta.getSaldo());
+            ps.setInt(6, cuenta.getId());
+            actualizado = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return actualizado;
     }
 }

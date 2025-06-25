@@ -8,4 +8,5 @@ public interface CuentaDao {
 	public int obtenerSiguienteIdCuenta();
 	public java.util.List<Cuenta> obtenerTodasLasCuentas();
 	public boolean eliminarCuenta(int id);
+    public boolean actualizarCuenta(Cuenta cuenta);
 }
