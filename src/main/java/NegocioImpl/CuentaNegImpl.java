@@ -1,6 +1,7 @@
 package NegocioImpl;
 
 import Dominio.Cuenta;
+import Excepciones.ClienteNoExisteException;
 import Datos.CuentaDao;
 import DatosImpl.CuentaDaoImpl;
 import Dominio.Cuenta;
@@ -10,7 +11,7 @@ public class CuentaNegImpl implements CuentaNeg {
 
 	CuentaDao cuentadao = new CuentaDaoImpl();
 	
-	public boolean crearCuenta(Cuenta cuenta) {
+	public boolean crearCuenta(Cuenta cuenta) throws ClienteNoExisteException {
 		
 		boolean estado = false;
 

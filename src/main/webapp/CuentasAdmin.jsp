@@ -41,17 +41,27 @@
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <option value="cajaAhorro">Caja de ahorro</option>
-                    <option value="cuentaCorriente">Cuenta corriente</option>
+                    <option value="1">Caja de ahorro</option>
+                    <option value="2">Cuenta corriente</option>
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
                 <input type="number" name="saldo" id="saldo" step="0.01" required>
             </p>
 
+
+
         </fieldset>
+
+        <% if (request.getAttribute("mensajeServlet") != null) { %>
+            <div class="mensajeServlet" style="color: black; font-weight:bold; margin: 10px 0;">
+                <%= request.getAttribute("mensajeServlet") %>
+            </div>
+        <% } %>
+
+
         <div class="botonContainer">
-  		<button class="btnRegistrar">Registrar</button>
+  		<button class="btnRegistrar" type="submit" name="registrar">Registrar</button>
 		</div>
     </form>
 </div>
@@ -119,6 +129,7 @@
         </table>
         </div>
 </div>
+
 
 
 
