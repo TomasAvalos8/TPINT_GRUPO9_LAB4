@@ -10,8 +10,8 @@ import java.sql.Statement;
 public class Conexion {
 	private String host = "jdbc:mysql://localhost:3306/";
 	private String user = "root";
-	private String pass = "root";
-	private String dbName = "bancodb"; //poner nombre de tu base
+	private String pass = "password";
+	private String dbName = "BancoDB"; //poner nombre de tu base
 	
 	protected Connection connection;
 	
@@ -20,7 +20,7 @@ public class Conexion {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(host+dbName, user, pass);
+			this.connection = DriverManager.getConnection(host + dbName + "?useSSL=false", user, pass);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
