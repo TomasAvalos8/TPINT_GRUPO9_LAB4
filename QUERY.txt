@@ -1,0 +1,141 @@
+CREATE DATABASE IF NOT EXISTS BancoDB;
+USE BancoDB;
+
+-- Provincia
+CREATE TABLE Provincia (
+    id_provincia INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+-- Localidad
+CREATE TABLE Localidad (
+    id_localidad INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL,
+    id_provincia INT NOT NULL,
+    FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia)
+);
+
+-- Tipos usuarios
+CREATE TABLE TiposUsuarios (
+    id_tipo_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+-- Usuarios
+CREATE TABLE Usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    id_tipo_usuario INT NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL,
+    fecha_alta DATE NOT NULL,
+    activo BOOLEAN,
+    FOREIGN KEY (id_tipo_usuario) REFERENCES TiposUsuarios(id_tipo_usuario)
+);
+
+-- Cliente
+CREATE TABLE Cliente (
+    dni BIGINT PRIMARY KEY,
+    cuil BIGINT,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    sexo CHAR(1),
+    nacionalidad VARCHAR(50),
+    fecha_nacimiento DATE,
+    direccion VARCHAR(200),
+    id_localidad INT,
+    id_provincia INT,
+    correo_electronico VARCHAR(100),
+    telefono VARCHAR(50),
+    id_usuario INT,
+    activo BOOLEAN,
+    FOREIGN KEY (id_localidad) REFERENCES Localidad(id_localidad),
+    FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia),
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    
+);
+
+-- Tipo cuenta
+CREATE TABLE TipoCuenta (
+    id_tipo_cuenta INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+-- Cuenta
+CREATE TABLE Cuenta (
+    id BIGINT PRIMARY KEY,
+    dni_cliente BIGINT NOT NULL,
+    fecha_creacion DATE NOT NULL,
+    tipo_cuenta INT NOT NULL,
+    CBU VARCHAR(22) NOT NULL UNIQUE,
+    saldo DECIMAL(15,2) NOT NULL DEFAULT 0,
+    activo BOOLEAN,
+    FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
+    FOREIGN KEY (tipo_cuenta) REFERENCES TipoCuenta(id_tipo_cuenta)
+);
+
+-- Solicitud prestamos
+CREATE TABLE SolicitudPrestamos (
+    id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
+    dni_cliente BIGINT NOT NULL,
+    autorizacion BOOLEAN DEFAULT FALSE,
+    cuotas INT,
+    numero_cuenta_deposito BIGINT,
+    estado VARCHAR(50),
+    FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
+    FOREIGN KEY (numero_cuenta_deposito) REFERENCES Cuenta(id)
+);
+
+-- Prestamo
+CREATE TABLE Prestamo (
+    id_prestamo INT AUTO_INCREMENT PRIMARY KEY,
+    id_solicitud INT,
+    dni_cliente BIGINT NOT NULL,
+    numero_cuenta BIGINT NOT NULL,
+    fecha_alta DATE NOT NULL,
+    cuotas INT,
+    importe_pagar_por_mes DECIMAL(15,2),
+    plazo_pago INT,
+    importe_solicitado DECIMAL(15,2),
+    FOREIGN KEY (id_solicitud) REFERENCES SolicitudPrestamos(id_solicitud),
+    FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
+    FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id)
+);
+
+-- Cuotas
+CREATE TABLE Cuotas (
+    id_prestamo INT NOT NULL,
+    numero_cuota INT NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    fecha_pago DATE NOT NULL,
+    PRIMARY KEY (id_prestamo, numero_cuota),
+    FOREIGN KEY (id_prestamo) REFERENCES Prestamo(id_prestamo)
+);
+
+-- Transferencias
+CREATE TABLE Transferencias (
+    id_transferencia INT AUTO_INCREMENT PRIMARY KEY,
+    numero_cuenta_saliente BIGINT NOT NULL,
+    numero_cuenta_destino BIGINT NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (numero_cuenta_saliente) REFERENCES Cuenta(id),
+    FOREIGN KEY (numero_cuenta_destino) REFERENCES Cuenta(id)
+);
+
+-- Tipo movimiento
+CREATE TABLE TipoMovimiento (
+    id_tipo_movimiento INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+-- Movimiento
+CREATE TABLE Movimiento (
+    id_movimiento INT AUTO_INCREMENT PRIMARY KEY,
+    numero_cuenta BIGINT NOT NULL,
+    id_tipo_movimiento INT NOT NULL,
+    detalle VARCHAR(255),
+    monto DECIMAL(15,2) NOT NULL,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id),
+    FOREIGN KEY (id_tipo_movimiento) REFERENCES TipoMovimiento(id_tipo_movimiento)
+);
