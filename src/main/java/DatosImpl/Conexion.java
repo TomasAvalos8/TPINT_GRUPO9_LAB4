@@ -11,7 +11,7 @@ public class Conexion {
 	private String host = "jdbc:mysql://localhost:3306/";
 	private String user = "root";
 	private String pass = "root";
-	private String dbName = "BancoDB";
+	private String dbName = "bancodb"; //poner nombre de tu base
 	
 	protected Connection connection;
 	

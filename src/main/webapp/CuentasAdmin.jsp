@@ -20,11 +20,11 @@
 <div class="parteDer">
     <h2>Formulario de Cuentas</h2>
 
-    <form class="formCliente" method="post" action="ServletCuenta">
+    <form class="formCliente" method="post" action="CuentasAdminServlet">
         <fieldset>
             <p>
                 <label for="id">ID Cuenta:</label>
-                <input type="number" id="id" name="id" value="00001" readonly>
+                <input type="number" id="id" name="id" value="${siguienteIdCuenta}" readonly>
                           
                 <label for="dni">DNI del Cliente:</label>
                 <input type="number" name="dni" id="dni" required>
@@ -50,14 +50,15 @@
             </p>
 
         </fieldset>
+        <div class="botonContainer">
+  		<button class="btnRegistrar">Registrar</button>
+		</div>
     </form>
 </div>
 
 
 </div>
-<div class="botonContainer">
-  <button class="btnRegistrar">Registrar</button>
-</div>
+
 
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Cuentas</h2>
