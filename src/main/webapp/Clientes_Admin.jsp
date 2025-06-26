@@ -8,9 +8,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Gestión de Clientes</title>
 <link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        #tablaClientes td {
+            vertical-align: middle;
+        }
+        .btnModificar, .btnEliminar {
+            margin: 2px;
+            padding: 5px 10px;
+        }
+        .fas {
+            margin-right: 5px;
+            color: #666;
+        }
+    </style>
 </head>
 <script type="text/javascript">
 
@@ -160,105 +176,84 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Clientes</h2>
 <div class="tablaCuentasContainer">
-<div class="filtrosContainer">
- <p> <b>Busqueda:</b> <input type="text" name="search">  
- <input type="submit" value="Buscar" class="btnBuscar">
- </p>
- 
-   
-     <p> DNI: <input type="text" name="idCliente">  </p>
-     <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
-  
-</div>
-
-	<table>
+    <table id="tablaClientes" class="display responsive nowrap" style="width:100%">
         <thead>
-    <tr>
-        <th>DNI</th>
-        <th>Nombre y Apellido</th>
-        <th>Sexo y Nacionalidad</th>
-        <th>Fecha de nacimiento</th>
-        <th>Accion</th>
-    </tr>
-</thead>
-<tbody>
-    <%
-    List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("listaClientes");
-    if (listaClientes != null && !listaClientes.isEmpty()) {
-        for (Cliente cliente : listaClientes) {
-    %>
-    <tr>
-        <td><%= cliente.getDni() %></td>
-        <td><%= cliente.getNombre() %> <%= cliente.getApellido() %></td>
-        <td>
-            <%
-            String sexo = "";
-            if ("M".equals(cliente.getSexo())) {
-                sexo = "Masculino";
-            } else if ("F".equals(cliente.getSexo())) {
-                sexo = "Femenino";
-            } else {
-                sexo = "No especificado";
-            }
-            %>
-            <%= sexo %> / <%= cliente.getNacionalidad() %>
-        </td>
-        <td>
-            <%
-    if (cliente.getFecha_nacimiento() != null) {
-        // Formatear la fecha día/mes/año
-        String fechaFormateada = String.format("%02d/%02d/%d", 
-            cliente.getFecha_nacimiento().getDayOfMonth(),
-            cliente.getFecha_nacimiento().getMonthValue(),
-            cliente.getFecha_nacimiento().getYear());
-        out.print(fechaFormateada);
-    } else {
-        out.print("");
-    }
-    %>
-    
-        </td>
-        <td>
-        			<form class="boton" method="post" action="ServletClientes" style="display:inline;">
-                        <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>" />
-                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Estás seguro que quieres eliminar esta cliente?');">Eliminar</button>
-                    </form>
-                    <form class="boton" method="post" action="ServletClientes" style="display:inline;">
-                        <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>" />
-                        <button class="btnModificar" type="submit">Modificar</button>
-                    </form>
-        </td>
-    </tr>
-    <%
-        }
-    } else {
-    %>
-    <tr>
-        <td colspan="4" style="text-align: center;">No se encontraron clientes</td>
-    </tr>
-    <%
-    }
-    %>
-</tbody>
-          <tfoot>
             <tr>
-                <td colspan="5">
-                    <div class="paginado">
-                    <button class="btnAnterior"><</button>
-                        <span> Pagina 1 de 10 </span>
-                        <button class="btnSiguiente">></button>
-                    </div>
-                </td>
+                <th width="10%">DNI</th>
+                <th width="20%">Nombre Completo</th>
+                <th width="5%">Sexo</th>
+                <th width="10%">Nacionalidad</th>
+                <th width="12%">Fecha Nac.</th>
+                <th width="18%">Contacto</th>
+                <th width="25%">Acciones</th>
             </tr>
-          </tfoot>
-        </table>
-        </div>
-</div>
+        </thead>
+        <tbody>
+            <%
+            List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("listaClientes");
+            if (listaClientes != null && !listaClientes.isEmpty()) {
+                for (Cliente cliente : listaClientes) {
+            %>
+                <tr>
+                    <td><%= cliente.getDni() %></td>
+                    <td><%= cliente.getApellido() + ", " + cliente.getNombre() %></td>
+                    <td><%= "M".equals(cliente.getSexo()) ? "M" : "F".equals(cliente.getSexo()) ? "F" : "X" %></td>
+                    <td><%= cliente.getNacionalidad() %></td>
+                    <td><%
+                        if (cliente.getFecha_nacimiento() != null) {
+                            String fechaFormateada = String.format("%02d/%02d/%d", 
+                                cliente.getFecha_nacimiento().getDayOfMonth(),
+                                cliente.getFecha_nacimiento().getMonthValue(),
+                                cliente.getFecha_nacimiento().getYear());
+                            out.print(fechaFormateada);
+                        }
+                        %></td>
+                    <td><i class="fas fa-envelope"></i> <%= cliente.getCorreo_electronico() %><br>
+                        <i class="fas fa-phone"></i> <%= cliente.getTelefono() %></td>
+                    <td>
+                        <form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                            <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>">
+                            <button class="btnModificar" type="submit">Modificar</button>
+                        </form>
+                        <form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                            <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>">
+                            <button class="btnEliminar" type="submit" onclick="return confirm('¿Está seguro que desea eliminar este cliente?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            <% 
+                }
+            } else { 
+            %>
+                <tr>
+                    <td colspan="9" style="text-align: center;">No se encontraron clientes</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
 
-
-</div>
-
-
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+		
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#tablaClientes').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            },
+            responsive: true,
+            "columns": [
+                { "data": "dni" },
+                { "data": "nombreCompleto" },
+                { "data": "sexo" },
+                { "data": "nacionalidad" },
+                { "data": "fechaNacimiento" },
+                { "data": "contacto" },
+                { "data": "acciones", "orderable": false }
+            ]
+        });
+    });
+    </script>
 </body>
 </html>
