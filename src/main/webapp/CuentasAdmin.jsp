@@ -16,7 +16,6 @@
 
 <%
     Dominio.Cuenta cuentaModificar = (Dominio.Cuenta) request.getAttribute("cuentaModificar");
-    // Obtener el valor del filtro seleccionado para que persista
     String tipoCuentaFiltroSeleccionado = request.getParameter("tipoCuentaFiltro");
     if (tipoCuentaFiltroSeleccionado == null) {
         tipoCuentaFiltroSeleccionado = ""; // Por defecto, sin filtro
@@ -97,7 +96,6 @@
                        if (tiposCuenta != null) {
                            for (Dominio.TipoCuenta tipo : tiposCuenta) { 
                                String selected = "";
-                               // Comprobar si el tipo actual coincide con el filtro seleccionado
                                if (tipoCuentaFiltroSeleccionado.equals(String.valueOf(tipo.getIdTipoCuenta()))) {
                                    selected = "selected";
                                }
