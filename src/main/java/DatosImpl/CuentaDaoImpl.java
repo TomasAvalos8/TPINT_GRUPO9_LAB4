@@ -2,7 +2,8 @@ package DatosImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -14,7 +15,7 @@ import Excepciones.ClienteNoExisteException;
 public class CuentaDaoImpl implements CuentaDao {
 
 	private static final String insertar = "INSERT INTO Cuenta (id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo) VALUES (?, ?, ?, ?, ?, ?)";
-	
+	private Conexion conexion;
 	public boolean crearCuenta(Cuenta cuenta) throws ClienteNoExisteException {
 		
 		PreparedStatement statement = null;
@@ -83,53 +84,41 @@ public class CuentaDaoImpl implements CuentaDao {
 	
 	
     @Override
-    public java.util.List<Cuenta> obtenerTodasLasCuentas() {
-        java.util.List<Cuenta> lista = new java.util.ArrayList<>();
-        Conexion cn = new Conexion();
-        Connection conexion = cn.Open();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+    public List<Cuenta> obtenerTodasLasCuentas() {
+        conexion = new Conexion();
+        conexion.Open();
+        List<Cuenta> lista = new ArrayList<Cuenta>();
+
+        String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo FROM Cuenta c LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta WHERE c.activo = 1;";
+
         try {
-            String sql = "SELECT id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo FROM Cuenta";
-            ps = conexion.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Cuenta cuenta = new Cuenta();
-                cuenta.setId(rs.getInt("id"));
-                cuenta.setDni(rs.getInt("dni_cliente"));
-                cuenta.setCreacion(rs.getDate("fecha_creacion"));
-                int idTipo = rs.getInt("tipo_cuenta");
+            ResultSet rs = conexion.query(query);
+
+            while(rs.next()) {
+                Cuenta nCuenta = new Cuenta();
+                nCuenta.setId(rs.getInt("id"));
+                nCuenta.setDni(rs.getInt("dni_cliente"));
+                nCuenta.setCreacion(rs.getDate("fecha_creacion"));
+                nCuenta.setCBU(rs.getString("CBU"));
+
+
                 TipoCuenta tipoCuenta = new TipoCuenta();
+                int idTipo = rs.getInt("tipo_cuenta");
+                String descripcionTipo = rs.getString("descripcion_tipo"); // Obtener la descripción
+                
                 tipoCuenta.setIdTipoCuenta(idTipo);
-                try {
-                    PreparedStatement psTipo = conexion.prepareStatement("SELECT descripcion FROM TipoCuenta WHERE id_tipo_cuenta = ?");
-                    psTipo.setInt(1, idTipo);
-                    ResultSet rsTipo = psTipo.executeQuery();
-                    if (rsTipo.next()) {
-                        tipoCuenta.setDescripcion(rsTipo.getString("descripcion"));
-                    }
-                    rsTipo.close();
-                    psTipo.close();
-                } catch (Exception e) {
-                    tipoCuenta.setDescripcion("");
-                }
-                cuenta.setTipo(tipoCuenta);
-                cuenta.setCBU(rs.getString("CBU"));
-                cuenta.setSaldo(rs.getFloat("saldo"));
-                cuenta.setEstado(true); 
-                lista.add(cuenta);
+                tipoCuenta.setDescripcion(descripcionTipo); // Asignar la descripción
+                nCuenta.setTipo(tipoCuenta);
+
+                lista.add(nCuenta);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                if (conexion != null) conexion.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            conexion.close();
         }
+
         return lista;
     }
 

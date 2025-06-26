@@ -1,17 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, Dominio.Cuenta, Dominio.TipoCuenta" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Creacion de cuentas</title>
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 </head>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <%
     Dominio.Cuenta cuentaModificar = (Dominio.Cuenta) request.getAttribute("cuentaModificar");
+    // Obtener el valor del filtro seleccionado para que persista
+    String tipoCuentaFiltroSeleccionado = request.getParameter("tipoCuentaFiltro");
+    if (tipoCuentaFiltroSeleccionado == null) {
+        tipoCuentaFiltroSeleccionado = ""; // Por defecto, sin filtro
+    }
 %>
 
 <p class="userLoguedText">usuario logueado </p>
@@ -36,14 +45,13 @@
             </p>
 
             <p>
-
                 <label for="fecha">Fecha de Creación:</label>
                 <input type="date" name="fecha" id="fecha" required value="<%= cuentaModificar != null && cuentaModificar.getCreacion() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(cuentaModificar.getCreacion()) : "" %>" />
 
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <% java.util.List<Dominio.TipoCuenta> tiposCuenta = (java.util.List<Dominio.TipoCuenta>) request.getAttribute("tiposCuenta");
+                    <% java.util.List<Dominio.TipoCuenta> tiposCuenta = (List<TipoCuenta>) request.getAttribute("tiposCuenta");
                        if (tiposCuenta != null) {
                            for (Dominio.TipoCuenta tipo : tiposCuenta) { %>
                                <option value="<%= tipo.getIdTipoCuenta() %>" <%= cuentaModificar != null && cuentaModificar.getTipo() != null && cuentaModificar.getTipo().getIdTipoCuenta() == tipo.getIdTipoCuenta() ? "selected" : "" %>><%= tipo.getDescripcion() %></option>
@@ -55,9 +63,6 @@
                 <label for="saldo">Saldo inicial:</label>
                 <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
             </p>
-
-
-
         </fieldset>
 
         <% if (request.getAttribute("mensajeServlet") != null) { %>
@@ -65,7 +70,6 @@
                 <%= request.getAttribute("mensajeServlet") %>
             </div>
         <% } %>
-
 
         <div class="botonContainer">
         <% if (cuentaModificar != null) { %>
@@ -77,89 +81,98 @@
     </form>
 </div>
 
-
 </div>
-
 
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Cuentas</h2>
 <div class="tablaCuentasContainer">
-<div class="filtrosContainer">
- <p> <b>Busqueda:</b> <input type="text" name="search">  
- <input type="submit" value="Buscar" class="btnBuscar">
- </p>
- <p> <b>Filtrar:</b>
- 
- 	Tipo de cuenta:
-     <select name="tipoCuentaFiltro">
-         <option value="">Seleccione</option>
-         <option value="cajaAhorro">Caja de ahorro</option>
-         <option value="cuentaCorriente">Cuenta corriente</option>
-     </select>
-     
-     <p> ID Cliente: <input type="text" name="idCliente">  </p>
-     <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
-     </p>
-</div>
 
-	<table>
+    <div class="filtrosContainer">
+        <form method="get" action="CuentasAdminServlet">
+            <p><b>Filtrar:</b>
+                Tipo de cuenta:
+                <select name="tipoCuentaFiltro">
+                    <option value="">Seleccione</option>
+                    <% 
+                       if (tiposCuenta != null) {
+                           for (Dominio.TipoCuenta tipo : tiposCuenta) { 
+                               String selected = "";
+                               // Comprobar si el tipo actual coincide con el filtro seleccionado
+                               if (tipoCuentaFiltroSeleccionado.equals(String.valueOf(tipo.getIdTipoCuenta()))) {
+                                   selected = "selected";
+                               }
+                    %>
+                               <option value="<%= tipo.getIdTipoCuenta() %>" <%= selected %>><%= tipo.getDescripcion() %></option>
+                    <%     }
+                       }
+                    %>
+                </select>
+            </p>
+            <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
+        </form>
+    </div>
+
+    <table id="tablaCuentas" class="display responsive nowrap" style="width:100%">
         <thead>
             <tr>
                 <th>ID Cuenta</th>
                 <th>Tipo de Cuenta</th>
-                <th>ID Cliente</th>
+                <th>DNI Cliente</th>
+                <th>CBU</th>
+                <th>Fecha Creacion</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody >
+        <tbody>
         <% 
-            java.util.List<Dominio.Cuenta> listaCuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("listaCuentas");
+            List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas");
             if (listaCuentas != null) {
                 for (Dominio.Cuenta cuenta : listaCuentas) { 
         %>
             <tr>
                 <td><%= cuenta.getId() %></td>
-                <td><%= cuenta.getTipo() != null ? cuenta.getTipo().getDescripcion() : "" %></td>
+                <td><%= cuenta.getTipo() != null ? cuenta.getTipo().getDescripcion() : "N/A" %></td>
                 <td><%= cuenta.getDni() %></td>
+                <td><%= cuenta.getCBU() %></td>
+                <td><%= cuenta.getCreacion() %></td>
+                <td><%= cuenta.isEstado() ? "Activa" : "Inactiva" %></td>
                 <td>
-                    <form   class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton" method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
-                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Estas seguro que queres eliminar esta cuenta?');">Eliminar</button>
+                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Estás seguro que quieres eliminar esta cuenta?');">Eliminar</button>
                     </form>
-                    <form class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton" method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="modificarId" value="<%= cuenta.getId() %>" />
                         <button class="btnModificar" type="submit">Modificar</button>
                     </form>
                 </td>
             </tr>
         <%      }
-            }
-        %>
-        </tbody>
-          <tfoot>
+            } else { %>
             <tr>
-                <td colspan="5">
-                    <div class="paginado">
-                    <button class="btnAnterior"><</button>
-                        <span> Pagina 1 de 10 </span>
-                        <button class="btnSiguiente">></button>
-                    </div>
-                </td>
+                <td colspan="5">No hay cuentas disponibles</td>
             </tr>
-          </tfoot>
-        </table>
-        </div>
+        <% } %>
+        </tbody>
+    </table>
+        
+</div>
 </div>
 
-
-
-
-
-
-
-
-
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+		
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tablaCuentas').DataTable({
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+        }
+    });
+});
+</script>
 
 </body>
 </html>
