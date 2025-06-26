@@ -13,31 +13,43 @@
 
 
 <p class="userLoguedText">usuario logueado </p>
+    <form class="formCliente" method="post" action="ServletUsuario">
 <div class="contenedorFormularios">
 
 <div class="formulariosWrapper">
 
 <div class="parteDer">
-    <h2>Crear nuevo usuario administrador</h2>
+    <h2>Crear nuevo usuario Administrador</h2>
 
-    <form class="formCliente" method="post" action="ServletCuenta">
         <fieldset>
          <p>    
-             usuario: <input type="text" name="usuario" required>
-             contraseña: <input type="password" name="contrasena" required>
+             Usuario: <input type="text" name="usuario" required>
+             Contraseña: <input type="password" name="password" required>
          </p>
          
 
         </fieldset>
-    </form>
 </div>
 
 
 </div>
+<%
+String mensaje = (String) request.getAttribute("mensaje");
+if (mensaje != null && !mensaje.isEmpty()) {
+%>
+<div style="text-align: center; margin: 10px 0;">
+    <p style="color: <%= mensaje.startsWith("Error") ? "red" : "green" %>;">
+        <%= mensaje %>
+    </p>
+</div>
+<%
+}
+%>
 <div class="botonContainer">
-  <button class="btnRegistrar">Registrar</button>
+  <button name="btnRegistrarUsuario" class="btnRegistrar">Registrar</button>
 </div>
-
+</div>
+    </form>
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Usuarios</h2>
 <div class="tablaCuentasContainer">

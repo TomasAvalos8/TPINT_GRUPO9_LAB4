@@ -2,6 +2,8 @@ package Servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,12 +12,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Negocio.ClienteNeg;
+import Negocio.ProvinciaNeg;
+import Negocio.LocalidadNeg;
 import NegocioImpl.ClienteNegImpl;
+import NegocioImpl.ProvinciaNegImpl;
+import NegocioImpl.LocalidadNegImpl;
 import Negocio.UsuarioNeg;
 import NegocioImpl.UsuarioNegImpl;
+
 import Dominio.Cliente;
 import Dominio.TipoUsuario;
 import Dominio.Usuario;
+import Dominio.Provincia;
+import Dominio.Localidad;
 /**
  * Servlet implementation class ServletClientes
  */
@@ -25,20 +34,39 @@ public class ServletClientes extends HttpServlet {
        
    ClienteNeg clienteNeg = new ClienteNegImpl();
    UsuarioNeg usuarioNeg = new UsuarioNegImpl();
-    public ServletClientes() {
+   ProvinciaNeg provNeg = new ProvinciaNegImpl();
+   LocalidadNeg locNeg = new LocalidadNegImpl();
+   public ServletClientes() {
         super();
         
     }
 
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	   
+	    List<Provincia> provincias = provNeg.obtenerProvincias();
+	    request.setAttribute("provincias", provincias);
+
+	
+	    String idProvincia = request.getParameter("idProvincia");
+	    if (idProvincia != null && !idProvincia.isEmpty()) {
+	        int id = Integer.parseInt(idProvincia);
+	        List<Localidad> localidades = locNeg.obtenerLocalidades(id);
+	        request.setAttribute("localidades", localidades);
+	        request.setAttribute("idProvinciaSeleccionada", idProvincia); 
+	    }
+
+	  
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
+	    dispatcher.forward(request, response);
 	}
+
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnRegistrar")!=null) {
+			if (request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
+
 			Usuario usuario = new Usuario();
 			Cliente cliente = new Cliente();
 			TipoUsuario tipo= new TipoUsuario(2, "cliente");
@@ -47,6 +75,7 @@ public class ServletClientes extends HttpServlet {
 			usuario.setTipoUsuario(tipo);
 			LocalDate fechaActual = LocalDate.now();
 			usuario.setFechaAlta(fechaActual);
+			
 			int IdGuardado = 0;
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if(IdGuardado!=0) {
@@ -68,12 +97,21 @@ public class ServletClientes extends HttpServlet {
 			estado=clienteNeg.insertar(cliente);
 			if (estado) {
 				request.setAttribute("estadoCliente", estado);
+				request.setAttribute("mensaje", "El cliente fue registrado correctamente.");
 			}
 			}
+			}else {
+				request.setAttribute("mensaje", "Error: las contraseñas son distintas");
+			}
+			List<Provincia> provincias = provNeg.obtenerProvincias();
+	        request.setAttribute("provincias", provincias);
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
 			dispatcher.forward(request, response);
 			
 		}
+	
+		
 	}
 
 }
