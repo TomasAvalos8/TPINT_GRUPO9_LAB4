@@ -43,22 +43,30 @@ public class ServletClientes extends HttpServlet {
 
 	
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	   
-	    List<Provincia> provincias = provNeg.obtenerProvincias();
-	    request.setAttribute("provincias", provincias);
-
-	
-	    String idProvincia = request.getParameter("idProvincia");
-	    if (idProvincia != null && !idProvincia.isEmpty()) {
-	        int id = Integer.parseInt(idProvincia);
-	        List<Localidad> localidades = locNeg.obtenerLocalidades(id);
-	        request.setAttribute("localidades", localidades);
-	        request.setAttribute("idProvinciaSeleccionada", idProvincia); 
+	    try {
+	        // Obtener provincias (esto debería estar antes de cualquier redirección)
+	        List<Provincia> provincias = provNeg.obtenerProvincias();
+	        request.setAttribute("provincias", provincias);
+	        
+	        // Resto de tu lógica...
+	        String idProvincia = request.getParameter("idProvincia");
+	        if (idProvincia != null && !idProvincia.isEmpty()) {
+	            int id = Integer.parseInt(idProvincia);
+	            List<Localidad> localidades = locNeg.obtenerLocalidades(id);
+	            request.setAttribute("localidades", localidades);
+	            request.setAttribute("idProvinciaSeleccionada", idProvincia); 
+	        }
+	        
+	        // Listar clientes
+	        List<Cliente> listaClientes = clienteNeg.listarClientes();
+	        request.setAttribute("listaClientes", listaClientes);
+	        
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
+	        dispatcher.forward(request, response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // Manejo de errores
 	    }
-
-	  
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
-	    dispatcher.forward(request, response);
 	}
 
 

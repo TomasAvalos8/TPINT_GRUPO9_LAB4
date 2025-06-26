@@ -1,5 +1,6 @@
 <%@page import="Dominio.Provincia"%>
 <%@page import="Dominio.Localidad"%>
+<%@page import="Dominio.Cliente"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -37,17 +38,27 @@ function eventoSeleccionarProvincia() {
             %>
                 Provincia:
                <select name="idProvincia" id="idProvincia" onchange="eventoSeleccionarProvincia()" required>
-               <option value="">Seleccione</option>
-               <%
-               List<Provincia> lista = (List<Provincia>) request.getAttribute("provincias");
-               for (Provincia p : lista) {
-            	   String seleccionado = (idProvinciaSeleccionada != null && idProvinciaSeleccionada.equals(String.valueOf(p.getId_provincia()))) ? "selected" : "";
-            	   %>
-            	   <option value="<%= p.getId_provincia() %>" <%= seleccionado %>><%= p.getDescripcion() %></option>
-            	   <%
-            	   }
-            	   %>
-            	   </select>
+    <option value="">Seleccione</option>
+    <%
+    List<Provincia> lista = (List<Provincia>) request.getAttribute("provincias");
+    if (lista != null && !lista.isEmpty()) {
+        for (Provincia p : lista) {
+            String seleccionado = (idProvinciaSeleccionada != null && 
+                                 idProvinciaSeleccionada.equals(String.valueOf(p.getId_provincia()))) ? 
+                                 "selected" : "";
+    %>
+            <option value="<%= p.getId_provincia() %>" <%= seleccionado %>>
+                <%= p.getDescripcion() %>
+            </option>
+    <%
+        }
+    } else {
+    %>
+        <option value="">No hay provincias disponibles</option>
+    <%
+    }
+    %>
+</select>
                 Localidad:
                 <select name="idLocalidad" required>
                     <option value="">Seleccione</option>
@@ -147,28 +158,64 @@ if (mensaje != null && !mensaje.isEmpty()) {
 
 	<table>
         <thead>
-            <tr>
-                <th>DNI</th>
-                <th>Nombre y Apellido</th>
-                <th>Sexo y Nacionalidad</th>
-                <th>Fecha de nacimiento</th>
-            </tr>
-        </thead>
-        <tbody >
-             <tr>
-                 <td>123421555</td>
-                 <td>Pedro gonzales</td>
-                 <td>Masculino/ Argentino</td>
-                 <td>17/20/1990</td>
-             </tr>
-             <tr>
-                 <td>42652311</td>
-                 <td>Pechito Martinez perez</td>
-                 <td>No binario/ Uruguayo</td>
-                 <td><button class="btnEliminar">Eliminar</button></td>
-             </tr>
-         
-        </tbody>
+    <tr>
+        <th>DNI</th>
+        <th>Nombre y Apellido</th>
+        <th>Sexo y Nacionalidad</th>
+        <th>Fecha de nacimiento</th>
+        <th>Accion</th>
+    </tr>
+</thead>
+<tbody>
+    <%
+    List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("listaClientes");
+    if (listaClientes != null && !listaClientes.isEmpty()) {
+        for (Cliente cliente : listaClientes) {
+    %>
+    <tr>
+        <td><%= cliente.getDni() %></td>
+        <td><%= cliente.getNombre() %> <%= cliente.getApellido() %></td>
+        <td>
+            <%
+            String sexo = "";
+            if ("M".equals(cliente.getSexo())) {
+                sexo = "Masculino";
+            } else if ("F".equals(cliente.getSexo())) {
+                sexo = "Femenino";
+            } else {
+                sexo = "No especificado";
+            }
+            %>
+            <%= sexo %> / <%= cliente.getNacionalidad() %>
+        </td>
+        <td>
+            <%
+    if (cliente.getFecha_nacimiento() != null) {
+        // Formatear la fecha día/mes/año
+        String fechaFormateada = String.format("%02d/%02d/%d", 
+            cliente.getFecha_nacimiento().getDayOfMonth(),
+            cliente.getFecha_nacimiento().getMonthValue(),
+            cliente.getFecha_nacimiento().getYear());
+        out.print(fechaFormateada);
+    } else {
+        out.print("");
+    }
+    %>
+    
+        </td>
+        <td><button class="btnEliminar">Eliminar</button></td>
+    </tr>
+    <%
+        }
+    } else {
+    %>
+    <tr>
+        <td colspan="4" style="text-align: center;">No se encontraron clientes</td>
+    </tr>
+    <%
+    }
+    %>
+</tbody>
           <tfoot>
             <tr>
                 <td colspan="5">

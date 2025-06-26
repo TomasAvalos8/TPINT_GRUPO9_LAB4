@@ -1,8 +1,12 @@
 package Datos;
 
+import java.util.List;
+
 import Dominio.Cliente;
 
 public interface ClienteDao {
 
 	public boolean insertarCliente(Cliente cliente);
+
+	List<Cliente> listarClientes();
 }

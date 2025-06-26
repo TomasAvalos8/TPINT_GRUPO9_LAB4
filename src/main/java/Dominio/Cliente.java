@@ -37,6 +37,14 @@ public class Cliente {
 		this.IdUsuario = IdUsuario;
 		this.activo = activo;
 	}
+	
+	public Cliente(int dni, String nombre, String apellido, String sexo, String nacionalidad) {
+	    this.dni = dni;
+	    this.nombre = nombre;
+	    this.apellido = apellido;
+	    this.sexo = sexo;
+	    this.nacionalidad = nacionalidad;
+	}
 	public Cliente() {}
 
 	public int getDni() {

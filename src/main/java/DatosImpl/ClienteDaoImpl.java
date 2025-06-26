@@ -1,5 +1,9 @@
 package DatosImpl;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import Datos.ClienteDao;
 import Dominio.Cliente;
 
@@ -38,6 +42,40 @@ private Conexion conexion;
 	    }
 	    return estado;
 	}
-
+	@Override
+	public List<Cliente> listarClientes() {
+	    List<Cliente> listaClientes = new ArrayList<>();
+	    conexion = new Conexion();
+	    conexion.Open();
+	    
+	    String query = "SELECT dni, nombre, apellido, sexo, nacionalidad, fecha_nacimiento FROM Cliente WHERE activo = 1";
+	    
+	    try {
+	        ResultSet rs = conexion.executeQuery(query);
+	        
+	        while (rs.next()) {
+	            Cliente cliente = new Cliente();
+	            cliente.setDni(rs.getInt("dni"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setSexo(rs.getString("sexo"));
+	            cliente.setNacionalidad(rs.getString("nacionalidad"));
+	            
+	            // Manejo de la fecha de nacimiento
+	            java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
+	            if (fechaNacimientoSQL != null) {
+	                cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
+	            }
+	            
+	            listaClientes.add(cliente);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        conexion.close();
+	    }
+	    
+	    return listaClientes;
+	}
 
 }

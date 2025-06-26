@@ -2,6 +2,9 @@ package NegocioImpl;
 
 import Dominio.Cliente;
 import Negocio.ClienteNeg;
+
+import java.util.List;
+
 import Datos.ClienteDao;
 import DatosImpl.ClienteDaoImpl;
 
@@ -14,5 +17,8 @@ public class ClienteNegImpl implements ClienteNeg{
 		
 		return cDao.insertarCliente(c);
 	}
-	
+	@Override
+    public List<Cliente> listarClientes() {
+        return cDao.listarClientes();
+    }
 }
