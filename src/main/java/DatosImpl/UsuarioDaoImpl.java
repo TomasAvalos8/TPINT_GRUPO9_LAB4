@@ -1,6 +1,9 @@
 package DatosImpl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import Datos.UsuarioDao;
 import Dominio.TipoUsuario;
@@ -97,6 +100,54 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	    return usuario;
 	}
 
+	public Usuario obtenerUsuarioPorId(int idUsuario) {
+		Usuario usuario = null;
+		Conexion conexion = new Conexion();
+		conexion.Open();
+		String query = "SELECT id_usuario, usuario, contraseña, id_tipo_usuario FROM Usuarios WHERE id_usuario = " + idUsuario;
+		try {
+			ResultSet rs = conexion.executeQuery(query);
+			if (rs.next()) {
+				usuario = new Usuario();
+				usuario.setId_usuario(rs.getInt("id_usuario"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuario.setContraseña(rs.getString("contraseña"));
+				TipoUsuario tipo = new TipoUsuario();
+				tipo.setIdTipoUsuario(rs.getInt("id_tipo_usuario"));
+				usuario.setTipoUsuario(tipo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conexion.close();
+		}
+		return usuario;
+	}
+	
+	@Override
+	public boolean actualizarUsuario(Usuario usuario) {
+		PreparedStatement ps = null;
+		Conexion cn = new Conexion();
+		Connection conexion = cn.Open();
+		boolean actualizado = false;
+		try {
+			String sql = "UPDATE Usuarios SET usuario=? WHERE id_usuario=?";
+			ps = conexion.prepareStatement(sql);
+			ps.setString(1, usuario.getUsuario());
+			ps.setInt(2, usuario.getId_usuario());
+			actualizado = ps.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) ps.close();
+				if (conexion != null) conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return actualizado;
+	}
 	
 }
 

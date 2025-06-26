@@ -48,39 +48,45 @@ private Conexion conexion;
 	}
 	@Override
 	public List<Cliente> listarClientes() {
-	    List<Cliente> listaClientes = new ArrayList<>();
-	    conexion = new Conexion();
-	    conexion.Open();
-	    
-	    String query = "SELECT dni, nombre, apellido, sexo, nacionalidad, fecha_nacimiento FROM Cliente WHERE activo = 1";
-	    
-	    try {
-	        ResultSet rs = conexion.executeQuery(query);
-	        
-	        while (rs.next()) {
-	            Cliente cliente = new Cliente();
-	            cliente.setDni(rs.getInt("dni"));
-	            cliente.setNombre(rs.getString("nombre"));
-	            cliente.setApellido(rs.getString("apellido"));
-	            cliente.setSexo(rs.getString("sexo"));
-	            cliente.setNacionalidad(rs.getString("nacionalidad"));
-	            
-	            // Manejo de la fecha de nacimiento
-	            java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
-	            if (fechaNacimientoSQL != null) {
-	                cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
-	            }
-	            
-	            listaClientes.add(cliente);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        conexion.close();
-	    }
-	    
-	    return listaClientes;
-	}
+        List<Cliente> listaClientes = new ArrayList<>();
+        conexion = new Conexion();
+        conexion.Open();
+        
+        String query = "SELECT dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo_electronico, telefono, id_usuario, activo FROM Cliente WHERE activo = 1";
+        
+        try {
+            ResultSet rs = conexion.executeQuery(query);
+            
+            while (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setDni(rs.getInt("dni"));
+                cliente.setCuil(rs.getInt("cuil"));
+                cliente.setNombre(rs.getString("nombre"));
+                cliente.setApellido(rs.getString("apellido"));
+                cliente.setSexo(rs.getString("sexo"));
+                cliente.setNacionalidad(rs.getString("nacionalidad"));
+                // Manejo de la fecha de nacimiento
+                java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
+                if (fechaNacimientoSQL != null) {
+                    cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
+                }
+                cliente.setDireccion(rs.getString("direccion"));
+                cliente.setId_localidad(rs.getInt("id_localidad"));
+                cliente.setId_provincia(rs.getInt("id_provincia"));
+                cliente.setCorreo_electronico(rs.getString("correo_electronico"));
+                cliente.setTelefono(rs.getString("telefono"));
+                cliente.setIdUsuario(rs.getInt("id_usuario"));
+                cliente.setActivo(rs.getBoolean("activo"));
+                listaClientes.add(cliente);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conexion.close();
+        }
+        
+        return listaClientes;
+    }
 	
 	public boolean eliminarCliente(int dni) {
 		PreparedStatement ps = null;
@@ -112,7 +118,7 @@ private Conexion conexion;
 	    Connection conexion = cn.Open();
 	    boolean actualizado = false;
 	    try {
-	        String sql = "UPDATE Cliente SET cuil=?, nombre=?, apellido=?, sexo=?, nacionalidad=?, fecha_nacimiento=?, direccion=?, id_localidad=?, id_provincia=?, correo_electronico=?, telefono=?, IdUsuario=?, activo=? WHERE dni=?";
+	        String sql = "UPDATE Cliente SET cuil=?, nombre=?, apellido=?, sexo=?, nacionalidad=?, fecha_nacimiento=?, direccion=?, id_localidad=?, id_provincia=?, correo_electronico=?, telefono=?, id_usuario=?, activo=? WHERE dni=?";
 	        ps = (PreparedStatement) conexion.prepareStatement(sql);
 	        ps.setInt(1, cliente.getCuil());
 	        ps.setString(2, cliente.getNombre());

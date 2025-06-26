@@ -113,7 +113,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 
             <fieldset>
                 <p>
-                    Usuario: <input type="text" name="usuario" required value="<%= (clienteModificar != null) ? "" : "" %>">
+                    Usuario: <input type="text" name="usuario" required value="<%= (clienteModificar != null && request.getAttribute("usuarioModificar") != null) ? ((Dominio.Usuario)request.getAttribute("usuarioModificar")).getUsuario() : "" %>">
                 </p>
                 <% if (clienteModificar == null) { %>
                 <p>
@@ -122,6 +122,9 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                 <p>
                     Repetir contraseña: <input type="password" name="passwordConfirm" required>
                 </p>
+                <% } %>
+                <% if (clienteModificar != null && request.getAttribute("usuarioModificar") != null) { %>
+                <input type="hidden" name="idUsuario" value="<%= ((Dominio.Usuario)request.getAttribute("usuarioModificar")).getId_usuario() %>" />
                 <% } %>
             </fieldset>
         </div>

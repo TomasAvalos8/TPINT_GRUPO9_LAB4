@@ -141,69 +141,79 @@ public class ServletClientes extends HttpServlet {
 		// Cargar datos de cliente para modificar
 		String modificarId = request.getParameter("modificarId");
 		if (modificarId != null) {
-		    int dniModificar = Integer.parseInt(modificarId);
-		    List<Cliente> listaClientes = clienteNeg.listarClientes();
-		    Cliente clienteModificar = null;
-		    for (Cliente c : listaClientes) {
-		        if (c.getDni() == dniModificar) {
-		            clienteModificar = c;
-		            break;
-		        }
-		    }
-		    
-		    //agregadooooooo
-		    
-		    
-		    request.setAttribute("clienteModificar", clienteModificar);
-		    
-		    List<Provincia> provincias = provNeg.obtenerProvincias();
-		    request.setAttribute("provincias", provincias);
-		    
-		    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
-		    return;
-		}
-		
-		// actualización de cliente
-		String actualizar = request.getParameter("actualizar");
-		if (actualizar != null) {
-		    try {
-		        Cliente cliente = new Cliente();
-		        cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-		        cliente.setCuil(Integer.parseInt(request.getParameter("cuil")));
-		        cliente.setNombre(request.getParameter("nombre"));
-		        cliente.setApellido(request.getParameter("apellido"));
-		        cliente.setSexo(request.getParameter("sexo"));
-		        cliente.setNacionalidad(request.getParameter("nacionalidad"));
-		        cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fecha_nacimiento")));
-		        cliente.setDireccion(request.getParameter("direccion"));
-		        cliente.setId_localidad(Integer.parseInt(request.getParameter("id_localidad")));
-		        cliente.setId_provincia(Integer.parseInt(request.getParameter("id_provincia")));
-		        cliente.setCorreo_electronico(request.getParameter("correo_electronico"));
-		        cliente.setTelefono(request.getParameter("telefono"));
-		        cliente.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
-		        cliente.setActivo(request.getParameter("activo") != null);
+            int dniModificar = Integer.parseInt(modificarId);
+            List<Cliente> listaClientes = clienteNeg.listarClientes();
+            Cliente clienteModificar = null;
+            for (Cliente c : listaClientes) {
+                if (c.getDni() == dniModificar) {
+                    clienteModificar = c;
+                    break;
+                }
+            }
+            request.setAttribute("clienteModificar", clienteModificar);
+            request.setAttribute("listaClientes", listaClientes);
+            List<Provincia> provincias = provNeg.obtenerProvincias();
+            request.setAttribute("provincias", provincias);
+            if (clienteModificar != null) {
+                List<Localidad> localidades = locNeg.obtenerLocalidades(clienteModificar.getId_provincia());
+                request.setAttribute("localidades", localidades);
+                Usuario usuarioModificar = usuarioNeg.obtenerUsuarioPorId(clienteModificar.getIdUsuario());
+                request.setAttribute("usuarioModificar", usuarioModificar);
+            }
+            request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
+            return;
+        }
+        String actualizar = request.getParameter("actualizar");
+        if (actualizar != null) {
+            try {
+                Cliente cliente = new Cliente();
+                cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+                cliente.setCuil(Integer.parseInt(request.getParameter("cuil")));
+                cliente.setNombre(request.getParameter("nombre"));
+                cliente.setApellido(request.getParameter("apellido"));
+                cliente.setSexo(request.getParameter("sexo"));
+                cliente.setNacionalidad(request.getParameter("nacionalidad"));
+                cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+                cliente.setDireccion(request.getParameter("direccion"));
+                cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
+                cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+                cliente.setCorreo_electronico(request.getParameter("email"));
+                cliente.setTelefono(request.getParameter("telefono"));
+                cliente.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
+                cliente.setActivo(true);
 
-		        boolean actualizado = clienteNeg.actualizarCliente(cliente);
+                boolean actualizado = clienteNeg.actualizarCliente(cliente);
 
-		        if (actualizado) {
-		            request.setAttribute("mensaje", "Cliente actualizado correctamente.");
-		        } else {
-		            request.setAttribute("mensaje", "Error al actualizar el cliente.");
-		        }
-		    } catch (Exception e) {
-		        request.setAttribute("mensaje", "Error al actualizar: " + e.getMessage());
-		    }
+                // Actualizar nombre de usuario
+                String nuevoUsuario = request.getParameter("usuario");
+                if (actualizado && nuevoUsuario != null && !nuevoUsuario.isEmpty()) {
+                    Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getIdUsuario());
+                    if (usuario != null && !nuevoUsuario.equals(usuario.getUsuario())) {
+                        usuario.setUsuario(nuevoUsuario);
+                        usuarioNeg.actualizarUsuario(usuario);
+                    }
+                }
 
-		    // Recargar lista para mostrar en JSP
-		    List<Cliente> listaClientes = clienteNeg.listarClientes();
-		    request.setAttribute("listaClientes", listaClientes);
+                if (actualizado) {
+                    request.setAttribute("mensaje", "Cliente actualizado exitosamente.");
+                } else {
+                    request.setAttribute("mensaje", "Error al actualizar el cliente.");
+                }
+            } catch (Exception e) {
+                request.setAttribute("mensaje", "Error al actualizar: " + e.getMessage());
+                e.printStackTrace();
+            }
 
-		    List<Provincia> provincias = provNeg.obtenerProvincias();
-		    request.setAttribute("provincias", provincias);
-
-		    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
-		    return;
-		}
+            // Recargar datos necesarios
+            List<Cliente> listaClientes = clienteNeg.listarClientes();
+            request.setAttribute("listaClientes", listaClientes);
+            List<Provincia> provincias = provNeg.obtenerProvincias();
+            request.setAttribute("provincias", provincias);
+            
+            // Redirigir
+            request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
+            return;
+        }
 	
 		
 	}
