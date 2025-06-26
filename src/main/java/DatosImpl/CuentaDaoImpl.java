@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 
 import Datos.CuentaDao;
 import Dominio.Cuenta;
+import Dominio.TipoCuenta;
 import Excepciones.ClienteNoExisteException;
 
 public class CuentaDaoImpl implements CuentaDao {
@@ -41,7 +42,7 @@ public class CuentaDaoImpl implements CuentaDao {
 	        statement.setLong(1, cuenta.getId());
 	        statement.setInt(2, cuenta.getDni());
 	        statement.setDate(3, new java.sql.Date(cuenta.getCreacion().getTime()));
-	        statement.setInt(4, cuenta.getTipo());
+	        statement.setInt(4, cuenta.getTipo().getIdTipoCuenta());
 	        statement.setString(5, cuenta.getCBU());
 	        statement.setFloat(6, cuenta.getSaldo());
 
@@ -97,7 +98,22 @@ public class CuentaDaoImpl implements CuentaDao {
                 cuenta.setId(rs.getInt("id"));
                 cuenta.setDni(rs.getInt("dni_cliente"));
                 cuenta.setCreacion(rs.getDate("fecha_creacion"));
-                cuenta.setTipo(rs.getInt("tipo_cuenta"));
+                int idTipo = rs.getInt("tipo_cuenta");
+                TipoCuenta tipoCuenta = new TipoCuenta();
+                tipoCuenta.setIdTipoCuenta(idTipo);
+                try {
+                    PreparedStatement psTipo = conexion.prepareStatement("SELECT descripcion FROM TipoCuenta WHERE id_tipo_cuenta = ?");
+                    psTipo.setInt(1, idTipo);
+                    ResultSet rsTipo = psTipo.executeQuery();
+                    if (rsTipo.next()) {
+                        tipoCuenta.setDescripcion(rsTipo.getString("descripcion"));
+                    }
+                    rsTipo.close();
+                    psTipo.close();
+                } catch (Exception e) {
+                    tipoCuenta.setDescripcion("");
+                }
+                cuenta.setTipo(tipoCuenta);
                 cuenta.setCBU(rs.getString("CBU"));
                 cuenta.setSaldo(rs.getFloat("saldo"));
                 cuenta.setEstado(true); 
@@ -152,7 +168,7 @@ public class CuentaDaoImpl implements CuentaDao {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, cuenta.getDni());
             ps.setDate(2, new java.sql.Date(cuenta.getCreacion().getTime()));
-            ps.setInt(3, cuenta.getTipo());
+            ps.setInt(3, cuenta.getTipo().getIdTipoCuenta());
             ps.setString(4, cuenta.getCBU());
             ps.setFloat(5, cuenta.getSaldo());
             ps.setInt(6, cuenta.getId());

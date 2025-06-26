@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Creacion de cuentas</title>
-<link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 </head>
 <body>
@@ -44,12 +43,17 @@
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <option value="1" <%= cuentaModificar != null && cuentaModificar.getTipo() == 1 ? "selected" : "" %>>Caja de ahorro</option>
-                    <option value="2" <%= cuentaModificar != null && cuentaModificar.getTipo() == 2 ? "selected" : "" %>>Cuenta corriente</option>
+                    <% java.util.List<Dominio.TipoCuenta> tiposCuenta = (java.util.List<Dominio.TipoCuenta>) request.getAttribute("tiposCuenta");
+                       if (tiposCuenta != null) {
+                           for (Dominio.TipoCuenta tipo : tiposCuenta) { %>
+                               <option value="<%= tipo.getIdTipoCuenta() %>" <%= cuentaModificar != null && cuentaModificar.getTipo() != null && cuentaModificar.getTipo().getIdTipoCuenta() == tipo.getIdTipoCuenta() ? "selected" : "" %>><%= tipo.getDescripcion() %></option>
+                    <%     }
+                       }
+                    %>
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
-                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "" %>" />
+                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
             </p>
 
 
@@ -115,14 +119,14 @@
         %>
             <tr>
                 <td><%= cuenta.getId() %></td>
-                <td><%= cuenta.getTipo() == 1 ? "Caja de ahorro" : cuenta.getTipo() == 2 ? "Cuenta corriente" : "" %></td>
+                <td><%= cuenta.getTipo() != null ? cuenta.getTipo().getDescripcion() : "" %></td>
                 <td><%= cuenta.getDni() %></td>
                 <td>
-                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form   class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
                         <button class="btnEliminar" type="submit" onclick="return confirm('¿Estas seguro que queres eliminar esta cuenta?');">Eliminar</button>
                     </form>
-                    <form method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton"  method="post" action="CuentasAdminServlet" style="display:inline;">
                         <input type="hidden" name="modificarId" value="<%= cuenta.getId() %>" />
                         <button class="btnModificar" type="submit">Modificar</button>
                     </form>
