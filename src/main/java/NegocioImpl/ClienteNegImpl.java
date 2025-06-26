@@ -25,4 +25,9 @@ public class ClienteNegImpl implements ClienteNeg{
 	public boolean eliminarCliente(int id) {
 		return cDao.eliminarCliente(id);
 	}
+	
+	public boolean actualizarCliente(Cliente cliente){
+		return cDao.actualizarCliente(cliente);
+		
+	}
 }
