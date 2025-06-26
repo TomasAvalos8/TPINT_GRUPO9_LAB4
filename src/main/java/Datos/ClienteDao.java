@@ -9,4 +9,5 @@ public interface ClienteDao {
 	public boolean insertarCliente(Cliente cliente);
 
 	List<Cliente> listarClientes();
+	public boolean eliminarCliente(int id);
 }

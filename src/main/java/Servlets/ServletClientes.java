@@ -118,6 +118,25 @@ public class ServletClientes extends HttpServlet {
 			dispatcher.forward(request, response);
 			
 		}
+		
+		//eliminardni
+		String eliminarId = request.getParameter("eliminarId");
+		
+		if (eliminarId != null) {
+		    int dniEliminar = Integer.parseInt(eliminarId);
+		    boolean eliminado = clienteNeg.eliminarCliente(dniEliminar);
+		    
+		    if (eliminado) {
+		        request.setAttribute("mensajeServlet", "Cliente eliminado exitosamente.");
+		    } else {
+		        request.setAttribute("mensajeServlet", "No se pudo eliminar el cliente.");
+		    }
+
+		    List<Cliente> listaClientes = clienteNeg.listarClientes();
+		    request.setAttribute("listaClientes", listaClientes);
+		    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
+		    return;
+		}
 	
 		
 	}

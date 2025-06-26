@@ -6,4 +6,5 @@ public interface ClienteNeg {
 	
 	public boolean insertar(Cliente c);
 	public List<Cliente> listarClientes();
+	public boolean eliminarCliente(int id);
 }

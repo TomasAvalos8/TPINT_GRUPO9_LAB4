@@ -203,7 +203,16 @@ if (mensaje != null && !mensaje.isEmpty()) {
     %>
     
         </td>
-        <td><button class="btnEliminar">Eliminar</button></td>
+        <td>
+        			<form class="boton" method="post" action="ServletClientes" style="display:inline;">
+                        <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>" />
+                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Estás seguro que quieres eliminar esta cliente?');">Eliminar</button>
+                    </form>
+                    <form class="boton" method="post" action="ServletClientes" style="display:inline;">
+                        <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>" />
+                        <button class="btnModificar" type="submit">Modificar</button>
+                    </form>
+        </td>
     </tr>
     <%
         }

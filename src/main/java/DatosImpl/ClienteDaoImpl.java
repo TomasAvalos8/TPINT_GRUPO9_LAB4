@@ -1,8 +1,12 @@
 package DatosImpl;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mysql.jdbc.PreparedStatement;
 
 import Datos.ClienteDao;
 import Dominio.Cliente;
@@ -76,6 +80,30 @@ private Conexion conexion;
 	    }
 	    
 	    return listaClientes;
+	}
+	
+	public boolean eliminarCliente(int dni) {
+		PreparedStatement ps = null;
+	    Conexion cn = new Conexion();
+	    Connection conexion = cn.Open();
+	    boolean eliminado = false;
+	    try {
+	        String sql = "UPDATE cliente SET activo = false WHERE dni = ?";
+	        ps = (PreparedStatement) conexion.prepareStatement(sql);
+	        ps.setInt(1, dni);
+	        int filasAfectadas = ps.executeUpdate();
+	        eliminado = filasAfectadas > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (ps != null) ps.close();
+	            if (conexion != null) conexion.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return eliminado;
 	}
 
 }
