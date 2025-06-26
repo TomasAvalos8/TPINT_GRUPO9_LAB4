@@ -129,7 +129,7 @@ public class CuentaDaoImpl implements CuentaDao {
         Connection conexion = cn.Open();
         boolean eliminado = false;
         try {
-            String sql = "DELETE FROM Cuenta WHERE id = ?";
+            String sql = "UPDATE Cuenta SET activo = false WHERE id = ?";
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
             eliminado = ps.executeUpdate() > 0;
