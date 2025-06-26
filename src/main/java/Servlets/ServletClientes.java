@@ -44,18 +44,38 @@ public class ServletClientes extends HttpServlet {
 	
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    try {
+	        String idProvincia = request.getParameter("idProvincia");
+	        if (idProvincia != null && !idProvincia.isEmpty()) {
+	            int id = Integer.parseInt(idProvincia);
+	            List<Localidad> localidades = locNeg.obtenerLocalidades(id);
+
+	            response.setContentType("application/json");
+	            response.setCharacterEncoding("UTF-8");
+
+	     
+	            StringBuilder json = new StringBuilder("[");
+	            for (int i = 0; i < localidades.size(); i++) {
+	                Localidad localidad = localidades.get(i);
+	                json.append("{")
+	                    .append("\"id_localidad\":").append(localidad.getId_localidad()).append(",")
+	                    .append("\"descripcion\":\"").append(localidad.getDescripcion()).append("\"")
+	                    .append("}");
+	                if (i < localidades.size() - 1) {
+	                    json.append(",");
+	                }
+	            }
+	            json.append("]");
+
+	            // Enviar la respuesta JSON
+	            response.getWriter().write(json.toString());
+	            return;
+	        }
+
 	        // Obtener provincias (esto debería estar antes de cualquier redirección)
 	        List<Provincia> provincias = provNeg.obtenerProvincias();
 	        request.setAttribute("provincias", provincias);
 	        
 	        // Resto de tu lógica...
-	        String idProvincia = request.getParameter("idProvincia");
-	        if (idProvincia != null && !idProvincia.isEmpty()) {
-	            int id = Integer.parseInt(idProvincia);
-	            List<Localidad> localidades = locNeg.obtenerLocalidades(id);
-	            request.setAttribute("localidades", localidades);
-	            request.setAttribute("idProvinciaSeleccionada", idProvincia); 
-	        }
 	        
 	        // Listar clientes
 	        List<Cliente> listaClientes = clienteNeg.listarClientes();
@@ -65,7 +85,7 @@ public class ServletClientes extends HttpServlet {
 	        dispatcher.forward(request, response);
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // Manejo de errores
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al procesar la solicitud");
 	    }
 	}
 

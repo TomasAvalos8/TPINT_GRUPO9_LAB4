@@ -15,10 +15,26 @@
 <script type="text/javascript">
 
 function eventoSeleccionarProvincia() {
-		var x = document.getElementById("idProvincia").value;
-		 window.location.replace("ServletClientes?idProvincia="+x);
-	  }
-	  
+    var idProvincia = document.getElementById("idProvincia").value;
+    if (idProvincia) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "ServletClientes?idProvincia=" + idProvincia, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var localidades = JSON.parse(xhr.responseText);
+                var localidadSelect = document.getElementsByName("idLocalidad")[0];
+                localidadSelect.innerHTML = "<option value=''>Seleccione</option>";
+                localidades.forEach(function (localidad) {
+                    var option = document.createElement("option");
+                    option.value = localidad.id_localidad;
+                    option.textContent = localidad.descripcion;
+                    localidadSelect.appendChild(option);
+                });
+            }
+        };
+        xhr.send();
+    }
+}
 </script>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
