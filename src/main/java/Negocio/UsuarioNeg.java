@@ -10,5 +10,5 @@ public interface UsuarioNeg {
 	public Usuario obtenerUsuarioPorId(int idUsuario);
 	public boolean actualizarUsuario(Usuario u);
 	public ArrayList<Usuario> listarUsuarios();
-	public boolean eliminar(String usuario);
+	public boolean eliminarUsuario(int usuario);
 }

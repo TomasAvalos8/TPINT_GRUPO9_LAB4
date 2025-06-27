@@ -21,7 +21,11 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		boolean estado = true;
 		conexion = new Conexion();
 		conexion.Open();
-		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"','"+usuario.getFechaAlta()+"') ";
+		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta, activo) " +
+		              "VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"'," +
+		              "'"+usuario.getUsuario()+"'," +
+		              "'"+usuario.getContraseña()+"'," +
+		              "'"+usuario.getFechaAlta()+"', 1)";
 		
 		try {
 			
@@ -155,8 +159,11 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		conexion = new Conexion();
 		conexion.Open();
-		String query = "SELECT u.id_usuario, u.usuario, u.contraseña, u.fecha_alta, u.id_tipo_usuario, t.descripcion as tipo_desc FROM Usuarios u " +
-					  "LEFT JOIN TiposUsuarios t ON u.id_tipo_usuario = t.id_tipo_usuario";
+		String query = "SELECT u.id_usuario, u.usuario, u.contraseña, u.fecha_alta, u.id_tipo_usuario, t.descripcion as tipo_desc " +
+					  "FROM Usuarios u " +
+					  "LEFT JOIN TiposUsuarios t ON u.id_tipo_usuario = t.id_tipo_usuario " +
+					  "WHERE u.activo = 1 " +
+					  "ORDER BY u.id_usuario";
 		
 		try {
 			ResultSet rs = conexion.executeQuery(query);
@@ -182,16 +189,18 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	}
 
 	@Override
-	public boolean eliminar(String usuario) {
+	public boolean eliminarUsuario(int usuario) {
 		boolean eliminado = false;
 		conexion = new Conexion();
 		Connection conn = conexion.Open();
 		PreparedStatement ps = null;
 		
 		try {
-			String sql = "DELETE FROM Usuarios WHERE usuario = ?";
+			
+			String sql = "UPDATE Usuarios SET activo = false WHERE id_usuario = ?";
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, usuario);
+			ps.setInt(1, usuario);
+		
 			
 			eliminado = ps.executeUpdate() > 0;
 			

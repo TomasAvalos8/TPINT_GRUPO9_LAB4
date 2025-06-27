@@ -62,8 +62,8 @@ public class ServletUsuario extends HttpServlet {
                     request.setAttribute("mensaje", "Error: El usuario No fue registrado correctamente.");
                 }
             } else if(request.getParameter("btnEliminarUsuario") != null) {
-                String usuarioEliminar = request.getParameter("usuarioEliminar");
-                boolean estado = usuarioNeg.eliminar(usuarioEliminar);
+                int usuarioEliminar = Integer.parseInt(request.getParameter("usuarioEliminar"));
+                boolean estado = usuarioNeg.eliminarUsuario(usuarioEliminar);
                 
                 if(estado) {
                     request.setAttribute("mensaje", "El usuario fue eliminado correctamente.");

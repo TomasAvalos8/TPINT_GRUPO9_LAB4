@@ -11,5 +11,5 @@ public interface UsuarioDao {
 	public Usuario obtenerUsuarioPorId(int idUsuario);
 	public boolean actualizarUsuario(Usuario usuario);
 	public ArrayList<Usuario> listarUsuarios();
-	public boolean eliminar(String usuario);
+	public boolean eliminarUsuario(int usuario);
 }

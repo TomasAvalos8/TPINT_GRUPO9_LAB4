@@ -38,7 +38,7 @@ public class UsuarioNegImpl implements UsuarioNeg {
 	}
 
 	@Override
-	public boolean eliminar(String usuario) {
-		return usDao.eliminar(usuario);
+	public boolean eliminarUsuario(int usuario) {
+		return usDao.eliminarUsuario(usuario);
 	}
 }

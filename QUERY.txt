@@ -35,7 +35,7 @@ CREATE TABLE Usuarios (
 -- Cliente
 CREATE TABLE Cliente (
     dni BIGINT PRIMARY KEY,
-    cuil BIGINT,
+    cuil VARCHAR(20),
     nombre VARCHAR(100),
     apellido VARCHAR(100),
     sexo CHAR(1),
