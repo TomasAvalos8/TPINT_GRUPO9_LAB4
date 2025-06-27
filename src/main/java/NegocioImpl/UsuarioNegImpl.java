@@ -21,4 +21,14 @@ public class UsuarioNegImpl implements UsuarioNeg {
 		return usDao.insertarUsuarioYDevuelveId(u);
 	}
 
+	@Override
+	public Usuario obtenerUsuarioPorId(int idUsuario) {
+		return usDao.obtenerUsuarioPorId(idUsuario);
+	}
+
+	@Override
+	public boolean actualizarUsuario(Usuario u) {
+		return usDao.actualizarUsuario(u);
+	}
+
 }
