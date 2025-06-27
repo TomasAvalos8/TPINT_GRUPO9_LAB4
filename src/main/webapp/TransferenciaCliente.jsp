@@ -5,12 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Banco UTN</title>
-<link rel="stylesheet" type="text/css" href="estilos/estilos.css">
-<link rel="stylesheet" type="text/css" href="estilos/estilosTransferencia.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<link rel="stylesheet" type="text/css" href="estilos/estilosTransferencia.css">
     
 </head>
+<style>
+body{
+    font-family: Arial, sans-serif;
+        font-size: 16px;
+    line-height: 1.5;
+    }
+</style>
+
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
 	

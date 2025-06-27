@@ -7,10 +7,51 @@
 <title>Inicio Administrador</title>
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+    }
+
+    .contenedor-bienvenida {
+        max-width: 600px;
+        margin: 80px auto;
+        padding: 30px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .contenedor-bienvenida h2 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .contenedor-bienvenida p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    .contenedor-bienvenida strong {
+        color: #2980b9;
+    }
+</style>
+
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
+<%
+String nombreUsuario= (String)session.getAttribute("usuario");
+String tipo= (String)session.getAttribute("tipoUsuario");
 
-<h1>Bienvenido, Usuario</h1>
+%>
+
+<div class="contenedor-bienvenida">
+<h1>¡Bienvenido, <%= nombreUsuario%> !</h1>
+<p>Estas logueado como: <strong><%= tipo %></strong></p>
+</div>
 
 
 <jsp:include page="Footer.html"></jsp:include>
