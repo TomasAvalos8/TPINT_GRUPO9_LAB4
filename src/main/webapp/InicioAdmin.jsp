@@ -38,6 +38,12 @@
     .contenedor-bienvenida strong {
         color: #2980b9;
     }
+
+    .userLoguedText {
+        font-size: 16px;
+        color: #333;
+        margin-top: 10px;
+    }
 </style>
 
 <body>
@@ -51,6 +57,7 @@ String tipo= (String)session.getAttribute("tipoUsuario");
 <div class="contenedor-bienvenida">
 <h1>¡Bienvenido, <%= nombreUsuario%> !</h1>
 <p>Estas logueado como: <strong><%= tipo %></strong></p>
+
 </div>
 
 

@@ -53,10 +53,15 @@ function eventoSeleccionarProvincia() {
 }
 </script>
 <body>
+
+
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <div class="contenedorFormularios">
-
+<% String usuario = (String)session.getAttribute("usuario"); %>
+<p class="userLoguedText">
+  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+</p>
     <%
 Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 %>

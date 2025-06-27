@@ -135,11 +135,22 @@ padding:0;
 .DiasPagar {
     margin-top: 20px;
 }
+
+.userLoguedText {
+    text-align: center;
+    margin: 10px 0;
+    font-style: italic;
+    color: #555;
+}
 </style>
 </head>
 
 <body>
     <jsp:include page="MenuCliente.html"></jsp:include>
+    <% String usuario = (String)session.getAttribute("usuario"); %>
+    <p class="userLoguedText">
+      <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+    </p>
     <h1 class="Titulo">Solicitud de préstamo</h1>
     
     <div class="ContenedorPrestamo">

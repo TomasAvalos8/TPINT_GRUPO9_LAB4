@@ -27,7 +27,10 @@
 </head>
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
-
+<% String usuario = (String)session.getAttribute("usuario"); %>
+<p class="userLoguedText">
+  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+</p>
 <div class="formulariosWrapper listadoContainer ">
 
     <h2>Historial de movimientos</h2>
@@ -91,6 +94,7 @@
         	</table>
     </div>
 </div>
+
 
 
 <jsp:include page="Footer.html"></jsp:include>

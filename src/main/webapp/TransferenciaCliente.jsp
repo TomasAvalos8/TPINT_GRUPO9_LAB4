@@ -20,8 +20,12 @@ body{
 </style>
 
 <body>
+
 <jsp:include page="MenuCliente.html"></jsp:include>
-	
+	<% String usuario = (String)session.getAttribute("usuario"); %>
+	<p class="userLoguedText">
+	  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+	</p>
 	<section class = "container">
 		<div class = "trans-card card" >
 			<form action="">
@@ -102,6 +106,7 @@ body{
 			</form>
 		</div>
 	</section>
+
 
 <jsp:include page="Footer.html"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

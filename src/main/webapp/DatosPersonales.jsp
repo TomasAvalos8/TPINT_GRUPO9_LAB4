@@ -108,7 +108,13 @@
 
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
+<% String usuario = (String)session.getAttribute("usuario"); %>
+<p class="userLoguedText">
+  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+</p>
 <h2 class="Titulo">Datos personal</h2>
+
+
 
 <div class="ContenedorPersonal">
     <div class="Nombre">

@@ -12,6 +12,10 @@
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <div class="estadisticas"></div>
+<% String usuario = (String)session.getAttribute("usuario"); %>
+<p class="userLoguedText">
+  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+</p>
 <form class="formInformes" method="post" action="ServletInformes">
     <fieldset>
         <p>
@@ -29,6 +33,7 @@
 </form>
 
 <div class="formulariosWrapper listadoContainer">
+
 <h2>Listado de Informes</h2>
 <div class="tablaCuentasContainer">
 	<table>

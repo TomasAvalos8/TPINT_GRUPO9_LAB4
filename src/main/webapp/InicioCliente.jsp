@@ -48,6 +48,7 @@ String tipo= (String)session.getAttribute("tipoUsuario");
 </style>
 
 <body>
+
 <div class = "main-contanier">
 <jsp:include page="MenuCliente.html"></jsp:include>
 

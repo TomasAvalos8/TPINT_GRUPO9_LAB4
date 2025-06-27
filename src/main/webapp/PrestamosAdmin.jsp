@@ -10,9 +10,10 @@
 </head>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
-
-
-<p class="userLoguedText">usuario logueado </p>
+<% String usuario = (String)session.getAttribute("usuario"); %>
+<p class="userLoguedText">
+  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+</p>
 <div class="contenedorFormularios">
 
 
