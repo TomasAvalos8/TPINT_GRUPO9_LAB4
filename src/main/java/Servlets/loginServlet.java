@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import DatosImpl.UsuarioDaoImpl;
 import Dominio.Usuario;
@@ -47,6 +48,11 @@ public class loginServlet extends HttpServlet {
 	        Usuario usuario = usuarioDao.login(user, pass);
 
 	        if (usuario != null) {
+	        	 
+	        	HttpSession sesion=request.getSession();
+	        	sesion.setAttribute("usuario", usuario.getUsuario());
+	        	sesion.setAttribute("tipoUsuario",usuario.getTipoUsuario().getDescripcion());
+	        	
 	            if (usuario.getTipoUsuario().getIdTipoUsuario() == 1) {
 	                response.sendRedirect("InicioAdmin.jsp");
 	            } else {

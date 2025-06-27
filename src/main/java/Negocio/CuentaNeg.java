@@ -10,4 +10,6 @@ public interface CuentaNeg {
 	public boolean actualizarCuenta(Cuenta cuenta);
 	public List<Cuenta> obtenerTodasLasCuentas();
 	public int obtenerSiguienteIdCuenta();
+	
+	public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta);
 }
