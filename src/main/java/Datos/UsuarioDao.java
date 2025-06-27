@@ -1,5 +1,6 @@
 package Datos;
 
+import java.util.ArrayList;
 import Dominio.Usuario;
 
 public interface UsuarioDao {
@@ -9,4 +10,6 @@ public interface UsuarioDao {
 	public Usuario login(String usuarioInput, String contraseñaInput);
 	public Usuario obtenerUsuarioPorId(int idUsuario);
 	public boolean actualizarUsuario(Usuario usuario);
+	public ArrayList<Usuario> listarUsuarios();
+	public boolean eliminar(String usuario);
 }

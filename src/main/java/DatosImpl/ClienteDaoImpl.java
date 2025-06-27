@@ -71,7 +71,6 @@ private Conexion conexion;
                 cliente.setApellido(rs.getString("apellido"));
                 cliente.setSexo(rs.getString("sexo"));
                 cliente.setNacionalidad(rs.getString("nacionalidad"));
-                // Manejo de la fecha de nacimiento
                 java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
                 if (fechaNacimientoSQL != null) {
                     cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());

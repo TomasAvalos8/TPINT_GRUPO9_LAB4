@@ -2,6 +2,7 @@ package Servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,36 +33,56 @@ public class ServletUsuario extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		ArrayList<Usuario> listaUsuarios = usuarioNeg.listarUsuarios();
+		request.setAttribute("usuarios", listaUsuarios);
+      
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("UsuariosAdmin.jsp");
+        dispatcher.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-if(request.getParameter("btnRegistrarUsuario")!=null) {
-			
-			
-			Usuario usuario = new Usuario();
-			TipoUsuario tipo= new TipoUsuario(1, "admin");
-			usuario.setUsuario(request.getParameter("usuario"));
-			usuario.setContraseña(request.getParameter("password"));
-			usuario.setTipoUsuario(tipo);
-			LocalDate fechaActual = LocalDate.now();
-			usuario.setFechaAlta(fechaActual);
-			
-			boolean estado=true;
-			estado = usuarioNeg.insertar(usuario);
-			
-			if(estado) {
-			request.setAttribute("mensaje", "El usuario fue registrado correctamente.");
-			}else {
-				request.setAttribute("mensaje", "Error: El usuario No fue registrado correctamente.");
-			}
-			RequestDispatcher dispatcher = request.getRequestDispatcher("UsuariosAdmin.jsp");
-			dispatcher.forward(request, response);
-		}
+        try {
+            if(request.getParameter("btnRegistrarUsuario") != null) {
+                Usuario usuario = new Usuario();
+                TipoUsuario tipo = new TipoUsuario(1, "admin");
+                usuario.setUsuario(request.getParameter("usuario"));
+                usuario.setContraseña(request.getParameter("password"));
+                usuario.setTipoUsuario(tipo);
+                usuario.setFechaAlta(LocalDate.now());
+                
+                boolean estado = usuarioNeg.insertar(usuario);
+                
+                if(estado) {
+                    request.setAttribute("mensaje", "El usuario fue registrado correctamente.");
+                } else {
+                    request.setAttribute("mensaje", "Error: El usuario No fue registrado correctamente.");
+                }
+            } else if(request.getParameter("btnEliminarUsuario") != null) {
+                String usuarioEliminar = request.getParameter("usuarioEliminar");
+                boolean estado = usuarioNeg.eliminar(usuarioEliminar);
+                
+                if(estado) {
+                    request.setAttribute("mensaje", "El usuario fue eliminado correctamente.");
+                } else {
+                    request.setAttribute("mensaje", "Error: No se pudo eliminar el usuario.");
+                }
+            }
+            
+
+            ArrayList<Usuario> listaUsuarios = usuarioNeg.listarUsuarios();
+            request.setAttribute("usuarios", listaUsuarios);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error: Ocurrió un error en la operación");
+        }
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("UsuariosAdmin.jsp");
+        dispatcher.forward(request, response);
 	}
 
 }

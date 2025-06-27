@@ -62,7 +62,6 @@ public class Usuario {
 		this.fechaAlta = fechaAlta;
 	}
 
-	// Metodo ToString
 	
 	@Override
 	public String toString() {

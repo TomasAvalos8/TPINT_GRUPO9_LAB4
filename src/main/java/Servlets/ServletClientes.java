@@ -66,18 +66,15 @@ public class ServletClientes extends HttpServlet {
 	            }
 	            json.append("]");
 
-	            // Enviar la respuesta JSON
 	            response.getWriter().write(json.toString());
 	            return;
 	        }
 
-	        // Obtener provincias (esto debería estar antes de cualquier redirección)
 	        List<Provincia> provincias = provNeg.obtenerProvincias();
 	        request.setAttribute("provincias", provincias);
 	        
-	        // Resto de tu lógica...
+	      
 	        
-	        // Listar clientes
 	        List<Cliente> listaClientes = clienteNeg.listarClientes();
 	        request.setAttribute("listaClientes", listaClientes);
 	        
@@ -143,7 +140,6 @@ public class ServletClientes extends HttpServlet {
 			
 		}
 		
-		//eliminardni
 		String eliminarId = request.getParameter("eliminarId");
 		
 		if (eliminarId != null) {
@@ -162,7 +158,6 @@ public class ServletClientes extends HttpServlet {
 		    return;
 		}
 		
-		// Cargar datos de cliente para modificar
 		String modificarId = request.getParameter("modificarId");
 		if (modificarId != null) {
             int dniModificar = Integer.parseInt(modificarId);
@@ -209,7 +204,6 @@ public class ServletClientes extends HttpServlet {
 
                 boolean actualizado = clienteNeg.actualizarCliente(cliente);
 
-                // Actualizar nombre de usuario
                 String nuevoUsuario = request.getParameter("usuario");
                 if (actualizado && nuevoUsuario != null && !nuevoUsuario.isEmpty()) {
                     Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getIdUsuario());
@@ -229,13 +223,11 @@ public class ServletClientes extends HttpServlet {
                 e.printStackTrace();
             }
 
-            // Recargar datos necesarios
             List<Cliente> listaClientes = clienteNeg.listarClientes();
             request.setAttribute("listaClientes", listaClientes);
             List<Provincia> provincias = provNeg.obtenerProvincias();
             request.setAttribute("provincias", provincias);
             
-            // Redirigir
             request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
             return;
         }

@@ -1,5 +1,6 @@
 package NegocioImpl;
 
+import java.util.ArrayList;
 import Negocio.UsuarioNeg;
 import Datos.UsuarioDao;
 import DatosImpl.UsuarioDaoImpl;
@@ -31,4 +32,13 @@ public class UsuarioNegImpl implements UsuarioNeg {
 		return usDao.actualizarUsuario(u);
 	}
 
+	@Override
+	public ArrayList<Usuario> listarUsuarios() {
+		return usDao.listarUsuarios();
+	}
+
+	@Override
+	public boolean eliminar(String usuario) {
+		return usDao.eliminar(usuario);
+	}
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import Datos.UsuarioDao;
 import Dominio.TipoUsuario;
@@ -149,6 +150,65 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		return actualizado;
 	}
 	
+	@Override
+	public ArrayList<Usuario> listarUsuarios() {
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		conexion = new Conexion();
+		conexion.Open();
+		String query = "SELECT u.id_usuario, u.usuario, u.contraseña, u.fecha_alta, u.id_tipo_usuario, t.descripcion as tipo_desc FROM Usuarios u " +
+					  "LEFT JOIN TiposUsuarios t ON u.id_tipo_usuario = t.id_tipo_usuario";
+		
+		try {
+			ResultSet rs = conexion.executeQuery(query);
+			while (rs.next()) {
+				Usuario usuario = new Usuario();
+				usuario.setId_usuario(rs.getInt("id_usuario"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuario.setContraseña(rs.getString("contraseña"));
+				usuario.setFechaAlta(rs.getDate("fecha_alta").toLocalDate());
+				
+				TipoUsuario tipo = new TipoUsuario();
+				tipo.setIdTipoUsuario(rs.getInt("id_tipo_usuario"));
+				tipo.setDescripcion(rs.getString("tipo_desc"));
+				usuario.setTipoUsuario(tipo);
+				lista.add(usuario);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conexion.close();
+		}
+		return lista;
+	}
+
+	@Override
+	public boolean eliminar(String usuario) {
+		boolean eliminado = false;
+		conexion = new Conexion();
+		Connection conn = conexion.Open();
+		PreparedStatement ps = null;
+		
+		try {
+			String sql = "DELETE FROM Usuarios WHERE usuario = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, usuario);
+			
+			eliminado = ps.executeUpdate() > 0;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			conexion.close();
+		}
+		
+		return eliminado;
+	}
+
 }
 
 

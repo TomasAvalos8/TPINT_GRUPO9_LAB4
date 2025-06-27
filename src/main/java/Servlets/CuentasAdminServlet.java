@@ -37,7 +37,6 @@ public class CuentasAdminServlet extends HttpServlet {
         int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
         request.setAttribute("siguienteIdCuenta", siguienteId);
         
-        //obtener cuentas filtradas o todas las cuentas
         String tipoCuentaFiltro = request.getParameter("tipoCuentaFiltro");
         List<Cuenta> listaCuentas;
         
@@ -55,7 +54,6 @@ public class CuentasAdminServlet extends HttpServlet {
         
         request.setAttribute("listaCuentas", listaCuentas);
 
-        // Obtener tipos de cuenta para el dropdown
         TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
         List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
@@ -72,7 +70,6 @@ public class CuentasAdminServlet extends HttpServlet {
         List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
         
-        // Eliminar cuenta
         String eliminarId = request.getParameter("eliminarId");
         if (eliminarId != null) {
             int idEliminar = Integer.parseInt(eliminarId);
@@ -90,7 +87,6 @@ public class CuentasAdminServlet extends HttpServlet {
             return;
         }
         
-        // Modificar (cargar datos en formulario)
         String modificarId = request.getParameter("modificarId");
         if (modificarId != null) {
             int idModificar = Integer.parseInt(modificarId);
@@ -110,7 +106,6 @@ public class CuentasAdminServlet extends HttpServlet {
             return;
         }
         
-        // Actualizar cuenta
         String actualizar = request.getParameter("actualizar");
         if (actualizar != null) {
             try {
@@ -151,7 +146,6 @@ public class CuentasAdminServlet extends HttpServlet {
             return;
         }
         
-        // Registrar cuenta (alta)
         String registrar = request.getParameter("registrar");
         if (registrar != null) {
             try {
@@ -202,7 +196,6 @@ public class CuentasAdminServlet extends HttpServlet {
             }
         }
         
-        // Si no hay ninguna acción, recarga la página
         int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
         request.setAttribute("siguienteIdCuenta", siguienteId);
         List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
