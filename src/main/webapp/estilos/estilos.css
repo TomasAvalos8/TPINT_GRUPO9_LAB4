@@ -215,6 +215,7 @@ form fieldset {
 .btnModificar, .btnEliminar {
     margin: 2px;
     padding: 5px 10px;
+    background: none;
     box-shadow: none;
 }
 
