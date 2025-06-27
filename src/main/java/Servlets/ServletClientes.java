@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import Negocio.ClienteNeg;
 import Negocio.ProvinciaNeg;
 import Negocio.LocalidadNeg;
@@ -81,8 +81,7 @@ public class ServletClientes extends HttpServlet {
 	        List<Cliente> listaClientes = clienteNeg.listarClientes();
 	        request.setAttribute("listaClientes", listaClientes);
 	        
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
-	        dispatcher.forward(request, response);
+	        request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al procesar la solicitud");
@@ -106,27 +105,31 @@ public class ServletClientes extends HttpServlet {
 			
 			int IdGuardado = 0;
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
-			if(IdGuardado!=0) {
-			cliente.setIdUsuario(IdGuardado);
-			cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-			cliente.setCuil(Integer.parseInt(request.getParameter("cuil")));
-			cliente.setNombre(request.getParameter("nombre"));
-			cliente.setApellido(request.getParameter("apellido"));
-			cliente.setSexo(request.getParameter("sexo"));
-			cliente.setNacionalidad(request.getParameter("nacionalidad"));
-			cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
-			cliente.setDireccion(request.getParameter("direccion"));
-			cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
-			cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
-			cliente.setCorreo_electronico(request.getParameter("email"));
-			cliente.setTelefono(request.getParameter("telefono"));
-			cliente.setActivo(true);
-			boolean estado= true;
-			estado=clienteNeg.insertar(cliente);
-			if (estado) {
+			if (IdGuardado > 0) {
+			    cliente.setIdUsuario(IdGuardado);
+			    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+			    cliente.setCuil(request.getParameter("cuil"));
+			    cliente.setNombre(request.getParameter("nombre"));
+			    cliente.setApellido(request.getParameter("apellido"));
+			    cliente.setSexo(request.getParameter("sexo"));
+			    cliente.setNacionalidad(request.getParameter("nacionalidad"));
+			    cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+			    cliente.setDireccion(request.getParameter("direccion"));
+			    cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
+			    cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+			    cliente.setCorreo_electronico(request.getParameter("email"));
+			    cliente.setTelefono(request.getParameter("telefono"));
+			    cliente.setActivo(true);
+			    boolean estado= true;
+			    estado=clienteNeg.insertar(cliente);
+			    if (estado) {
 				request.setAttribute("estadoCliente", estado);
 				request.setAttribute("mensaje", "El cliente fue registrado correctamente.");
-			}
+			    } else {
+				request.setAttribute("mensaje", "Error al registrar el cliente.");
+			    }
+			} else {
+			    request.setAttribute("mensaje", "Error al registrar el usuario.");
 			}
 			}else {
 				request.setAttribute("mensaje", "Error: las contraseñas son distintas");
@@ -134,8 +137,7 @@ public class ServletClientes extends HttpServlet {
 			List<Provincia> provincias = provNeg.obtenerProvincias();
 	        request.setAttribute("provincias", provincias);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("Clientes_Admin.jsp");
-			dispatcher.forward(request, response);
+			request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
 			
 		}
 		
@@ -188,7 +190,16 @@ public class ServletClientes extends HttpServlet {
             try {
                 Cliente cliente = new Cliente();
                 cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-                cliente.setCuil(Integer.parseInt(request.getParameter("cuil")));
+                
+                try {
+                    cliente.setCuil(request.getParameter("cuil"));
+                } catch (NumberFormatException e) {
+                    System.out.println("Error al convertir CUIL: " + e.getMessage());
+                    request.setAttribute("mensaje", "El CUIL ingresado no es válido.");
+                    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
+                    return;
+                }
+                
                 cliente.setNombre(request.getParameter("nombre"));
                 cliente.setApellido(request.getParameter("apellido"));
                 cliente.setSexo(request.getParameter("sexo"));

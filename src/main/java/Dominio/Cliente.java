@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Cliente {
 	private int dni;
-	private int cuil;
+	private String cuil;
 	private String nombre;
 	private String apellido;
 	private String sexo;
@@ -18,7 +18,7 @@ public class Cliente {
 	private int IdUsuario;
 	private boolean activo;
 	
-	public Cliente(int dni, int cuil, String nombre, String apellido, String sexo, String nacionalidad,
+	public Cliente(int dni, String cuil, String nombre, String apellido, String sexo, String nacionalidad,
 			LocalDate fecha_nacimiento, String direccion, int id_localidad, int id_provincia, String correo_electronico,
 			String telefono, int  IdUsuario, boolean activo) {
 		super();
@@ -55,11 +55,11 @@ public class Cliente {
 		this.dni = dni;
 	}
 
-	public int getCuil() {
+	public String getCuil() {
 		return cuil;
 	}
 
-	public void setCuil(int cuil) {
+	public void setCuil(String cuil) {
 		this.cuil = cuil;
 	}
 

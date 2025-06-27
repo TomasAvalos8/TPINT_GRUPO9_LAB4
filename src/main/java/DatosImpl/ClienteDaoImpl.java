@@ -60,7 +60,7 @@ private Conexion conexion;
             while (rs.next()) {
                 Cliente cliente = new Cliente();
                 cliente.setDni(rs.getInt("dni"));
-                cliente.setCuil(rs.getInt("cuil"));
+                cliente.setCuil(rs.getString("cuil"));
                 cliente.setNombre(rs.getString("nombre"));
                 cliente.setApellido(rs.getString("apellido"));
                 cliente.setSexo(rs.getString("sexo"));
@@ -120,7 +120,7 @@ private Conexion conexion;
 	    try {
 	        String sql = "UPDATE Cliente SET cuil=?, nombre=?, apellido=?, sexo=?, nacionalidad=?, fecha_nacimiento=?, direccion=?, id_localidad=?, id_provincia=?, correo_electronico=?, telefono=?, id_usuario=?, activo=? WHERE dni=?";
 	        ps = (PreparedStatement) conexion.prepareStatement(sql);
-	        ps.setInt(1, cliente.getCuil());
+	        ps.setString(1, cliente.getCuil());
 	        ps.setString(2, cliente.getNombre());
 	        ps.setString(3, cliente.getApellido());
 	        ps.setString(4, cliente.getSexo());

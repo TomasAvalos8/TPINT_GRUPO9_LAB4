@@ -114,7 +114,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                 </p>
                 <p>
                     DNI: <input type="number" name="dni" required value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
-                    CUIL: <input type="number" name="cuil" required value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
+                    CUIL: <input type="text" name="cuil" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
                 </p>
                 <p>
                     Nombre: <input type="text" name="nombre" required value="<%= (clienteModificar != null) ? clienteModificar.getNombre() : "" %>">
@@ -174,86 +174,77 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 
 
 <div class="formulariosWrapper listadoContainer">
-<h2>Listado de Clientes</h2>
-<div class="tablaCuentasContainer">
-    <table id="tablaClientes" class="display responsive nowrap" style="width:100%">
-        <thead>
-            <tr>
-                <th width="10%">DNI</th>
-                <th width="20%">Nombre Completo</th>
-                <th width="5%">Sexo</th>
-                <th width="10%">Nacionalidad</th>
-                <th width="12%">Fecha Nac.</th>
-                <th width="18%">Contacto</th>
-                <th width="25%">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%
+    <h2>Listado de Clientes</h2>
+    <div class="tablaCuentasContainer">
+        <table id="tablaClientes" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th width="10%">DNI</th>
+                    <th width="10%">CUIL</th>
+                    <th width="20%">Nombre Completo</th>
+                    <th width="5%">Sexo</th>
+                    <th width="10%">Nacionalidad</th>
+                    <th width="12%">Fecha Nac.</th>
+                    <th width="18%">Contacto</th>
+                    <th width="25%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody><%
             List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("listaClientes");
             if (listaClientes != null && !listaClientes.isEmpty()) {
                 for (Cliente cliente : listaClientes) {
-            %>
-                <tr>
-                    <td><%= cliente.getDni() %></td>
-                    <td><%= cliente.getApellido() + ", " + cliente.getNombre() %></td>
-                    <td><%= "M".equals(cliente.getSexo()) ? "M" : "F".equals(cliente.getSexo()) ? "F" : "X" %></td>
-                    <td><%= cliente.getNacionalidad() %></td>
-                    <td><%
-                        if (cliente.getFecha_nacimiento() != null) {
-                            String fechaFormateada = String.format("%02d/%02d/%d", 
-                                cliente.getFecha_nacimiento().getDayOfMonth(),
-                                cliente.getFecha_nacimiento().getMonthValue(),
-                                cliente.getFecha_nacimiento().getYear());
-                            out.print(fechaFormateada);
-                        }
-                        %></td>
-                    <td><i class="fas fa-envelope"></i> <%= cliente.getCorreo_electronico() %><br>
-                        <i class="fas fa-phone"></i> <%= cliente.getTelefono() %></td>
-                    <td>
-                        <form method="post" class="boton" action="ServletClientes" style="display:inline;">
-                            <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>">
-                            <button class="btnModificar" type="submit">Modificar</button>
-                        </form>
-                        <form method="post" class="boton" action="ServletClientes" style="display:inline;">
-                            <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>">
-                            <button class="btnEliminar" type="submit" onclick="return confirm('¿Está seguro que desea eliminar este cliente?');">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            <% 
+                    String fechaFormateada = "";
+                    if (cliente.getFecha_nacimiento() != null) {
+                        fechaFormateada = String.format("%02d/%02d/%d", 
+                            cliente.getFecha_nacimiento().getDayOfMonth(),
+                            cliente.getFecha_nacimiento().getMonthValue(),
+                            cliente.getFecha_nacimiento().getYear());
+                    }
+                    String correo = cliente.getCorreo_electronico() != null ? cliente.getCorreo_electronico() : "";
+                    String telefono = cliente.getTelefono() != null ? cliente.getTelefono() : "";
+            %><tr>
+                <td><%= cliente.getDni() %></td>
+                <td><%= cliente.getCuil() %></td>
+                <td><%= cliente.getApellido() + ", " + cliente.getNombre() %></td>
+                <td><%= "M".equals(cliente.getSexo()) ? "M" : "F".equals(cliente.getSexo()) ? "F" : "X" %></td>
+                <td><%= cliente.getNacionalidad() != null ? cliente.getNacionalidad() : "" %></td>
+                <td><%= fechaFormateada %></td>
+                <td><% if (!correo.isEmpty()) { %><i class="fas fa-envelope"></i> <%= correo %><br><% } %>
+                    <% if (!telefono.isEmpty()) { %><i class="fas fa-phone"></i> <%= telefono %><% } %></td>
+                <td><form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                        <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>">
+                        <button class="btnModificar" type="submit">Modificar</button>
+                    </form>
+                    <form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                        <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>">
+                        <button class="btnEliminar" type="submit" onclick="return confirm('¿Está seguro que desea eliminar este cliente?');">Eliminar</button>
+                    </form></td>
+            </tr><%
                 }
-            } else { 
-            %>
-                <tr>
-                    <td colspan="9" style="text-align: center;">No se encontraron clientes</td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
+            }
+            %></tbody>
+        </table>
+    </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 		
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $('#tablaClientes').DataTable({
-            "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
-            },
-            responsive: true,
-            "columns": [
-                { "data": "dni" },
-                { "data": "nombreCompleto" },
-                { "data": "sexo" },
-                { "data": "nacionalidad" },
-                { "data": "fechaNacimiento" },
-                { "data": "contacto" },
-                { "data": "acciones", "orderable": false }
-            ]
-        });
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tablaClientes').DataTable({
+        responsive: true,
+        pageLength: 10,
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json",
+            emptyTable: "No se encontraron clientes"
+        },
+        columnDefs: [
+            { targets: -1, orderable: false } // La última columna (Acciones) no es ordenable
+        ]
     });
-    </script>
+});
+</script>
 </body>
 </html>
