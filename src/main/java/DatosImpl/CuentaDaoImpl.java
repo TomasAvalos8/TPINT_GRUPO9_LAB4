@@ -91,7 +91,7 @@ public class CuentaDaoImpl implements CuentaDao {
 
         String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo"
         		+ " FROM Cuenta c "
-        		+ "LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta"
+        		+ "LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta "
         		+ "WHERE c.activo = 1;";
 
         try {

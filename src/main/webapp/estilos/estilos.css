@@ -142,8 +142,8 @@ form fieldset {
 
 .userLoguedText {
     position: absolute;
-    top: 60px;
-    right: 30px;
+    top: 70px;
+    right: 20px;
     margin-top: 0 !important;
     font-weight: 600;
 }

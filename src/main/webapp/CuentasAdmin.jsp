@@ -153,7 +153,7 @@
         <%      }
             } else { %>
             <tr>
-                <td colspan="5">No hay cuentas disponibles</td>
+                <td colspan="7">No hay cuentas disponibles</td>
             </tr>
         <% } %>
         </tbody>
