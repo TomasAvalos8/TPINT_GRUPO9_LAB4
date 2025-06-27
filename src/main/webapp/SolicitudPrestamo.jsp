@@ -14,6 +14,7 @@
 body{
 margin:0;
 padding:0;
+font-family: Arial, sans-serif;
 }
 .ContenedorPrestamo {
     width: 500px;
@@ -139,7 +140,6 @@ padding:0;
 .userLoguedText {
     text-align: center;
     margin: 10px 0;
-    font-style: italic;
     color: #555;
 }
 </style>
