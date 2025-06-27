@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilosTransferencia.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
 </head>
 <style>
@@ -24,7 +25,7 @@ body{
 <jsp:include page="MenuCliente.html"></jsp:include>
 	<% String usuario = (String)session.getAttribute("usuario"); %>
 	<p class="userLoguedText">
-	  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+	  <i class="fas fa-user"></i> <%= usuario %>
 	</p>
 	<section class = "container">
 		<div class = "trans-card card" >

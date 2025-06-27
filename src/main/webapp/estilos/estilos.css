@@ -142,20 +142,10 @@ form fieldset {
 
 .userLoguedText {
     position: absolute;
-    top: 70px;
+    top: 60px;
     right: 30px;
-    color: #222;
-    font-weight: bold;
-    font-size: 1.1em;
-    background: #fff;
-    border-radius: 6px;
-    padding: 6px 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    z-index: 1500;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-top: 0 !important;
+    font-weight: 600;
 }
 
 .listadoContainer{
@@ -212,6 +202,19 @@ form fieldset {
 .paginado{
 	margin-top: 20px;
     
+}
+
+.fas {
+    color: #666;
+    margin-right: 5px;
+}
+
+#tablaClientes td {
+    vertical-align: middle;
+}
+.btnModificar, .btnEliminar {
+    margin: 2px;
+    padding: 5px 10px;
 }
 
 

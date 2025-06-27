@@ -14,19 +14,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        #tablaClientes td {
-            vertical-align: middle;
-        }
-        .btnModificar, .btnEliminar {
-            margin: 2px;
-            padding: 5px 10px;
-        }
-        .fas {
-            margin-right: 5px;
-            color: #666;
-        }
-    </style>
+   
 </head>
 <script type="text/javascript">
 
@@ -60,7 +48,7 @@ function eventoSeleccionarProvincia() {
 <div class="contenedorFormularios">
 <% String usuario = (String)session.getAttribute("usuario"); %>
 <p class="userLoguedText">
-  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+  <i class="fas fa-user"></i> <%= usuario %>
 </p>
     <%
 Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");

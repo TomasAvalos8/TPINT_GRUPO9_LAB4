@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Solicitud de Préstamo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <style>
 .Titulo {
     padding-top: 20px;
@@ -15,6 +17,7 @@ body{
 margin:0;
 padding:0;
 font-family: Arial, sans-serif;
+position: relative;
 }
 .ContenedorPrestamo {
     width: 500px;
@@ -137,11 +140,7 @@ font-family: Arial, sans-serif;
     margin-top: 20px;
 }
 
-.userLoguedText {
-    text-align: center;
-    margin: 10px 0;
-    color: #555;
-}
+
 </style>
 </head>
 
@@ -149,7 +148,7 @@ font-family: Arial, sans-serif;
     <jsp:include page="MenuCliente.html"></jsp:include>
     <% String usuario = (String)session.getAttribute("usuario"); %>
     <p class="userLoguedText">
-      <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+      <i class="fas fa-user"></i> <%= usuario %>
     </p>
     <h1 class="Titulo">Solicitud de préstamo</h1>
     

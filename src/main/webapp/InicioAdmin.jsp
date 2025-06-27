@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Inicio Administrador</title>
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style>
     body {

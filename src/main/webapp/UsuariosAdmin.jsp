@@ -7,13 +7,14 @@
 <title>Manejo de usuarios</title>
 <link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <% String usuario = (String)session.getAttribute("usuario"); %>
 <p class="userLoguedText">
-  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+  <i class="fas fa-user"></i> <%= usuario %>
 </p>
     <form class="formCliente" method="post" action="ServletUsuario">
 <div class="contenedorFormularios">

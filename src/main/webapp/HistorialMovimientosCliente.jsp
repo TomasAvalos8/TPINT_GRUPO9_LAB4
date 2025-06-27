@@ -10,6 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style type="text/css">
 
 .formMovimiento {
@@ -29,7 +30,7 @@
 <jsp:include page="MenuCliente.html"></jsp:include>
 <% String usuario = (String)session.getAttribute("usuario"); %>
 <p class="userLoguedText">
-  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+  <i class="fas fa-user"></i> <%= usuario %>
 </p>
 <div class="formulariosWrapper listadoContainer ">
 

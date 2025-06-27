@@ -10,6 +10,7 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
@@ -24,7 +25,7 @@
 
 <% String usuario = (String)session.getAttribute("usuario"); %>
 <p class="userLoguedText">
-  <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario logueado" %>
+  <i class="fas fa-user"></i> <%= usuario %>
 </p>
 <div class="contenedorFormularios">
 
