@@ -107,8 +107,6 @@ public class ServletClientes extends HttpServlet {
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if (IdGuardado > 0) {
 			    cliente.setIdUsuario(IdGuardado);
-			    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-			    cliente.setCuil(request.getParameter("cuil"));
 			    cliente.setNombre(request.getParameter("nombre"));
 			    cliente.setApellido(request.getParameter("apellido"));
 			    cliente.setSexo(request.getParameter("sexo"));
@@ -125,9 +123,13 @@ public class ServletClientes extends HttpServlet {
 			    if (estado) {
 				request.setAttribute("estadoCliente", estado);
 				request.setAttribute("mensaje", "El cliente fue registrado correctamente.");
-			    } else {
+				List<Cliente> listaClientes = clienteNeg.listarClientes();
+				request.setAttribute("listaClientes", listaClientes);
+				List<Provincia> provincias = provNeg.obtenerProvincias();
+				request.setAttribute("provincias", provincias);
+				} else {
 				request.setAttribute("mensaje", "Error al registrar el cliente.");
-			    }
+				}
 			} else {
 			    request.setAttribute("mensaje", "Error al registrar el usuario.");
 			}
@@ -189,16 +191,8 @@ public class ServletClientes extends HttpServlet {
         if (actualizar != null) {
             try {
                 Cliente cliente = new Cliente();
-                cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-                
-                try {
-                    cliente.setCuil(request.getParameter("cuil"));
-                } catch (NumberFormatException e) {
-                    System.out.println("Error al convertir CUIL: " + e.getMessage());
-                    request.setAttribute("mensaje", "El CUIL ingresado no es válido.");
-                    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
-                    return;
-                }
+				cliente.setCuil(request.getParameter("cuil"));
+          
                 
                 cliente.setNombre(request.getParameter("nombre"));
                 cliente.setApellido(request.getParameter("apellido"));

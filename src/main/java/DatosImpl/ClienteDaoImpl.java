@@ -15,34 +15,40 @@ public class ClienteDaoImpl implements ClienteDao {
 private Conexion conexion;
 	@Override
 	public boolean insertarCliente(Cliente cliente) {
-	    boolean estado = true;
-
-	    conexion = new Conexion();
-	    conexion.Open();
-
-	    String query = "INSERT INTO Cliente (dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo_electronico, telefono, id_usuario, activo) VALUES ("
-	            + cliente.getDni() + ", "
-	            + cliente.getCuil() + ", '"
-	            + cliente.getNombre() + "', '"
-	            + cliente.getApellido() + "', '"
-	            + cliente.getSexo() + "', '"
-	            + cliente.getNacionalidad() + "', '"
-	            + cliente.getFecha_nacimiento() + "', '"
-	            + cliente.getDireccion() + "', "
-	            + cliente.getId_localidad() + ", "
-	            + cliente.getId_provincia() + ", '"
-	            + cliente.getCorreo_electronico() + "', '"
-	            + cliente.getTelefono() + "', "
-	            + cliente.getIdUsuario() + ", "
-	            + (cliente.getActivo() ? 1 : 0) + ")";
+	    PreparedStatement ps = null;
+	    Conexion cn = new Conexion();
+	    Connection conexion = cn.Open();
+	    boolean estado = false;
 
 	    try {
-	        estado = conexion.execute(query);
+	        String sql = "INSERT INTO Cliente (dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo_electronico, telefono, id_usuario, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        ps = (PreparedStatement) conexion.prepareStatement(sql);
+	        
+	        ps.setInt(1, cliente.getDni());
+	        ps.setString(2, cliente.getCuil());
+	        ps.setString(3, cliente.getNombre());
+	        ps.setString(4, cliente.getApellido());
+	        ps.setString(5, cliente.getSexo());
+	        ps.setString(6, cliente.getNacionalidad());
+	        ps.setDate(7, java.sql.Date.valueOf(cliente.getFecha_nacimiento()));
+	        ps.setString(8, cliente.getDireccion());
+	        ps.setInt(9, cliente.getId_localidad());
+	        ps.setInt(10, cliente.getId_provincia());
+	        ps.setString(11, cliente.getCorreo_electronico());
+	        ps.setString(12, cliente.getTelefono());
+	        ps.setInt(13, cliente.getIdUsuario());
+	        ps.setBoolean(14, cliente.getActivo());
+
+	        estado = ps.executeUpdate() > 0;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        estado = false;
 	    } finally {
-	        conexion.close();
+	        try {
+	            if (ps != null) ps.close();
+	            if (conexion != null) conexion.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return estado;
 	}
@@ -94,7 +100,7 @@ private Conexion conexion;
 	    Connection conexion = cn.Open();
 	    boolean eliminado = false;
 	    try {
-	        String sql = "UPDATE cliente SET activo = false WHERE dni = ?";
+	        String sql = "UPDATE Cliente SET activo = false WHERE dni = ?";
 	        ps = (PreparedStatement) conexion.prepareStatement(sql);
 	        ps.setInt(1, dni);
 	        int filasAfectadas = ps.executeUpdate();

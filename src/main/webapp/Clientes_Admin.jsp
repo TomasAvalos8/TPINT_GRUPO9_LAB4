@@ -113,8 +113,8 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                     </select>
                 </p>
                 <p>
-                    DNI: <input type="number" name="dni" required value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
-                    CUIL: <input type="text" name="cuil" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
+                    DNI: <input type="number" name="dni" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
+                    CUIL: <input type="number" name="cuil" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
                 </p>
                 <p>
                     Nombre: <input type="text" name="nombre" required value="<%= (clienteModificar != null) ? clienteModificar.getNombre() : "" %>">
