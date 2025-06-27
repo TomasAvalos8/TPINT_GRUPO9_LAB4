@@ -36,10 +36,26 @@ public class CuentasAdminServlet extends HttpServlet {
         CuentaNeg cuentaNeg = new CuentaNegImpl();
         int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
         request.setAttribute("siguienteIdCuenta", siguienteId);
-       
-        List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
+        
+        //obtener cuentas filtradas o todas las cuentas
+        String tipoCuentaFiltro = request.getParameter("tipoCuentaFiltro");
+        List<Cuenta> listaCuentas;
+        
+        if (tipoCuentaFiltro != null && !tipoCuentaFiltro.isEmpty()) {
+            try {
+                int idTipoCuenta = Integer.parseInt(tipoCuentaFiltro);
+                listaCuentas = cuentaNeg.obtenerCuentasPorTipo(idTipoCuenta);
+            } 
+            catch (NumberFormatException e) {
+                listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
+            }
+        } else {
+            listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
+        }
+        
         request.setAttribute("listaCuentas", listaCuentas);
 
+        // Obtener tipos de cuenta para el dropdown
         TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
         List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
@@ -55,6 +71,7 @@ public class CuentasAdminServlet extends HttpServlet {
         TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
         List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
+        
         // Eliminar cuenta
         String eliminarId = request.getParameter("eliminarId");
         if (eliminarId != null) {
@@ -72,6 +89,7 @@ public class CuentasAdminServlet extends HttpServlet {
             request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
             return;
         }
+        
         // Modificar (cargar datos en formulario)
         String modificarId = request.getParameter("modificarId");
         if (modificarId != null) {
@@ -91,6 +109,7 @@ public class CuentasAdminServlet extends HttpServlet {
             request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
             return;
         }
+        
         // Actualizar cuenta
         String actualizar = request.getParameter("actualizar");
         if (actualizar != null) {
@@ -102,6 +121,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
                 java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
+                
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
                 cuenta.setDni(dni);
@@ -112,13 +132,15 @@ public class CuentasAdminServlet extends HttpServlet {
                 cuenta.setTipo(tipoCuenta);
                 cuenta.setSaldo(saldo);
                 cuenta.setEstado(true);
+                
                 boolean actualizado = cuentaNeg.actualizarCuenta(cuenta);
                 if (actualizado) {
                     request.setAttribute("mensajeServlet", "Cuenta actualizada exitosamente.");
                 } else {
                     request.setAttribute("mensajeServlet", "No se pudo actualizar la cuenta.");
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 request.setAttribute("mensajeServlet", "Error al actualizar: " + e.getMessage());
             }
             int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
@@ -128,6 +150,7 @@ public class CuentasAdminServlet extends HttpServlet {
             request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
             return;
         }
+        
         // Registrar cuenta (alta)
         String registrar = request.getParameter("registrar");
         if (registrar != null) {
@@ -139,6 +162,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
                 java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
+                
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
                 cuenta.setDni(dni);
@@ -149,6 +173,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 cuenta.setTipo(tipoCuenta);
                 cuenta.setSaldo(saldo);
                 cuenta.setEstado(true);
+                
                 try {
                     boolean exito = cuentaNeg.crearCuenta(cuenta);
                     if (exito) {
@@ -159,6 +184,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 } catch (ClienteNoExisteException e) {
                     request.setAttribute("mensajeServlet", "Cliente inexistente");
                 }
+                
                 int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
                 request.setAttribute("siguienteIdCuenta", siguienteId);
                 List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
@@ -175,11 +201,12 @@ public class CuentasAdminServlet extends HttpServlet {
                 return;
             }
         }
+        
         // Si no hay ninguna acción, recarga la página
         int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
         request.setAttribute("siguienteIdCuenta", siguienteId);
         List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
         request.setAttribute("listaCuentas", listaCuentas);
         request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
-}
+    }
 }

@@ -89,7 +89,10 @@ public class CuentaDaoImpl implements CuentaDao {
         conexion.Open();
         List<Cuenta> lista = new ArrayList<Cuenta>();
 
-        String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo FROM Cuenta c LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta WHERE c.activo = 1;";
+        String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo"
+        		+ " FROM Cuenta c "
+        		+ "LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta"
+        		+ "WHERE c.activo = 1;";
 
         try {
             ResultSet rs = conexion.query(query);
@@ -104,10 +107,10 @@ public class CuentaDaoImpl implements CuentaDao {
 
                 TipoCuenta tipoCuenta = new TipoCuenta();
                 int idTipo = rs.getInt("tipo_cuenta");
-                String descripcionTipo = rs.getString("descripcion_tipo"); // Obtener la descripción
+                String descripcionTipo = rs.getString("descripcion_tipo");
                 
                 tipoCuenta.setIdTipoCuenta(idTipo);
-                tipoCuenta.setDescripcion(descripcionTipo); // Asignar la descripción
+                tipoCuenta.setDescripcion(descripcionTipo);
                 nCuenta.setTipo(tipoCuenta);
 
                 lista.add(nCuenta);
@@ -174,4 +177,51 @@ public class CuentaDaoImpl implements CuentaDao {
         }
         return actualizado;
     }
+
+	@Override
+	public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta) {
+	    conexion = new Conexion();
+	    conexion.Open();
+	    List<Cuenta> lista = new ArrayList<Cuenta>();
+
+	    String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo " +
+	                   "FROM Cuenta c LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta " +
+	                   "WHERE c.activo = 1 AND c.tipo_cuenta = ?";
+
+	    try {
+	        PreparedStatement ps = conexion.Open().prepareStatement(query);
+	        ps.setInt(1, idTipoCuenta);
+	        ResultSet rs = ps.executeQuery();
+
+	        while(rs.next()) {
+	            Cuenta nCuenta = new Cuenta();
+	            nCuenta.setId(rs.getInt("id"));
+	            nCuenta.setDni(rs.getInt("dni_cliente"));
+	            nCuenta.setCreacion(rs.getDate("fecha_creacion"));
+	            nCuenta.setCBU(rs.getString("CBU"));
+	            nCuenta.setSaldo(rs.getFloat("saldo"));
+
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            int idTipo = rs.getInt("tipo_cuenta");
+	            String descripcionTipo = rs.getString("descripcion_tipo");
+	            
+	            tipoCuenta.setIdTipoCuenta(idTipo);
+	            tipoCuenta.setDescripcion(descripcionTipo);
+	            nCuenta.setTipo(tipoCuenta);
+
+	            lista.add(nCuenta);
+	        }
+	        
+	        rs.close();
+	        ps.close();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        conexion.close();
+	    }
+
+	    return lista;
+
+	}
 }
