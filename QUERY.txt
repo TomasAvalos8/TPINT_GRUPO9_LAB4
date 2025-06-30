@@ -77,9 +77,11 @@ CREATE TABLE Cuenta (
 CREATE TABLE SolicitudPrestamos (
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
     dni_cliente BIGINT NOT NULL,
-    autorizacion BOOLEAN DEFAULT FALSE,
-    cuotas INT,
-    numero_cuenta_deposito BIGINT,
+    importe_solicitado BIGINT,
+    numero_cuenta_deposito BIGINT NOT NULL,
+    cuotas INT NOT NULL,
+    fecha_solicitud DATE NOT NULL,
+    autorizacion BOOLEAN,
     estado VARCHAR(50),
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (numero_cuenta_deposito) REFERENCES Cuenta(id)
@@ -94,8 +96,9 @@ CREATE TABLE Prestamo (
     fecha_alta DATE NOT NULL,
     cuotas INT,
     importe_pagar_por_mes DECIMAL(15,2),
-    plazo_pago INT,
+    plazo_pago_meses INT,
     importe_solicitado DECIMAL(15,2),
+    activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (id_solicitud) REFERENCES SolicitudPrestamos(id_solicitud),
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id)

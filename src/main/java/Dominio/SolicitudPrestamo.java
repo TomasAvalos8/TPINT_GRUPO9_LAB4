@@ -46,7 +46,7 @@ public class SolicitudPrestamo {
     public void setFecha_solicitud(java.sql.Date fecha_solicitud) {
         this.fecha_solicitud = fecha_solicitud;
     }
-    public boolean isAutorizacion() {
+    public boolean getAutorizacion() {
         return autorizacion;
     }
     public void setAutorizacion(boolean autorizacion) {
