@@ -36,9 +36,20 @@ if(request.getAttribute("usuarios") == null) {
              Repetir contraseña: <input type="password" name="passwordConfirm" required>
          </p>
         </fieldset>
-        <% if (request.getAttribute("mensaje") != null) { %>
-            <div class="mensajeServlet" style="color: black; font-weight:bold; margin: 10px 0;">
-                <%= request.getAttribute("mensaje") %>
+        <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        String claseMensaje = "";
+        if (mensaje != null) {
+            if (mensaje.contains("Error")) {
+                claseMensaje = "error";
+            } else if (mensaje.contains("exitosamente")) {
+                claseMensaje = "success";
+            }
+        }
+        %>
+        <% if (mensaje != null) { %>
+            <div class="mensajeServlet <%= claseMensaje %>">
+                <%= mensaje %>
             </div>
         <% } %>
         <div class="botonContainer">

@@ -121,7 +121,7 @@ public class ServletClientes extends HttpServlet {
 			    estado=clienteNeg.insertar(cliente);
 			    if (estado) {
 				request.setAttribute("estadoCliente", estado);
-				request.setAttribute("mensaje", "El cliente fue registrado correctamente.");
+				request.setAttribute("mensaje", "El cliente fue registrado exitosamente.");
 				List<Cliente> listaClientes = clienteNeg.listarClientes();
 				request.setAttribute("listaClientes", listaClientes);
 				List<Provincia> provincias = provNeg.obtenerProvincias();

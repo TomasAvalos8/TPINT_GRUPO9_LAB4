@@ -45,48 +45,51 @@ public class ServletUsuario extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            if(request.getParameter("btnRegistrarUsuario") != null) {
-            	if(request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
+    try {
+        if(request.getParameter("btnRegistrarUsuario") != null) {
+            String password = request.getParameter("password");
+            String passwordConfirm = request.getParameter("passwordConfirm");
+            if(password != null && password.equals(passwordConfirm)) {
                 Usuario usuario = new Usuario();
                 TipoUsuario tipo = new TipoUsuario(1, "admin");
                 usuario.setUsuario(request.getParameter("usuario"));
-                usuario.setContraseña(request.getParameter("password"));
+                usuario.setContraseña(password);
                 usuario.setTipoUsuario(tipo);
                 usuario.setFechaAlta(LocalDate.now());
                 
                 boolean estado = usuarioNeg.insertar(usuario);
                 
                 if(estado) {
-                    request.setAttribute("mensaje", "El usuario fue registrado correctamente.");
+                    request.setAttribute("mensaje", "El usuario fue registrado exitosamente.");
                 } else {
-                    request.setAttribute("mensaje", "Error: El usuario No fue registrado correctamente.");
+                    request.setAttribute("mensaje", "Error: El usuario No fue registrado exitosamente.");
                 }
-            } 
-            	}else {request.setAttribute("mensaje","Error: Las contraseñas no coinciden.");}
-            
-            if(request.getParameter("btnEliminarUsuario") != null) {
-                int usuarioEliminar = Integer.parseInt(request.getParameter("usuarioEliminar"));
-                boolean estado = usuarioNeg.eliminarUsuario(usuarioEliminar);
-                
-                if(estado) {
-                    request.setAttribute("mensaje", "El usuario fue eliminado correctamente.");
-                } else {
-                    request.setAttribute("mensaje", "Error: No se pudo eliminar el usuario.");
-                }
+            } else {
+                request.setAttribute("mensaje","Error: las contraseñas no coinciden");
             }
-            
-
-            ArrayList<Usuario> listaUsuarios = usuarioNeg.listarUsuarios();
-            request.setAttribute("usuarios", listaUsuarios);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("mensaje", "Error: Ocurrió un error en la operación");
         }
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("UsuariosAdmin.jsp");
-        dispatcher.forward(request, response);
-	}
+        if(request.getParameter("btnEliminarUsuario") != null) {
+            int usuarioEliminar = Integer.parseInt(request.getParameter("usuarioEliminar"));
+            boolean estado = usuarioNeg.eliminarUsuario(usuarioEliminar);
+            
+            if(estado) {
+                request.setAttribute("mensaje", "El usuario fue eliminado exitosamente.");
+            } else {
+                request.setAttribute("mensaje", "Error: No se pudo eliminar el usuario.");
+            }
+        }
+        
 
+        ArrayList<Usuario> listaUsuarios = usuarioNeg.listarUsuarios();
+        request.setAttribute("usuarios", listaUsuarios);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        request.setAttribute("mensaje", "Error: Ocurrió un error en la operación");
+    }
+    
+    RequestDispatcher dispatcher = request.getRequestDispatcher("UsuariosAdmin.jsp");
+    dispatcher.forward(request, response);
+}
 }
