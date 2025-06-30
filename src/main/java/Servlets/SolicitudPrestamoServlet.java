@@ -98,9 +98,13 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 
 			Negocio.SolicitudPrestamoNeg neg = new NegocioImpl.SolicitudPrestamoNegImpl();
 			boolean exito = neg.insertar(prestamo);
-			request.setAttribute("exito", exito);
+			if (exito) {
+				request.setAttribute("mensajeExito", "Préstamo solicitado correctamente");
+			} else {
+				request.setAttribute("mensajeError", "Ocurrió un error al solicitar el préstamo");
+			}
 		} catch (Exception e) {
-			request.setAttribute("exito", false);
+			request.setAttribute("mensajeError", "Ocurrió un error al solicitar el préstamo");
 		}
 		cargarClienteYCuentas(request);
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);

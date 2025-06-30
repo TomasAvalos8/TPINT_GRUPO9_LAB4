@@ -155,24 +155,24 @@ position: relative;
     <div class="ContenedorPrestamo">
         <form action="SolicitudPrestamoServlet" method="post">
             <h3>Ingrese el monto</h3>
-            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required value="<%= request.getParameter("importe_solicitado") != null ? request.getParameter("importe_solicitado") : "" %>">
+            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required value="<%= request.getAttribute("mensajeExito") != null ? "" : (request.getParameter("importe_solicitado") != null ? request.getParameter("importe_solicitado") : "") %>">
             
             <h3>¿En cuántas cuotas?</h3>
             <div class="cuotas-container">
                 <div class="cuota-select">
                     <select name="cuotas" required>
-                        <option value="" disabled <%= request.getParameter("cuotas") == null ? "selected" : "" %>>Seleccione cuotas</option>
-                        <option value="6" <%= "6".equals(request.getParameter("cuotas")) ? "selected" : "" %>>6 cuotas</option>
-                        <option value="12" <%= "12".equals(request.getParameter("cuotas")) ? "selected" : "" %>>12 cuotas</option>
-                        <option value="18" <%= "18".equals(request.getParameter("cuotas")) ? "selected" : "" %>>18 cuotas</option>
-                        <option value="24" <%= "24".equals(request.getParameter("cuotas")) ? "selected" : "" %>>24 cuotas</option>
-                        <option value="30" <%= "30".equals(request.getParameter("cuotas")) ? "selected" : "" %>>30 cuotas</option>
-                        <option value="36" <%= "36".equals(request.getParameter("cuotas")) ? "selected" : "" %>>36 cuotas</option>
-                        <option value="42" <%= "42".equals(request.getParameter("cuotas")) ? "selected" : "" %>>42 cuotas</option>
+                        <option value="" disabled <%= request.getAttribute("mensajeExito") != null || request.getParameter("cuotas") == null ? "selected" : "" %>>Seleccione cuotas</option>
+                        <option value="6" <%= (request.getAttribute("mensajeExito") == null && "6".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>6 cuotas</option>
+                        <option value="12" <%= (request.getAttribute("mensajeExito") == null && "12".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>12 cuotas</option>
+                        <option value="18" <%= (request.getAttribute("mensajeExito") == null && "18".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>18 cuotas</option>
+                        <option value="24" <%= (request.getAttribute("mensajeExito") == null && "24".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>24 cuotas</option>
+                        <option value="30" <%= (request.getAttribute("mensajeExito") == null && "30".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>30 cuotas</option>
+                        <option value="36" <%= (request.getAttribute("mensajeExito") == null && "36".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>36 cuotas</option>
+                        <option value="42" <%= (request.getAttribute("mensajeExito") == null && "42".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>42 cuotas</option>
                     </select>
                 </div>
                 <div class="info-box" id="interes-info">
-                    <%= request.getAttribute("interes") != null ? request.getAttribute("interes") : "0% interés" %>
+                    <%= request.getAttribute("mensajeExito") != null ? "0% interés" : (request.getAttribute("interes") != null ? request.getAttribute("interes") : "0% interés") %>
                 </div>
             </div>
             
@@ -187,7 +187,7 @@ position: relative;
                     <%= request.getAttribute("cuotaMensual") != null ? request.getAttribute("cuotaMensual") : "" %>
                 </div>
                 <div class="info-box">
-                    <%= request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "" %>
+                    <%= request.getAttribute("mensajeExito") != null ? "0 cuotas" : (request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "") %>
                 </div>
             </div>
             
@@ -202,17 +202,22 @@ position: relative;
             <h3>Seleccione la cuenta de depósito</h3>
             <div class="cuota-select">
                 <select name="numero_cuenta_deposito" >
-                    <option value="" disabled <%= request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
+                    <option value="" disabled <%=  request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
                     <% java.util.List<Dominio.Cuenta> cuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("cuentasCliente");
                        if (cuentas != null) {
                            for (Dominio.Cuenta c : cuentas) { %>
-                        <option value="<%= c.getId() %>" >Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
+                        <option value="<%= c.getId() %>" <%= (""+c.getId()).equals(request.getParameter("numero_cuenta_deposito")) ? "selected" : "" %>>Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
                     <%   }
                        }
                     %>
                 </select>
             </div>
             <button type="submit" class="btn-solicitar">Solicitar Préstamo</button>
+            <% if (request.getAttribute("mensajeExito") != null) { %>
+                <div class="info-box" style="background:#d4edda;color:#155724;margin-top:15px;">
+                    <%= request.getAttribute("mensajeExito") %>
+                </div>
+            <% } %>
         </form>
     </div>
     
