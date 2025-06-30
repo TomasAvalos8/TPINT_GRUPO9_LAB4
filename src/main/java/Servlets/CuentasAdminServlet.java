@@ -169,9 +169,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 }
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
-                
                 java.sql.Date fecha = new java.sql.Date(System.currentTimeMillis());
-                
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
                 cuenta.setDni(dni);
@@ -183,18 +181,23 @@ public class CuentasAdminServlet extends HttpServlet {
                 cuenta.setTipo(tipoCuenta);
                 cuenta.setSaldo(saldo);
                 cuenta.setEstado(true);
-                
+                boolean exito = false;
                 try {
-                    boolean exito = cuentaNeg.crearCuenta(cuenta);
-                    if (exito) {
-                        request.setAttribute("mensajeServlet", "Cuenta registrada exitosamente.");
-                    } else {
-                        request.setAttribute("mensajeServlet", "Error al registrar la cuenta.");
-                    }
+                    exito = cuentaNeg.crearCuenta(cuenta);
                 } catch (ClienteNoExisteException e) {
-                    request.setAttribute("mensajeServlet", "Error: Cliente inexistente");
+                    request.setAttribute("mensajeServlet", "Error: DNI inexistente.");
+                    int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
+                    request.setAttribute("siguienteIdCuenta", siguienteId);
+                    List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
+                    request.setAttribute("listaCuentas", listaCuentas);
+                    request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
+                    return;
                 }
-                
+                if (exito) {
+                    request.setAttribute("mensajeServlet", "Cuenta registrada exitosamente.");
+                } else {
+                    request.setAttribute("mensajeServlet", "Error al registrar la cuenta.");
+                }
                 int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
                 request.setAttribute("siguienteIdCuenta", siguienteId);
                 List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
