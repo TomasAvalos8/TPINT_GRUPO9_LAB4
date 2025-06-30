@@ -155,21 +155,24 @@ position: relative;
     <div class="ContenedorPrestamo">
         <form action="procesarPrestamo.jsp" method="post">
             <h3>Ingrese el monto</h3>
-            <input type="number" name="monto" placeholder="Ej: 10000" min="1" step="0.01" required>
+            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required>
             
             <h3>¿En cuántas cuotas?</h3>
             <div class="cuotas-container">
                 <div class="cuota-select">
                     <select name="cuotas" required>
                         <option value="" disabled selected>Seleccione cuotas</option>
-                        <option value="3">3 cuotas</option>
                         <option value="6">6 cuotas</option>
                         <option value="12">12 cuotas</option>
+                        <option value="18">18 cuotas</option>
                         <option value="24">24 cuotas</option>
+                        <option value="30">30 cuotas</option>
+                        <option value="36">36 cuotas</option>
+                        <option value="42">42 cuotas</option>
                     </select>
                 </div>
-                <div class="info-box">
-                    15% interés
+                <div class="info-box" id="interes-info">
+                    <%= request.getAttribute("interes") != null ? request.getAttribute("interes") : "0% interés" %>
                 </div>
             </div>
             
@@ -207,5 +210,25 @@ position: relative;
     <footer>
         <jsp:include page="Footer.html"></jsp:include>
     </footer>
+
+    <script>
+        const cuotasSelect = document.querySelector('select[name="cuotas"]');
+        const interesInfo = document.getElementById('interes-info');
+        function getInteres(cuotas) {
+            switch (cuotas) {
+                case '6': return '5% interés';
+                case '12': return '10% interés';
+                case '18': return '15% interés';
+                case '24': return '20% interés';
+                case '30': return '25% interés';
+                case '36': return '30% interés';
+                case '42': return '35% interés';
+                default: return '';
+            }
+        }
+        cuotasSelect.addEventListener('change', function() {
+            interesInfo.textContent = getInteres(this.value);
+        });
+    </script>
 </body>
 </html>
