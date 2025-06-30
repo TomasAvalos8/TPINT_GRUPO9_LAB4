@@ -14,7 +14,6 @@ import Excepciones.ClienteNoExisteException;
 
 public class CuentaDaoImpl implements CuentaDao {
 
-	private static final String insertar = "INSERT INTO Cuenta (id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo) VALUES (?, ?, ?, ?, ?, ?)";
 	private Conexion conexion;
 	public boolean crearCuenta(Cuenta cuenta) throws ClienteNoExisteException {
 		
@@ -38,7 +37,7 @@ public class CuentaDaoImpl implements CuentaDao {
 	        rsCliente.close();
 	        psCliente.close();
 
-	        
+	        String insertar = "INSERT INTO Cuenta (id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	        statement = conexion.prepareStatement(insertar);
 	        statement.setLong(1, cuenta.getId());
 	        statement.setInt(2, cuenta.getDni());
@@ -46,6 +45,7 @@ public class CuentaDaoImpl implements CuentaDao {
 	        statement.setInt(4, cuenta.getTipo().getIdTipoCuenta());
 	        statement.setString(5, cuenta.getCBU());
 	        statement.setFloat(6, cuenta.getSaldo());
+			statement.setBoolean(7, cuenta.isEstado());
 
 	        int filas = statement.executeUpdate();
 	        isInsertExitoso = filas > 0;
