@@ -68,7 +68,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 
             <fieldset>
                 <p>
-                    DNI: <input type="number" name="dni" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
+                    DNI: <input type="text" pattern="^[0-9]+$" name="dni" maxlength="8" required  title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
                     CUIL: <input type="text" name="cuil" required title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
                 </p>
                 <p>
