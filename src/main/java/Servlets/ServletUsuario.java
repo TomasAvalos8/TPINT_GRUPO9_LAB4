@@ -62,7 +62,7 @@ public class ServletUsuario extends HttpServlet {
                 if(estado) {
                     request.setAttribute("mensaje", "El usuario fue registrado exitosamente.");
                 } else {
-                    request.setAttribute("mensaje", "Error: El usuario No fue registrado exitosamente.");
+                    request.setAttribute("mensaje", "Error al registrar el usuario.");
                 }
             } else {
                 request.setAttribute("mensaje","Error: las contraseñas no coinciden");

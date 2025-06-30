@@ -87,7 +87,7 @@ if(request.getAttribute("usuarios") == null) {
     <td><%= tipoDesc %></td>
     <td><%= fechaAlta %></td>
     <td>
-        <form method="post" class="btnEliminar"action="ServletUsuario" style="display:inline;">
+        <form method="post" action="ServletUsuario">
             <input type="hidden" name="usuarioEliminar" value="<%= u.getId_usuario() %>"/>
             <button type="submit" name="btnEliminarUsuario" class="btnEliminar" 
                     onclick="return confirm('¿Está seguro de eliminar este usuario?');">

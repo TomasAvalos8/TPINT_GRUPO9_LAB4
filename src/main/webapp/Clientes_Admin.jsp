@@ -226,11 +226,11 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                 <td><%= fechaFormateada %></td>
                 <td><% if (!correo.isEmpty()) { %><i class="fas fa-envelope"></i> <%= correo %><br><% } %>
                     <% if (!telefono.isEmpty()) { %><i class="fas fa-phone"></i> <%= telefono %><% } %></td>
-                <td><form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                <td><form method="post" class="boton" action="ServletClientes" >
                         <input type="hidden" name="modificarId" value="<%= cliente.getDni() %>">
                         <button class="btnModificar" type="submit">Modificar</button>
                     </form>
-                    <form method="post" class="boton" action="ServletClientes" style="display:inline;">
+                    <form method="post" class="boton" action="ServletClientes" >
                         <input type="hidden" name="eliminarId" value="<%= cliente.getDni() %>">
                         <button class="btnEliminar" type="submit" onclick="return confirm('¿Está seguro que desea eliminar este cliente?');">Eliminar</button>
                     </form></td>
