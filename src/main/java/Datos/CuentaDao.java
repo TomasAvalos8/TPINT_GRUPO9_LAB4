@@ -12,4 +12,5 @@ public interface CuentaDao {
 	public boolean eliminarCuenta(int id);
     public boolean actualizarCuenta(Cuenta cuenta);
     public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta);
+    public List<Cuenta> obtenerCuentasPorDni(int dni);
 }
