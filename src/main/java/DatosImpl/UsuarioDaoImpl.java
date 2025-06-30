@@ -163,7 +163,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		String query = "SELECT u.id_usuario, u.usuario, u.contraseña, u.fecha_alta, u.id_tipo_usuario, t.descripcion as tipo_desc " +
 					  "FROM Usuarios u " +
 					  "LEFT JOIN TiposUsuarios t ON u.id_tipo_usuario = t.id_tipo_usuario " +
-					  "WHERE u.activo = 1 " +
+					  "WHERE u.id_tipo_usuario = 1 AND " + 
+					  "u.activo = 1 " +
 					  "ORDER BY u.id_usuario";
 		
 		try {
