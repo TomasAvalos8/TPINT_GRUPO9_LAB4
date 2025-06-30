@@ -1,5 +1,7 @@
 package Negocio;
 
-public class SolicitudPrestamoNeg {
+import Dominio.SolicitudPrestamo;
 
+public interface SolicitudPrestamoNeg {
+    boolean insertar(SolicitudPrestamo prestamo);
 }

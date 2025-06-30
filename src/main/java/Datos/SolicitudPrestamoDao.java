@@ -1,5 +1,7 @@
 package Datos;
 
-public class SolicitudPrestamoDao {
+import Dominio.SolicitudPrestamo;
 
+public interface SolicitudPrestamoDao {
+    boolean insertar(SolicitudPrestamo prestamo);
 }

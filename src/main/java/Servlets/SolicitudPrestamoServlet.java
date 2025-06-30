@@ -27,6 +27,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		cargarClienteYCuentas(request);
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 	}
 
@@ -61,8 +62,76 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				request.setAttribute("cuotaMensual", "");
 				request.setAttribute("totalPagar", "");
 			}
+			cargarClienteYCuentas(request);
+			request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
+			return;
 		}
+
+		
+		try {
+			String cuotasParam = request.getParameter("cuotas");
+			String importeParam = request.getParameter("importe_solicitado");
+			String cuentaParam = request.getParameter("numero_cuenta_deposito");
+			int cuotas = Integer.parseInt(cuotasParam);
+			long importe = Long.parseLong(importeParam);
+			long cuenta = Long.parseLong(cuentaParam);
+
+			Dominio.SolicitudPrestamo prestamo = new Dominio.SolicitudPrestamo();
+			prestamo.setCuotas(cuotas);
+			prestamo.setImporte_solicitado(importe);
+			prestamo.setNumero_cuenta_deposito(cuenta);
+			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
+			prestamo.setAutorizacion(true);
+			prestamo.setEstado("activo");
+
+			// Obtener el dni_cliente del usuario activo
+			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
+			Long dniCliente = null;
+			if (idUsuario != null) {
+				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
+				Dominio.Cliente cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
+				if (cliente != null) {
+					dniCliente = Long.valueOf(cliente.getDni());
+				}
+			}
+			prestamo.setDni_cliente(dniCliente);
+
+			Negocio.SolicitudPrestamoNeg neg = new NegocioImpl.SolicitudPrestamoNegImpl();
+			boolean exito = neg.insertar(prestamo);
+			request.setAttribute("exito", exito);
+		} catch (Exception e) {
+			request.setAttribute("exito", false);
+		}
+		cargarClienteYCuentas(request);
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 	}
 
+	private void cargarClienteYCuentas(HttpServletRequest request) {
+		try {
+			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
+			System.out.println("id_usuario en sesión: " + idUsuario);
+			Dominio.Cliente cliente = null;
+			if (idUsuario != null) {
+				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
+				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
+				System.out.println("Cliente obtenido: " + (cliente != null ? cliente.getDni() : "null"));
+			}
+			if (cliente != null) {
+				Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
+				java.util.List<Dominio.Cuenta> cuentas = cuentaDao.obtenerCuentasPorDni(cliente.getDni());
+				System.out.println("Cuentas obtenidas: " + (cuentas != null ? cuentas.size() : 0));
+				request.setAttribute("cuentasCliente", cuentas);
+				if (cuentas == null || cuentas.isEmpty()) {
+					request.setAttribute("mensajeSinCuentas", "No tiene cuentas disponibles para seleccionar.");
+				}
+			} else {
+				request.setAttribute("cuentasCliente", new java.util.ArrayList<Dominio.Cuenta>());
+				request.setAttribute("mensajeSinCuentas", "No se pudo obtener el cliente o no tiene cuentas.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("cuentasCliente", new java.util.ArrayList<Dominio.Cuenta>());
+			request.setAttribute("mensajeSinCuentas", "Error al obtener cuentas del cliente.");
+		}
+	}
 }

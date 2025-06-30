@@ -176,8 +176,11 @@ position: relative;
                 </div>
             </div>
             
-            <button type="submit" class="btn-solicitar" name="accion" value="calcular">Calcular Total</button>
+         
             
+            <button type="submit" class="btn-solicitar" name="accion" value="calcular">Calcular Total</button>
+       
+
             <h2>Total en cuotas</h2>
             <div class="total-cuotas-container">
                 <div class="total-cuotas-amount">
@@ -195,7 +198,20 @@ position: relative;
                     <%= request.getAttribute("totalPagar") != null ? request.getAttribute("totalPagar") : "" %>
                 </span>
             </div>
-            
+
+            <h3>Seleccione la cuenta de depósito</h3>
+            <div class="cuota-select">
+                <select name="numero_cuenta_deposito" >
+                    <option value="" disabled <%= request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
+                    <% java.util.List<Dominio.Cuenta> cuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("cuentasCliente");
+                       if (cuentas != null) {
+                           for (Dominio.Cuenta c : cuentas) { %>
+                        <option value="<%= c.getId() %>" >Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
+                    <%   }
+                       }
+                    %>
+                </select>
+            </div>
             <button type="submit" class="btn-solicitar">Solicitar Préstamo</button>
         </form>
     </div>

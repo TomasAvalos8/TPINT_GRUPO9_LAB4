@@ -48,9 +48,9 @@ public class loginServlet extends HttpServlet {
 	        Usuario usuario = usuarioDao.login(user, pass);
 
 	        if (usuario != null) {
-	        	 
-	        	HttpSession sesion=request.getSession();
+	        	HttpSession sesion = request.getSession();
 	        	sesion.setAttribute("usuario", usuario.getUsuario());
+	        	sesion.setAttribute("id_usuario", usuario.getId_usuario());
 	        	sesion.setAttribute("tipoUsuario",usuario.getTipoUsuario().getDescripcion());
 	        	sesion.setAttribute("tipoUsuarioId",usuario.getTipoUsuario().getIdTipoUsuario());
 	        	
