@@ -54,8 +54,6 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
             </p>
 
             <p>
-                <label for="fecha">Fecha de Creación:</label>
-                <input type="date" name="fecha" id="fecha" required value="<%= cuentaModificar != null && cuentaModificar.getCreacion() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(cuentaModificar.getCreacion()) : "" %>" />
 
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>

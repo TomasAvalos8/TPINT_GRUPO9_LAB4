@@ -151,10 +151,26 @@ public class CuentasAdminServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int dni = Integer.parseInt(request.getParameter("dni"));
-                String fechaStr = request.getParameter("fecha");
+                List<Cuenta> cuentasUsuario = cuentaNeg.obtenerTodasLasCuentas();
+                int cuentasActivas = 0;
+                for (Cuenta c : cuentasUsuario) {
+                    if (c.getDni() == dni && c.isEstado()) {
+                        cuentasActivas++;
+                    }
+                }
+                if (cuentasActivas >= 3) {
+                    request.setAttribute("mensajeServlet", "El usuario ya tiene 3 cuentas activas. No puede crear otra cuenta.");
+                    int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
+                    request.setAttribute("siguienteIdCuenta", siguienteId);
+                    List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
+                    request.setAttribute("listaCuentas", listaCuentas);
+                    request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
+                    return;
+                }
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
-                java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
+                
+                java.sql.Date fecha = new java.sql.Date(System.currentTimeMillis());
                 
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
