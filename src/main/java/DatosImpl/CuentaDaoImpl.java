@@ -100,7 +100,7 @@ public class CuentaDaoImpl implements CuentaDao {
                 nCuenta.setDni(rs.getInt("dni_cliente"));
                 nCuenta.setCreacion(rs.getDate("fecha_creacion"));
                 nCuenta.setCBU(rs.getString("CBU"));
-
+                nCuenta.setSaldo(rs.getFloat("saldo")); 
 
                 TipoCuenta tipoCuenta = new TipoCuenta();
                 int idTipo = rs.getInt("tipo_cuenta");

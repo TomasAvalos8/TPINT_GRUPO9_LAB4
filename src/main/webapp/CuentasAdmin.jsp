@@ -79,6 +79,8 @@ if (tipoUsuarioId != 1) {
 
                 <label for="saldo">Saldo inicial:</label>
                 <input type="number" name="saldo" id="saldo" step="0.01" required readonly value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
+                
+                <input type="hidden" name="fecha" value="<%= cuentaModificar != null ? cuentaModificar.getCreacion() : new java.sql.Date(new java.util.Date().getTime()) %>" />
             </p>
         </fieldset>
 

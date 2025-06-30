@@ -84,7 +84,6 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			prestamo.setAutorizacion(true);
 			prestamo.setEstado("activo");
 
-			// Obtener el dni_cliente del usuario activo
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 			Long dniCliente = null;
 			if (idUsuario != null) {

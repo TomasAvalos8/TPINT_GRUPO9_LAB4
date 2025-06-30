@@ -133,7 +133,7 @@ public class ServletClientes extends HttpServlet {
 			    request.setAttribute("mensajeServlet", "Error al registrar el usuario.");
 			}
 			}else {
-				request.setAttribute("mensajeServlet", "Error: las contraseñas son distintas");   // <-- AGREGAR ESTA LÍNEA
+				request.setAttribute("mensajeServlet", "Error: las contraseñas son distintas");  
 			}
 			List<Provincia> provincias = provNeg.obtenerProvincias();
 	        request.setAttribute("provincias", provincias);
