@@ -153,5 +153,42 @@ private Conexion conexion;
 	    }
 	    return actualizado;
 	}
+	
+	public Cliente obtenerClientePorIdUsuario(int idUsuario) {
+        Cliente cliente = null;
+        conexion = new Conexion();
+        conexion.Open();
+        String query = "SELECT * FROM Cliente WHERE id_usuario = ? AND activo = 1";
+        try {
+            PreparedStatement ps = (PreparedStatement) conexion.connection.prepareStatement(query);
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                cliente = new Cliente();
+                cliente.setDni(rs.getInt("dni"));
+                cliente.setCuil(rs.getString("cuil"));
+                cliente.setNombre(rs.getString("nombre"));
+                cliente.setApellido(rs.getString("apellido"));
+                cliente.setSexo(rs.getString("sexo"));
+                cliente.setNacionalidad(rs.getString("nacionalidad"));
+                java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
+                if (fechaNacimientoSQL != null) {
+                    cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
+                }
+                cliente.setDireccion(rs.getString("direccion"));
+                cliente.setId_localidad(rs.getInt("id_localidad"));
+                cliente.setId_provincia(rs.getInt("id_provincia"));
+                cliente.setCorreo_electronico(rs.getString("correo_electronico"));
+                cliente.setTelefono(rs.getString("telefono"));
+                cliente.setIdUsuario(rs.getInt("id_usuario"));
+                cliente.setActivo(rs.getBoolean("activo"));
+            }
+            ps.close();
+            conexion.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cliente;
+    }
 
 }

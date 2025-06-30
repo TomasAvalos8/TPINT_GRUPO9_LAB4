@@ -11,4 +11,5 @@ public interface ClienteDao {
 	List<Cliente> listarClientes();
 	public boolean eliminarCliente(int id);
 	public boolean actualizarCliente(Cliente cliente);
+	public Cliente obtenerClientePorIdUsuario(int idUsuario);
 }
