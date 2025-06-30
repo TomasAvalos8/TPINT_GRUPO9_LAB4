@@ -2,6 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, Dominio.Usuario" %>
 <%
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("InicioCliente.jsp");
+    return;
+}
+
 if(request.getAttribute("usuarios") == null) {
     response.sendRedirect("ServletUsuario");
     return;

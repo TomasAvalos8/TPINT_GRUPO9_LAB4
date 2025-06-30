@@ -52,6 +52,7 @@ public class loginServlet extends HttpServlet {
 	        	HttpSession sesion=request.getSession();
 	        	sesion.setAttribute("usuario", usuario.getUsuario());
 	        	sesion.setAttribute("tipoUsuario",usuario.getTipoUsuario().getDescripcion());
+	        	sesion.setAttribute("tipoUsuarioId",usuario.getTipoUsuario().getIdTipoUsuario());
 	        	
 	            if (usuario.getTipoUsuario().getIdTipoUsuario() == 1) {
 	                response.sendRedirect("InicioAdmin.jsp");

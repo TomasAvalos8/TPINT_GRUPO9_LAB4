@@ -52,7 +52,15 @@
 <%
 String nombreUsuario= (String)session.getAttribute("usuario");
 String tipo= (String)session.getAttribute("tipoUsuario");
-
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("InicioCliente.jsp");
+    return;
+}
 %>
 
 <div class="contenedor-bienvenida">

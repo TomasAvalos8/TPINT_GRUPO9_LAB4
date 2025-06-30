@@ -6,6 +6,16 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
     response.sendRedirect("CuentasAdminServlet");
     return;
 }
+
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("InicioCliente.jsp");
+    return;
+}
 %>
 <!DOCTYPE html>
 <html>
