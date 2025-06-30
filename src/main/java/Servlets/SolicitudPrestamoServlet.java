@@ -35,8 +35,34 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String accion = request.getParameter("accion");
+		if ("calcular".equals(accion)) {
+			try {
+				String cuotasParam = request.getParameter("cuotas");
+				String importeParam = request.getParameter("importe_solicitado");
+				int cuotas = Integer.parseInt(cuotasParam);
+				double importe = Double.parseDouble(importeParam);
+				double interes = 0;
+				switch (cuotas) {
+					case 6: interes = 0.05; break;
+					case 12: interes = 0.10; break;
+					case 18: interes = 0.15; break;
+					case 24: interes = 0.20; break;
+					case 30: interes = 0.25; break;
+					case 36: interes = 0.30; break;
+					case 42: interes = 0.35; break;
+					default: interes = 0; break;
+				}
+				double totalPagar = importe + (importe * interes);
+				double cuotaMensual = totalPagar / cuotas;
+				request.setAttribute("cuotaMensual", String.format("$%.2f/mes", cuotaMensual));
+				request.setAttribute("totalPagar", String.format("$%.2f", totalPagar));
+			} catch (Exception e) {
+				request.setAttribute("cuotaMensual", "");
+				request.setAttribute("totalPagar", "");
+			}
+		}
+		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 	}
 
 }

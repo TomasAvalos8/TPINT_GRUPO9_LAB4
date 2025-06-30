@@ -153,22 +153,22 @@ position: relative;
     <h1 class="Titulo">Solicitud de préstamo</h1>
     
     <div class="ContenedorPrestamo">
-        <form action="procesarPrestamo.jsp" method="post">
+        <form action="SolicitudPrestamoServlet" method="post">
             <h3>Ingrese el monto</h3>
-            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required>
+            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required value="<%= request.getParameter("importe_solicitado") != null ? request.getParameter("importe_solicitado") : "" %>">
             
             <h3>¿En cuántas cuotas?</h3>
             <div class="cuotas-container">
                 <div class="cuota-select">
                     <select name="cuotas" required>
-                        <option value="" disabled selected>Seleccione cuotas</option>
-                        <option value="6">6 cuotas</option>
-                        <option value="12">12 cuotas</option>
-                        <option value="18">18 cuotas</option>
-                        <option value="24">24 cuotas</option>
-                        <option value="30">30 cuotas</option>
-                        <option value="36">36 cuotas</option>
-                        <option value="42">42 cuotas</option>
+                        <option value="" disabled <%= request.getParameter("cuotas") == null ? "selected" : "" %>>Seleccione cuotas</option>
+                        <option value="6" <%= "6".equals(request.getParameter("cuotas")) ? "selected" : "" %>>6 cuotas</option>
+                        <option value="12" <%= "12".equals(request.getParameter("cuotas")) ? "selected" : "" %>>12 cuotas</option>
+                        <option value="18" <%= "18".equals(request.getParameter("cuotas")) ? "selected" : "" %>>18 cuotas</option>
+                        <option value="24" <%= "24".equals(request.getParameter("cuotas")) ? "selected" : "" %>>24 cuotas</option>
+                        <option value="30" <%= "30".equals(request.getParameter("cuotas")) ? "selected" : "" %>>30 cuotas</option>
+                        <option value="36" <%= "36".equals(request.getParameter("cuotas")) ? "selected" : "" %>>36 cuotas</option>
+                        <option value="42" <%= "42".equals(request.getParameter("cuotas")) ? "selected" : "" %>>42 cuotas</option>
                     </select>
                 </div>
                 <div class="info-box" id="interes-info">
@@ -176,31 +176,24 @@ position: relative;
                 </div>
             </div>
             
+            <button type="submit" class="btn-solicitar" name="accion" value="calcular">Calcular Total</button>
+            
             <h2>Total en cuotas</h2>
             <div class="total-cuotas-container">
                 <div class="total-cuotas-amount">
-                    $479.17/mes
+                    <%= request.getAttribute("cuotaMensual") != null ? request.getAttribute("cuotaMensual") : "" %>
                 </div>
                 <div class="info-box">
-                    24 cuotas
+                    <%= request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "" %>
                 </div>
             </div>
             
             <h2>Total a pagar</h2>
             <div class="total-container">
                 <span class="total-label">Total:</span>
-                <span class="total-amount">$11,500.00</span>
-            </div>
-            
-            <div class="DiasPagar">
-                <h3>Días a pagar</h3>
-                <div class="Dias-select">
-                    <select name="diaPago" required>
-                        <option value="" disabled selected>Seleccione día a pagar</option>
-                        <option value="UltimoDiaMes">Último día del mes</option>
-                        <option value="PrimerDiaDelMes">Primer día del mes</option>
-                    </select>
-                </div>
+                <span class="total-amount">
+                    <%= request.getAttribute("totalPagar") != null ? request.getAttribute("totalPagar") : "" %>
+                </span>
             </div>
             
             <button type="submit" class="btn-solicitar">Solicitar Préstamo</button>
@@ -214,7 +207,7 @@ position: relative;
     <script>
         const cuotasSelect = document.querySelector('select[name="cuotas"]');
         const interesInfo = document.getElementById('interes-info');
-        function getInteres(cuotas) {
+        function getInteresText(cuotas) {
             switch (cuotas) {
                 case '6': return '5% interés';
                 case '12': return '10% interés';
@@ -227,7 +220,7 @@ position: relative;
             }
         }
         cuotasSelect.addEventListener('change', function() {
-            interesInfo.textContent = getInteres(this.value);
+            interesInfo.textContent = getInteresText(this.value);
         });
     </script>
 </body>
