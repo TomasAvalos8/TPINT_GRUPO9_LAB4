@@ -155,11 +155,11 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
                 <td><%= cuenta.getCreacion() %></td>
                 <td><%= cuenta.isEstado() ? "Activa" : "Inactiva" %></td>
                 <td>
-                    <form class="boton" method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton" method="post" action="CuentasAdminServlet" >
                         <input type="hidden" name="eliminarId" value="<%= cuenta.getId() %>" />
                         <button class="btnEliminar" type="submit" onclick="return confirm('¿Estás seguro que quieres eliminar esta cuenta?');">Eliminar</button>
                     </form>
-                    <form class="boton" method="post" action="CuentasAdminServlet" style="display:inline;">
+                    <form class="boton" method="post" action="CuentasAdminServlet" >
                         <input type="hidden" name="modificarId" value="<%= cuenta.getId() %>" />
                         <button class="btnModificar" type="submit">Modificar</button>
                     </form>

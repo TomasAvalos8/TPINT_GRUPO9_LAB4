@@ -217,6 +217,7 @@ form fieldset {
     padding: 5px 10px;
     background: none;
     box-shadow: none;
+    border: none;
 }
 
 
