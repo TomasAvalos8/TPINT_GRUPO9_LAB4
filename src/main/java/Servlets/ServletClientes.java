@@ -90,7 +90,7 @@ public class ServletClientes extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnRegistrar")!=null) {
 			if (request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
-
+				
 			Usuario usuario = new Usuario();
 			Cliente cliente = new Cliente();
 			TipoUsuario tipo= new TipoUsuario(2, "cliente");
@@ -121,23 +121,24 @@ public class ServletClientes extends HttpServlet {
 			    estado=clienteNeg.insertar(cliente);
 			    if (estado) {
 				request.setAttribute("estadoCliente", estado);
-				request.setAttribute("mensaje", "El cliente fue registrado exitosamente.");
+				request.setAttribute("mensajeServlet", "El cliente fue registrado exitosamente.");
 				List<Cliente> listaClientes = clienteNeg.listarClientes();
 				request.setAttribute("listaClientes", listaClientes);
 				List<Provincia> provincias = provNeg.obtenerProvincias();
 				request.setAttribute("provincias", provincias);
 				} else {
-				request.setAttribute("mensaje", "Error al registrar el cliente.");
+				request.setAttribute("mensajeServlet", "Error al registrar el cliente.");
 				}
 			} else {
-			    request.setAttribute("mensaje", "Error al registrar el usuario.");
+			    request.setAttribute("mensajeServlet", "Error al registrar el usuario.");
 			}
 			}else {
-				request.setAttribute("mensaje", "Error: las contraseñas son distintas");
+				request.setAttribute("mensajeServlet", "Error: las contraseñas son distintas");   // <-- AGREGAR ESTA LÍNEA
 			}
 			List<Provincia> provincias = provNeg.obtenerProvincias();
 	        request.setAttribute("provincias", provincias);
-			
+			List<Cliente> listaClientes = clienteNeg.listarClientes();
+			request.setAttribute("listaClientes", listaClientes);   
 			request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
 			
 		}
@@ -216,12 +217,12 @@ public class ServletClientes extends HttpServlet {
                 }
 
                 if (actualizado) {
-                    request.setAttribute("mensaje", "Cliente actualizado exitosamente.");
+                    request.setAttribute("mensajeServlet", "Cliente actualizado exitosamente.");
                 } else {
-                    request.setAttribute("mensaje", "Error al actualizar el cliente.");
+                    request.setAttribute("mensajeServlet", "Error al actualizar el cliente.");
                 }
             } catch (Exception e) {
-                request.setAttribute("mensaje", "Error al actualizar: " + e.getMessage());
+                request.setAttribute("mensajeServlet", "Error al actualizar: " + e.getMessage());
                 e.printStackTrace();
             }
 

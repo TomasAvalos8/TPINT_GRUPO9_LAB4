@@ -161,6 +161,22 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
         </div>
 
     </div>
+        <% 
+        String mensaje = (String) request.getAttribute("mensajeServlet");
+        String claseMensaje = "";
+        if (mensaje != null) {
+            if (mensaje.contains("Error")) {
+                claseMensaje = "error";
+            } else if (mensaje.contains("exitosamente")) {
+                claseMensaje = "success";
+            }
+        }
+        %>
+        <% if (mensaje != null) { %>
+            <div class="mensajeServlet <%= claseMensaje %>">
+                <%= mensaje %>
+            </div>
+        <% } %>
 
     <div class="botonContainer">
         <% if (clienteModificar != null) { %>
