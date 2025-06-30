@@ -72,11 +72,22 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
             </p>
         </fieldset>
 
-        <% if (request.getAttribute("mensajeServlet") != null) { %>
-            <div class="mensajeServlet" style="color: black; font-weight:bold; margin: 10px 0;">
-                <%= request.getAttribute("mensajeServlet") %>
-            </div>
-        <% } %>
+       <% 
+        String mensaje = (String) request.getAttribute("mensajeServlet");
+        String claseMensaje = "";
+        if (mensaje != null) {
+            if (mensaje.contains("Error")) {
+                claseMensaje = "error";
+            } else if (mensaje.contains("exitosamente")) {
+                claseMensaje = "success";
+            }
+        }
+    %>
+    <% if (mensaje != null) { %>
+        <div class="mensajeServlet <%= claseMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
 
         <div class="botonContainer">
         <% if (cuentaModificar != null) { %>

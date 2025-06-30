@@ -159,7 +159,7 @@ public class CuentasAdminServlet extends HttpServlet {
                     }
                 }
                 if (cuentasActivas >= 3) {
-                    request.setAttribute("mensajeServlet", "El usuario ya tiene 3 cuentas activas. No puede crear otra cuenta.");
+                    request.setAttribute("mensajeServlet", "Error: El usuario ya tiene 3 cuentas activas. No puede crear otra cuenta.");
                     int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
                     request.setAttribute("siguienteIdCuenta", siguienteId);
                     List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
@@ -192,7 +192,7 @@ public class CuentasAdminServlet extends HttpServlet {
                         request.setAttribute("mensajeServlet", "Error al registrar la cuenta.");
                     }
                 } catch (ClienteNoExisteException e) {
-                    request.setAttribute("mensajeServlet", "Cliente inexistente");
+                    request.setAttribute("mensajeServlet", "Error: Cliente inexistente");
                 }
                 
                 int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
