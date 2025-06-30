@@ -50,7 +50,7 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
                 <input type="number" name="dni" id="dni" required value="<%= cuentaModificar != null ? cuentaModificar.getDni() : "" %>" />
 
                 <label for="cbu">CBU:</label>
-                <input type="number" name="cbu" id="cbu" required value="<%= cuentaModificar != null ? cuentaModificar.getCBU() : "" %>" />
+                <input type="text" name="cbu" id="cbu" readonly value="<%= cuentaModificar != null ? cuentaModificar.getCBU() : (request.getAttribute("siguienteIdCuenta") != null ? String.format("%022d", Integer.parseInt(request.getAttribute("siguienteIdCuenta").toString())) : "") %>" />
             </p>
 
             <p>
@@ -70,7 +70,7 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
                 </select>
 
                 <label for="saldo">Saldo inicial:</label>
-                <input type="number" name="saldo" id="saldo" step="0.01" required value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
+                <input type="number" name="saldo" id="saldo" step="0.01" required readonly value="<%= cuentaModificar != null ? cuentaModificar.getSaldo() : "10000" %>" />
             </p>
         </fieldset>
 

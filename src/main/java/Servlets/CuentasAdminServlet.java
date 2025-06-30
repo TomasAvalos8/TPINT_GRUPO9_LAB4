@@ -111,7 +111,6 @@ public class CuentasAdminServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int dni = Integer.parseInt(request.getParameter("dni"));
-                String cbu = request.getParameter("cbu");
                 String fechaStr = request.getParameter("fecha");
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
@@ -120,6 +119,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
                 cuenta.setDni(dni);
+                String cbu = String.format("%022d", id); 
                 cuenta.setCBU(cbu);
                 cuenta.setCreacion(fecha);
                 TipoCuenta tipoCuenta = new TipoCuenta();
@@ -151,7 +151,6 @@ public class CuentasAdminServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int dni = Integer.parseInt(request.getParameter("dni"));
-                String cbu = request.getParameter("cbu");
                 String fechaStr = request.getParameter("fecha");
                 int tipoId = Integer.parseInt(request.getParameter("tipoCuenta"));
                 float saldo = Float.parseFloat(request.getParameter("saldo"));
@@ -160,6 +159,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 Cuenta cuenta = new Cuenta();
                 cuenta.setId(id);
                 cuenta.setDni(dni);
+                String cbu = String.format("%022d", id);
                 cuenta.setCBU(cbu);
                 cuenta.setCreacion(fecha);
                 TipoCuenta tipoCuenta = new TipoCuenta();
