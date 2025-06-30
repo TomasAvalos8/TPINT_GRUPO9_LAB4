@@ -104,6 +104,8 @@ public class ServletClientes extends HttpServlet {
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if (IdGuardado > 0) {
 			    cliente.setIdUsuario(IdGuardado);
+			    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+			    cliente.setCuil(request.getParameter("cuil"));
 			    cliente.setNombre(request.getParameter("nombre"));
 			    cliente.setApellido(request.getParameter("apellido"));
 			    cliente.setSexo(request.getParameter("sexo"));

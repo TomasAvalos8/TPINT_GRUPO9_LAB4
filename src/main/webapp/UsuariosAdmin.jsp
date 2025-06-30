@@ -33,6 +33,7 @@ if(request.getAttribute("usuarios") == null) {
          <p>    
              Usuario: <input type="text" name="usuario" required>
              Contraseña: <input type="password" name="password" required>
+             Repetir contraseña: <input type="password" name="passwordConfirm" required>
          </p>
         </fieldset>
         <% if (request.getAttribute("mensaje") != null) { %>

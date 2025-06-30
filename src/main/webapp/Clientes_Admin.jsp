@@ -68,6 +68,27 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 
             <fieldset>
                 <p>
+                    DNI: <input type="number" name="dni" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
+                    CUIL: <input type="text" name="cuil" required title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
+                </p>
+                <p>
+                    Nombre: <input type="text" name="nombre" required value="<%= (clienteModificar != null) ? clienteModificar.getNombre() : "" %>">
+                    Apellido: <input type="text" name="apellido" required value="<%= (clienteModificar != null) ? clienteModificar.getApellido() : "" %>">
+                </p>
+                <p>
+                    Sexo:
+                    <select name="sexo" required>
+                        <option value="">Seleccione</option>
+                        <option value="M" <%= (clienteModificar != null && "M".equals(clienteModificar.getSexo())) ? "selected" : "" %>>Masculino</option>
+                        <option value="F" <%= (clienteModificar != null && "F".equals(clienteModificar.getSexo())) ? "selected" : "" %>>Femenino</option>
+                    </select>
+                    Nacionalidad: <input type="text" name="nacionalidad" required value="<%= (clienteModificar != null) ? clienteModificar.getNacionalidad() : "" %>">
+                </p>
+                <p>
+                    Fecha de nacimiento: <input type="date" name="fechaNacimiento" required value="<%= (clienteModificar != null) ? clienteModificar.getFecha_nacimiento() : "" %>">
+                    Dirección: <input type="text" name="direccion" required value="<%= (clienteModificar != null) ? clienteModificar.getDireccion() : "" %>">
+                </p>
+                <p>
                     Provincia:
                     <select name="idProvincia" id="idProvincia" onchange="eventoSeleccionarProvincia()" required>
                         <option value="">Seleccione</option>
@@ -110,27 +131,6 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                         }
                         %>
                     </select>
-                </p>
-                <p>
-                    DNI: <input type="number" name="dni" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getDni() : "" %>" <%= (clienteModificar != null) ? "readonly" : "" %> >
-                    CUIL: <input type="number" name="cuil" required pattern="\d+" title="Ingrese solo números" value="<%= (clienteModificar != null) ? clienteModificar.getCuil() : "" %>">
-                </p>
-                <p>
-                    Nombre: <input type="text" name="nombre" required value="<%= (clienteModificar != null) ? clienteModificar.getNombre() : "" %>">
-                    Apellido: <input type="text" name="apellido" required value="<%= (clienteModificar != null) ? clienteModificar.getApellido() : "" %>">
-                </p>
-                <p>
-                    Sexo:
-                    <select name="sexo" required>
-                        <option value="">Seleccione</option>
-                        <option value="M" <%= (clienteModificar != null && "M".equals(clienteModificar.getSexo())) ? "selected" : "" %>>Masculino</option>
-                        <option value="F" <%= (clienteModificar != null && "F".equals(clienteModificar.getSexo())) ? "selected" : "" %>>Femenino</option>
-                    </select>
-                    Nacionalidad: <input type="text" name="nacionalidad" required value="<%= (clienteModificar != null) ? clienteModificar.getNacionalidad() : "" %>">
-                </p>
-                <p>
-                    Fecha de nacimiento: <input type="date" name="fechaNacimiento" required value="<%= (clienteModificar != null) ? clienteModificar.getFecha_nacimiento() : "" %>">
-                    Dirección: <input type="text" name="direccion" required value="<%= (clienteModificar != null) ? clienteModificar.getDireccion() : "" %>">
                 </p>
                 <p>
                     Correo electrónico: <input type="email" name="email" required value="<%= (clienteModificar != null) ? clienteModificar.getCorreo_electronico() : "" %>">

@@ -8,14 +8,16 @@ public class Usuario {
 	private String contraseña;
 	private LocalDate fechaAlta;
 	private TipoUsuario tipoUsuario; //1=admin, 2=cliente;
+	private boolean activo;
 	
 	// CONSTRUCTORES
 	
-	 public Usuario (String usuario, String contraseña, TipoUsuario tipoUsuario,LocalDate fechaAlta) {
+	 public Usuario (String usuario, String contraseña, TipoUsuario tipoUsuario,LocalDate fechaAlta,boolean activo) {
 	        this.Usuario = usuario;
 	        this.contraseña = contraseña;
 	        this.tipoUsuario = tipoUsuario;
 	        this.fechaAlta = fechaAlta;
+	        this.activo=activo;
 	    }
 	    
 	 public Usuario() {}
@@ -61,8 +63,15 @@ public class Usuario {
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-
 	
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id_usuario=" + id_usuario + ", contraseña=" + contraseña + ", Usuario=" + Usuario

@@ -47,6 +47,7 @@ public class ServletUsuario extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             if(request.getParameter("btnRegistrarUsuario") != null) {
+            	if(request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
                 Usuario usuario = new Usuario();
                 TipoUsuario tipo = new TipoUsuario(1, "admin");
                 usuario.setUsuario(request.getParameter("usuario"));
@@ -61,7 +62,10 @@ public class ServletUsuario extends HttpServlet {
                 } else {
                     request.setAttribute("mensaje", "Error: El usuario No fue registrado correctamente.");
                 }
-            } else if(request.getParameter("btnEliminarUsuario") != null) {
+            } 
+            	}else {request.setAttribute("mensaje","Error: Las contraseñas no coinciden.");}
+            
+            if(request.getParameter("btnEliminarUsuario") != null) {
                 int usuarioEliminar = Integer.parseInt(request.getParameter("usuarioEliminar"));
                 boolean estado = usuarioNeg.eliminarUsuario(usuarioEliminar);
                 

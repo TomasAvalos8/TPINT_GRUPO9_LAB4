@@ -25,7 +25,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		              "VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"'," +
 		              "'"+usuario.getUsuario()+"'," +
 		              "'"+usuario.getContraseña()+"'," +
-		              "'"+usuario.getFechaAlta()+"', 1)";
+		              "'"+usuario.getFechaAlta()+"', " +
+		              true+ ")";
 		
 		try {
 			
@@ -51,7 +52,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		int idGuardado = 0;
 		conexion = new Conexion();
 		conexion.Open();
-		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"','"+usuario.getFechaAlta()+"') ";
+		String query = "INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta,activo) VALUES ('"+ usuario.getTipoUsuario().getIdTipoUsuario()+"','"+usuario.getUsuario()+"','"+usuario.getContraseña()+"','"+usuario.getFechaAlta()+"', " +true+ ")";
 		
 		try {
 			
