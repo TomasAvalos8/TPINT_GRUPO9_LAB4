@@ -79,6 +79,11 @@ body{
                         </div>
                     </div>
                     <div class="mb-3">
+                        <label for="cuentadestino" class="form-label">Cuenta</label>
+                        <input type="text" class="form-control" id="cuentadestino" name="cuentadestino" 
+                               placeholder="Ingrese la cuenta de destino" maxlength="50" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="cantidad" class="form-label">Importe</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
