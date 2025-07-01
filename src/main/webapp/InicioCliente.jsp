@@ -25,6 +25,7 @@ String tipo= (String)session.getAttribute("tipoUsuario");
     .contenedor-bienvenida {
         max-width: 600px;
         margin: 80px auto;
+        margin-bottom: 0;
         padding: 30px;
         text-align: center;
         background-color: #fff;

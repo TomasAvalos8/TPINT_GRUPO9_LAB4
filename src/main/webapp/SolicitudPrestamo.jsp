@@ -201,7 +201,7 @@ position: relative;
 
             <h3>Seleccione la cuenta de depósito</h3>
             <div class="cuota-select">
-                <select name="numero_cuenta_deposito" >
+                <select name="numero_cuenta_deposito" required>
                     <option value="" disabled <%=  request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
                     <% java.util.List<Dominio.Cuenta> cuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("cuentasCliente");
                        if (cuentas != null) {
