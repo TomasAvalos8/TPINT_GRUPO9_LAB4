@@ -153,6 +153,8 @@ INSERT INTO TiposUsuarios (id_tipo_usuario, descripcion) VALUES
 (1, 'admin'),
 (2, 'cliente');
 
+INSERT INTO Usuarios (id_tipo_usuario, usuario, contraseña, fecha_alta, activo)
+VALUES (1, 'admin', 'admin', CURDATE(), 1);
 
 INSERT INTO Provincia (id_provincia, descripcion) VALUES
 (1, 'Buenos Aires'),
