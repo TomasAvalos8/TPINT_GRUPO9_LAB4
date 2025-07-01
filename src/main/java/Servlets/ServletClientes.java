@@ -189,9 +189,8 @@ public class ServletClientes extends HttpServlet {
         if (actualizar != null) {
             try {
                 Cliente cliente = new Cliente();
-				cliente.setCuil(request.getParameter("cuil"));
-          
-                
+                cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+                cliente.setCuil(request.getParameter("cuil"));
                 cliente.setNombre(request.getParameter("nombre"));
                 cliente.setApellido(request.getParameter("apellido"));
                 cliente.setSexo(request.getParameter("sexo"));

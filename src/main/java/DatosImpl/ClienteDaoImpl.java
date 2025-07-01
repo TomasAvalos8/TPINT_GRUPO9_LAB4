@@ -103,7 +103,15 @@ private Conexion conexion;
 	        ps = (PreparedStatement) conexion.prepareStatement(sql);
 	        ps.setInt(1, dni);
 	        int filasAfectadas = ps.executeUpdate();
-	        eliminado = filasAfectadas > 0;
+
+
+			String sqlUser = "UPDATE Usuarios SET activo = false WHERE id_usuario = (SELECT id_usuario FROM Cliente WHERE dni = ?)";
+			ps = (PreparedStatement) conexion.prepareStatement(sqlUser);
+			ps.setInt(1, dni);
+	        int filasAfectadasUser = ps.executeUpdate();
+
+	        eliminado = filasAfectadasUser > 0 && filasAfectadas > 0;
+			
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
@@ -118,41 +126,42 @@ private Conexion conexion;
 	}
 	
 	public boolean actualizarCliente(Cliente cliente){
-		PreparedStatement ps = null;
-	    Conexion cn = new Conexion();
-	    Connection conexion = cn.Open();
-	    boolean actualizado = false;
-	    try {
-	        String sql = "UPDATE Cliente SET cuil=?, nombre=?, apellido=?, sexo=?, nacionalidad=?, fecha_nacimiento=?, direccion=?, id_localidad=?, id_provincia=?, correo_electronico=?, telefono=?, id_usuario=?, activo=? WHERE dni=?";
-	        ps = (PreparedStatement) conexion.prepareStatement(sql);
-	        ps.setString(1, cliente.getCuil());
-	        ps.setString(2, cliente.getNombre());
-	        ps.setString(3, cliente.getApellido());
-	        ps.setString(4, cliente.getSexo());
-	        ps.setString(5, cliente.getNacionalidad());
-	        ps.setDate(6, java.sql.Date.valueOf(cliente.getFecha_nacimiento()));
-	        ps.setString(7, cliente.getDireccion());
-	        ps.setInt(8, cliente.getId_localidad());
-	        ps.setInt(9, cliente.getId_provincia());
-	        ps.setString(10, cliente.getCorreo_electronico());
-	        ps.setString(11, cliente.getTelefono());
-	        ps.setInt(12, cliente.getIdUsuario());
-	        ps.setBoolean(13, cliente.getActivo());
-	        ps.setInt(14, cliente.getDni());
+        PreparedStatement ps = null;
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        boolean actualizado = false;
+        try {
+            String sql = "UPDATE Cliente SET cuil=?, nombre=?, apellido=?, sexo=?, nacionalidad=?, fecha_nacimiento=?, direccion=?, id_localidad=?, id_provincia=?, correo_electronico=?, telefono=?, id_usuario=?, activo=? WHERE dni=?";
+            ps = (PreparedStatement) conexion.prepareStatement(sql);
+            ps.setString(1, cliente.getCuil());
+            ps.setString(2, cliente.getNombre());
+            ps.setString(3, cliente.getApellido());
+            ps.setString(4, cliente.getSexo());
+            ps.setString(5, cliente.getNacionalidad());
+            ps.setDate(6, java.sql.Date.valueOf(cliente.getFecha_nacimiento()));
+            ps.setString(7, cliente.getDireccion());
+            ps.setInt(8, cliente.getId_localidad());
+            ps.setInt(9, cliente.getId_provincia());
+            ps.setString(10, cliente.getCorreo_electronico());
+            ps.setString(11, cliente.getTelefono());
+            ps.setInt(12, cliente.getIdUsuario());
+            ps.setBoolean(13, cliente.getActivo());
+            ps.setInt(14, cliente.getDni());
 
-	        actualizado = ps.executeUpdate() > 0;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (ps != null) ps.close();
-	            if (conexion != null) conexion.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return actualizado;
-	}
+            int filas = ps.executeUpdate();
+            actualizado = filas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return actualizado;
+    }
 	
 	public Cliente obtenerClientePorIdUsuario(int idUsuario) {
         Cliente cliente = null;
