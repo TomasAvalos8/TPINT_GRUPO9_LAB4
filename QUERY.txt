@@ -82,7 +82,7 @@ CREATE TABLE SolicitudPrestamos (
     cuotas INT NOT NULL,
     fecha_solicitud DATE NOT NULL,
     autorizacion BOOLEAN,
-    estado VARCHAR(50),
+    estado BOOL,
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (numero_cuenta_deposito) REFERENCES Cuenta(id)
 );
@@ -142,3 +142,131 @@ CREATE TABLE Movimiento (
     FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id),
     FOREIGN KEY (id_tipo_movimiento) REFERENCES TipoMovimiento(id_tipo_movimiento)
 );
+
+
+INSERT INTO TipoCuenta (id_tipo_cuenta, descripcion) VALUES
+(1, 'Caja de Ahorro'),
+(2, 'Cuenta Corriente');
+
+
+INSERT INTO TiposUsuarios (id_tipo_usuario, descripcion) VALUES
+(1, 'admin'),
+(2, 'cliente');
+
+
+INSERT INTO Provincia (id_provincia, descripcion) VALUES
+(1, 'Buenos Aires'),
+(2, 'Catamarca'),
+(3, 'Chaco'),
+(4, 'Chubut'),
+(5, 'Córdoba'),
+(6, 'Corrientes'),
+(7, 'Entre Ríos'),
+(8, 'Formosa'),
+(9, 'Jujuy'),
+(10, 'La Pampa'),
+(11, 'La Rioja'),
+(12, 'Mendoza'),
+(13, 'Misiones'),
+(14, 'Neuquén'),
+(15, 'Río Negro'),
+(16, 'Salta'),
+(17, 'San Juan'),
+(18, 'San Luis'),
+(19, 'Santa Cruz'),
+(20, 'Santa Fe'),
+(21, 'Santiago del Estero'),
+(22, 'Tierra del Fuego'),
+(23, 'Tucumán');
+
+-- Buenos Aires
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('La Plata', 1), ('Mar del Plata', 1), ('Bahía Blanca', 1);
+
+-- Catamarca
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('San Fernando del Valle de Catamarca', 2), ('Andalgalá', 2), ('Belén', 2);
+
+-- Chaco
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Resistencia', 3), ('Presidencia Roque Sáenz Peña', 3), ('Villa Ángela', 3);
+
+-- Chubut
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Rawson', 4), ('Comodoro Rivadavia', 4), ('Puerto Madryn', 4);
+
+-- Córdoba
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Córdoba', 5), ('Villa Carlos Paz', 5), ('Río Cuarto', 5);
+
+-- Corrientes
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Corrientes', 6), ('Goya', 6), ('Paso de los Libres', 6);
+
+-- Entre Ríos
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Paraná', 7), ('Concordia', 7), ('Gualeguaychú', 7);
+
+-- Formosa
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Formosa', 8), ('Clorinda', 8), ('Pirané', 8);
+
+-- Jujuy
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('San Salvador de Jujuy', 9), ('Palpalá', 9), ('Libertador General San Martín', 9);
+
+-- La Pampa
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Santa Rosa', 10), ('General Pico', 10), ('Toay', 10);
+
+-- La Rioja
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('La Rioja', 11), ('Chilecito', 11), ('Aimogasta', 11);
+
+-- Mendoza
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Mendoza', 12), ('San Rafael', 12), ('Godoy Cruz', 12);
+
+-- Misiones
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Posadas', 13), ('Oberá', 13), ('Eldorado', 13);
+
+-- Neuquén
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Neuquén', 14), ('Cutral Có', 14), ('Plottier', 14);
+
+-- Río Negro
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Viedma', 15), ('Bariloche', 15), ('General Roca', 15);
+
+-- Salta
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Salta', 16), ('San Ramón de la Nueva Orán', 16), ('Tartagal', 16);
+
+-- San Juan
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('San Juan', 17), ('Rawson', 17), ('Chimbas', 17);
+
+-- San Luis
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('San Luis', 18), ('Villa Mercedes', 18), ('Merlo', 18);
+
+-- Santa Cruz
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Río Gallegos', 19), ('Caleta Olivia', 19), ('El Calafate', 19);
+
+-- Santa Fe
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Santa Fe', 20), ('Rosario', 20), ('Rafaela', 20);
+
+-- Santiago del Estero
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Santiago del Estero', 21), ('La Banda', 21), ('Termas de Río Hondo', 21);
+
+-- Tierra del Fuego
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('Ushuaia', 22), ('Río Grande', 22), ('Tolhuin', 22);
+
+-- Tucumán
+INSERT INTO Localidad (descripcion, id_provincia) VALUES
+('San Miguel de Tucumán', 23), ('Tafí Viejo', 23), ('Yerba Buena', 23);
