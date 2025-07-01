@@ -80,7 +80,6 @@ if(request.getAttribute("usuarios") == null) {
             <tr>
                 <th>ID Usuario</th>
                 <th>Nombre de usuario</th>
-                <th>Tipo</th>
                 <th>Fecha Alta</th>
                 <th>Acciones</th>
             </tr>
@@ -89,15 +88,13 @@ if(request.getAttribute("usuarios") == null) {
 <% if (listaUsuarios != null && !listaUsuarios.isEmpty()) {
     for (Usuario u : listaUsuarios) {
         if (u != null) {
-            String tipoDesc = u.getTipoUsuario() != null ? u.getTipoUsuario().getDescripcion() : "N/A";
             String fechaAlta = u.getFechaAlta() != null ? u.getFechaAlta().toString() : "N/A";
 %><tr>
     <td><%= u.getId_usuario() %></td>
     <td><%= u.getUsuario() %></td>
-    <td><%= tipoDesc %></td>
     <td><%= fechaAlta %></td>
     <td>
-        <form method="post" class="btnEliminar"action="ServletUsuario">
+        <form method="post" action="ServletUsuario">
             <input type="hidden" name="usuarioEliminar" value="<%= u.getId_usuario() %>"/>
             <button type="submit" name="btnEliminarUsuario" class="btnEliminar" 
                     onclick="return confirm('¿Está seguro de eliminar este usuario?');">
@@ -109,7 +106,7 @@ if(request.getAttribute("usuarios") == null) {
         }
     }
 } else { %><tr>
-    <td colspan="5" style="text-align:center;">No se encontraron usuarios.</td>
+    <td colspan="4" style="text-align:center;">No se encontraron usuarios.</td>
 </tr><% } %>
         </tbody>
     </table>
@@ -130,8 +127,7 @@ $(document).ready(function() {
             { "width": "10%" },
             { "width": "25%" },
             { "width": "20%" },
-            { "width": "25%" },
-            { "width": "20%" }
+            { "width": "45%" }
         ],
         "pageLength": 10,
         "searching": true,
