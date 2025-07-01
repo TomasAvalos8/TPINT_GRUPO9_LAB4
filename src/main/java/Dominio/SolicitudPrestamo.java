@@ -7,7 +7,7 @@ public class SolicitudPrestamo {
     private long numero_cuenta_deposito;
     private int cuotas;
     private java.sql.Date fecha_solicitud;
-    private boolean autorizacion;
+    private int autorizacion;
     private String estado;
 
     public int getId_solicitud() {
@@ -46,10 +46,10 @@ public class SolicitudPrestamo {
     public void setFecha_solicitud(java.sql.Date fecha_solicitud) {
         this.fecha_solicitud = fecha_solicitud;
     }
-    public boolean getAutorizacion() {
+    public int getAutorizacion() {
         return autorizacion;
     }
-    public void setAutorizacion(boolean autorizacion) {
+    public void setAutorizacion(int autorizacion) {
         this.autorizacion = autorizacion;
     }
     public String getEstado() {

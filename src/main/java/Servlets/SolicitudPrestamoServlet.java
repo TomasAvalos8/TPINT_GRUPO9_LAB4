@@ -81,7 +81,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			prestamo.setImporte_solicitado(importe);
 			prestamo.setNumero_cuenta_deposito(cuenta);
 			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
-			prestamo.setAutorizacion(true);
+			prestamo.setAutorizacion(0);
 			prestamo.setEstado("activo");
 
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");

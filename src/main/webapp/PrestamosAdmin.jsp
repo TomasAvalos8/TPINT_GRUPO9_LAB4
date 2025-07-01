@@ -8,6 +8,8 @@
 <link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 </head>
 <body>
 <jsp:include page="MenuAdmin.html"></jsp:include>
@@ -21,54 +23,70 @@
 <div class="formulariosWrapper listadoContainer">
 <h2>Listado de Prestamos</h2>
 <div class="tablaCuentasContainer">
-<div class="filtrosContainer">
- <p> <b>Busqueda:</b> <input type="text" name="search">  </p>
- <p><input type="submit" value="Buscar" class="btnBuscar"></p>
- <p> <b>Filtrar:</b> 
-     
-     <p> ID Cliente: <input type="text" name="idCliente">  </p>
-     <p> ID Cuenta a depositar: <input type="text" name="idCuenta">  </p>
-     <p><input type="submit" value="Filtrar" class="btnFiltrar"></p>
-     
-</div>
-
-	<table>
+    <table id="tablaPrestamos" class="display responsive nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>ID Cliente</th>
-                <th>Dinero solicitado</th>
-                <th>Cuotas solicitadas</th>
-                <th>ID Cuenta a depositar</th>
+                <th>ID</th>
+                <th>DNI Cliente</th>
+                <th>Importe Solicitado</th>
+                <th>Cuenta Depósito</th>
+                <th>Cuotas</th>
+                <th>Fecha Solicitud</th>
+                <th>Autorización</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody >
-             <tr>
-                 <td>123</td>
-                 <td>$ 1.000.000</td>
-                 <td>12</td>
-                 <td>00435</td>
-                 <td><button class="btnAprobar">Aprobar</button> <button class="btnRechazar">Rechazar</button></td>
-                 
-             </tr>
-             
-        
-         
-        </tbody>
-        
-         <tfoot>
-            <tr>
-                <td colspan="5">
-                    <div class="paginado">
-                    <button class="btnAnterior"><</button>
-                        <span> Pagina 1 de 10 </span>
-                        <button class="btnSiguiente">></button>
-                    </div>
+        <tbody>
+        <% 
+            java.util.List<Dominio.SolicitudPrestamo> listaPrestamos = (java.util.List<Dominio.SolicitudPrestamo>) request.getAttribute("listaPrestamos");
+            if (listaPrestamos != null) {
+                for (Dominio.SolicitudPrestamo sp : listaPrestamos) { 
+                    String rowClass = "";
+                    String autorizacionText = "";
+                    int autorizacion = sp.getAutorizacion();
+                    if (autorizacion == 2) {
+                        rowClass = "autorizado";
+                        autorizacionText = "Aprobada";
+                    } else if (autorizacion == 1) {
+                        rowClass = "rechazado";
+                        autorizacionText = "Rechazada";
+                    } else {
+                        autorizacionText = "Pendiente";
+                    }
+        %>
+            <tr class="<%= rowClass %>">
+                <td><%= sp.getId_solicitud() %></td>
+                <td><%= sp.getDni_cliente() %></td>
+                <td><%= sp.getImporte_solicitado() %></td>
+                <td><%= sp.getNumero_cuenta_deposito() %></td>
+                <td><%= sp.getCuotas() %></td>
+                <td><%= sp.getFecha_solicitud() %></td>
+                <td><%= autorizacionText %></td>
+                <td>
+        <form method="post" class="btnAprobar" action="PrestamosAdminServlet" style="display:inline">
+            <input type="hidden" name="accion" value="aprobar">
+            <input type="hidden" name="id" value="<%= sp.getId_solicitud() %>">
+            <button  type="submit">Aprobar</button>
+        </form>
+        <form method="post" class="btnRechazar" action="PrestamosAdminServlet" style="display:inline">
+            <input type="hidden" name="accion" value="rechazar">
+            <input type="hidden" name="id" value="<%= sp.getId_solicitud() %>">
+            <button  type="submit">Rechazar</button>
+        </form>
                 </td>
             </tr>
-          </tfoot>
-         
-        </table>
+        <%      }
+            } else { %>
+            <tr>
+                <td colspan="8">No hay préstamos disponibles</td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <style>
+    .autorizado { background-color: #d4edda !important; }
+    .rechazado { background-color: #f8d7da !important; }
+    </style>
         </div>
 </div>
 </div>
@@ -85,10 +103,18 @@ if (tipoUsuarioId != 1) {
 }
 %>
 
-
-
-
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tablaPrestamos').DataTable({
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+        }
+    });
+});
+</script>
 
 </body>
 </html>

@@ -229,6 +229,10 @@ form fieldset {
     border: none;
 }
 
+.btnAprobar, .btnRechazar{
+    display: contents !important;
+}
+
 
 .error{
     background: #f8d7da;
