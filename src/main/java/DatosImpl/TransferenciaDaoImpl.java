@@ -7,10 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import Datos.TransferenciaDao;
+import Dominio.Cuenta;
 
 public class TransferenciaDaoImpl implements TransferenciaDao {
 
-	public boolean Transferir(int CuentaSaliente, int CuentaDestino, Float monto, Date fecha) {
+	public boolean Transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, Float monto, Date fecha) {
 		String sqlSaldo = "SELECT saldo FROM cuenta WHERE id = ?";
 	    String sqlDebito = "UPDATE cuenta SET saldo = saldo - ? WHERE id = ?";
 	    String sqlCredito = "UPDATE cuenta SET saldo = saldo + ? WHERE id = ?";
@@ -30,7 +31,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 
 	        //Saldo
 	        stmtSaldo = (PreparedStatement) conexion.prepareStatement(sqlSaldo);
-	        stmtSaldo.setInt(1, CuentaSaliente);
+	        stmtSaldo.setInt(1, CuentaSaliente.getId());
 	        ResultSet rs = stmtSaldo.executeQuery();
 	        if (!rs.next() || rs.getFloat("saldo") < monto) {
 	            return false;
@@ -39,18 +40,18 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        //cuenta saliente
 	        stmtDebito = (PreparedStatement) conexion.prepareStatement(sqlDebito);
 	        stmtDebito.setFloat(1, monto);
-	        stmtDebito.setInt(2, CuentaSaliente);
+	        stmtDebito.setInt(2, CuentaSaliente.getId());
 	        stmtDebito.executeUpdate();
 
 	        //cuenta destino
 	        stmtCredito = (PreparedStatement) conexion.prepareStatement(sqlCredito);
 	        stmtCredito.setFloat(1, monto);
-	        stmtCredito.setInt(2, CuentaDestino);
+	        stmtCredito.setInt(2, CuentaDestino.getId());
 	        stmtCredito.executeUpdate();
 
 	        //movimiento en cuenta saliente
 	        stmtMovimiento = (PreparedStatement) conexion.prepareStatement(sqlMovimiento);
-	        stmtMovimiento.setInt(1, CuentaSaliente);
+	        stmtMovimiento.setInt(1, CuentaSaliente.getId());
 	        stmtMovimiento.setDate(2, new java.sql.Date(fecha.getTime()));
 	        stmtMovimiento.setString(3, "Transferencia a cuenta " + CuentaDestino);
 	        stmtMovimiento.setFloat(4, -monto);
@@ -58,7 +59,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        stmtMovimiento.executeUpdate();
 
 	        //movimiento en cuenta destino
-	        stmtMovimiento.setInt(1, CuentaDestino);
+	        stmtMovimiento.setInt(1, CuentaDestino.getId());
 	        stmtMovimiento.setDate(2, new java.sql.Date(fecha.getTime()));
 	        stmtMovimiento.setString(3, "Transferencia desde cuenta " + CuentaSaliente);
 	        stmtMovimiento.setFloat(4, monto);

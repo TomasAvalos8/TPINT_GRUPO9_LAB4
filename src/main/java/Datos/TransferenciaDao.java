@@ -2,8 +2,10 @@ package Datos;
 
 import java.sql.Date;
 
+import Dominio.Cuenta;
+
 public interface TransferenciaDao {
 	
-	boolean Transferir(int CuentaSaliente, int CuentaDestino, Float monto, Date fecha);
+	boolean Transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, Float monto, Date fecha);
 
 }
