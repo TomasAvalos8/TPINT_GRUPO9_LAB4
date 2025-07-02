@@ -42,7 +42,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
         Connection conn = conexion.Open();
         String sql = "SELECT * FROM SolicitudPrestamos";
         try {
-            System.out.println("Ejecutando SQL: " + sql);
+           
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             int rowCount = 0;

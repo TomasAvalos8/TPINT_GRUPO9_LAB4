@@ -108,7 +108,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                             for (Provincia p : lista) {
                                 String seleccionado = "";
                                 if (clienteModificar != null) {
-                                    seleccionado = (String.valueOf(p.getId_provincia()).equals(String.valueOf(clienteModificar.getId_provincia()))) ? "selected" : "";
+                                    seleccionado = (String.valueOf(p.getId_provincia()).equals(String.valueOf(clienteModificar.getProvincia() != null ? clienteModificar.getProvincia().getId_provincia() : ""))) ? "selected" : "";
                                 }
                         %>
                         <option value="<%= p.getId_provincia() %>" <%= seleccionado %>>

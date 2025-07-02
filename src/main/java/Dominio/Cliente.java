@@ -12,14 +12,14 @@ public class Cliente {
 	private LocalDate fecha_nacimiento;
 	private String direccion;
 	private int id_localidad;
-	private int id_provincia;
+	private Provincia provincia;
 	private String correo_electronico;
 	private String telefono;
 	private int IdUsuario;
 	private boolean activo;
 	
 	public Cliente(int dni, String cuil, String nombre, String apellido, String sexo, String nacionalidad,
-			LocalDate fecha_nacimiento, String direccion, int id_localidad, int id_provincia, String correo_electronico,
+			LocalDate fecha_nacimiento, String direccion, int id_localidad, Provincia provincia, String correo_electronico,
 			String telefono, int  IdUsuario, boolean activo) {
 		super();
 		this.dni = dni;
@@ -31,7 +31,7 @@ public class Cliente {
 		this.fecha_nacimiento = fecha_nacimiento;
 		this.direccion = direccion;
 		this.id_localidad = id_localidad;
-		this.id_provincia = id_provincia;
+		this.provincia = provincia;
 		this.correo_electronico = correo_electronico;
 		this.telefono = telefono;
 		this.IdUsuario = IdUsuario;
@@ -119,12 +119,12 @@ public class Cliente {
 		this.id_localidad = id_localidad;
 	}
 
-	public int getId_provincia() {
-		return id_provincia;
+	public Provincia getProvincia() {
+		return provincia;
 	}
 
-	public void setId_provincia(int id_provincia) {
-		this.id_provincia = id_provincia;
+	public void setProvincia(Provincia provincia) {
+		this.provincia = provincia;
 	}
 
 	public String getCorreo_electronico() {

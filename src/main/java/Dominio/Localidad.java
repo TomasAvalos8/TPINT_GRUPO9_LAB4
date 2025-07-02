@@ -3,13 +3,13 @@ package Dominio;
 public class Localidad {
 private int id_localidad;
 private String descripcion;
-private int id_provincia;
+private Provincia provincia;
 
-public Localidad(int id_localidad, String descripcion, int id_provincia) {
+public Localidad(int id_localidad, String descripcion, Provincia provincia) {
 	super();
 	this.id_localidad = id_localidad;
 	this.descripcion = descripcion;
-	this.id_provincia = id_provincia;
+	this.provincia = provincia;
 }
 
 public Localidad() {}
@@ -26,10 +26,10 @@ public String getDescripcion() {
 public void setDescripcion(String descripcion) {
 	this.descripcion = descripcion;
 }
-public int getId_provincia() {
-	return id_provincia;
+public Provincia getProvincia() {
+	return provincia;
 }
-public void setId_provincia(int id_provincia) {
-	this.id_provincia = id_provincia;
+public void setProvincia(Provincia provincia) {
+	this.provincia = provincia;
 }
 }
