@@ -79,7 +79,11 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			Dominio.SolicitudPrestamo prestamo = new Dominio.SolicitudPrestamo();
 			prestamo.setCuotas(cuotas);
 			prestamo.setImporte_solicitado(importe);
-			prestamo.setNumero_cuenta_deposito(cuenta);
+
+			Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
+			Dominio.Cuenta  cuentaDeposito = cuentaDao.obtenerCuentaPorId((int) cuenta); 
+			prestamo.setCuentaDeposito(cuentaDeposito);
+
 			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
 			prestamo.setAutorizacion(0);
 			prestamo.setEstado(true); 

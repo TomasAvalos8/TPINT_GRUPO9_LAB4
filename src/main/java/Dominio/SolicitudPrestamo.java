@@ -4,7 +4,7 @@ public class SolicitudPrestamo {
     private int id_solicitud;
     private Cliente cliente;
     private long importe_solicitado;
-    private long numero_cuenta_deposito;
+    private Cuenta cuentaDeposito;
     private int cuotas;
     private java.sql.Date fecha_solicitud;
     private int autorizacion;
@@ -28,11 +28,11 @@ public class SolicitudPrestamo {
     public void setImporte_solicitado(long importe_solicitado) {
         this.importe_solicitado = importe_solicitado;
     }
-    public long getNumero_cuenta_deposito() {
-        return numero_cuenta_deposito;
+    public Cuenta getCuentaDeposito() {
+        return cuentaDeposito;
     }
-    public void setNumero_cuenta_deposito(long numero_cuenta_deposito) {
-        this.numero_cuenta_deposito = numero_cuenta_deposito;
+    public void setCuentaDeposito(Cuenta cuentaDeposito) {
+        this.cuentaDeposito = cuentaDeposito;
     }
     public int getCuotas() {
         return cuotas;

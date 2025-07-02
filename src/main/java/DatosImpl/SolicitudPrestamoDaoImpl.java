@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import Datos.SolicitudPrestamoDao;
 import Dominio.SolicitudPrestamo;
-import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -21,7 +20,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, prestamo.getCliente().getDni());
             ps.setLong(2, prestamo.getImporte_solicitado());
-            ps.setLong(3, prestamo.getNumero_cuenta_deposito());
+            ps.setLong(3, prestamo.getCuentaDeposito().getId());
             ps.setInt(4, prestamo.getCuotas());
             ps.setDate(5, prestamo.getFecha_solicitud());
             ps.setInt(6, prestamo.getAutorizacion());
@@ -43,21 +42,20 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
         String sql = "SELECT * FROM SolicitudPrestamos";
         try {
             ClienteDaoImpl clienteDao = new ClienteDaoImpl();
+            Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            int rowCount = 0;
             while (rs.next()) {
                 SolicitudPrestamo sp = new SolicitudPrestamo();
                 sp.setId_solicitud(rs.getInt("id_solicitud"));
                 sp.setCliente(clienteDao.obtenerClientePorDni(rs.getLong("dni_cliente")));
                 sp.setImporte_solicitado(rs.getLong("importe_solicitado"));
-                sp.setNumero_cuenta_deposito(rs.getLong("numero_cuenta_deposito"));
                 sp.setCuotas(rs.getInt("cuotas"));
                 sp.setFecha_solicitud(rs.getDate("fecha_solicitud"));
                 sp.setAutorizacion(rs.getInt("autorizacion"));
                 sp.setEstado(rs.getBoolean("estado"));
+                sp.setCuentaDeposito(cuentaDao.obtenerCuentaPorId(rs.getInt("numero_cuenta_deposito")));
                 lista.add(sp);
-                rowCount++;
             }
             rs.close();
             ps.close();
