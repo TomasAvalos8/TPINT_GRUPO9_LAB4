@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Dominio.Cliente;
+import Dominio.SolicitudPrestamo;
+import Dominio.Cuenta;
 /**
  * Servlet implementation class SolicitudPrestamoServlet
  */
@@ -76,12 +78,12 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			long importe = Long.parseLong(importeParam);
 			long cuenta = Long.parseLong(cuentaParam);
 
-			Dominio.SolicitudPrestamo prestamo = new Dominio.SolicitudPrestamo();
+			SolicitudPrestamo prestamo = new SolicitudPrestamo();
 			prestamo.setCuotas(cuotas);
 			prestamo.setImporte_solicitado(importe);
 
 			Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
-			Dominio.Cuenta  cuentaDeposito = cuentaDao.obtenerCuentaPorId((int) cuenta); 
+			Cuenta  cuentaDeposito = cuentaDao.obtenerCuentaPorId((int) cuenta); 
 			prestamo.setCuentaDeposito(cuentaDeposito);
 
 			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
@@ -115,7 +117,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 		try {
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 			System.out.println("id_usuario en sesión: " + idUsuario);
-			Dominio.Cliente cliente = null;
+			Cliente cliente = null;
 			if (idUsuario != null) {
 				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
 				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
@@ -123,19 +125,19 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			}
 			if (cliente != null) {
 				Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
-				java.util.List<Dominio.Cuenta> cuentas = cuentaDao.obtenerCuentasPorDni(cliente.getDni());
+				java.util.List<Cuenta> cuentas = cuentaDao.obtenerCuentasPorDni(cliente.getDni());
 				System.out.println("Cuentas obtenidas: " + (cuentas != null ? cuentas.size() : 0));
 				request.setAttribute("cuentasCliente", cuentas);
 				if (cuentas == null || cuentas.isEmpty()) {
 					request.setAttribute("mensajeSinCuentas", "No tiene cuentas disponibles para seleccionar.");
 				}
 			} else {
-				request.setAttribute("cuentasCliente", new java.util.ArrayList<Dominio.Cuenta>());
+				request.setAttribute("cuentasCliente", new java.util.ArrayList<Cuenta>());
 				request.setAttribute("mensajeSinCuentas", "No se pudo obtener el cliente o no tiene cuentas.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("cuentasCliente", new java.util.ArrayList<Dominio.Cuenta>());
+			request.setAttribute("cuentasCliente", new java.util.ArrayList<Cuenta>());
 			request.setAttribute("mensajeSinCuentas", "Error al obtener cuentas del cliente.");
 		}
 	}

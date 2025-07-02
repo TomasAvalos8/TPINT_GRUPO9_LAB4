@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="Dominio.Cuenta"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -203,9 +204,9 @@ position: relative;
             <div class="cuota-select">
                 <select name="numero_cuenta_deposito" >
                     <option value="" disabled <%=  request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
-                    <% java.util.List<Dominio.Cuenta> cuentas = (java.util.List<Dominio.Cuenta>) request.getAttribute("cuentasCliente");
+                    <% java.util.List<Cuenta> cuentas = (java.util.List<Cuenta>) request.getAttribute("cuentasCliente");
                        if (cuentas != null) {
-                           for (Dominio.Cuenta c : cuentas) { %>
+                           for (Cuenta c : cuentas) { %>
                         <option value="<%= c.getId() %>" <%= (""+c.getId()).equals(request.getParameter("numero_cuenta_deposito")) ? "selected" : "" %>>Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
                     <%   }
                        }

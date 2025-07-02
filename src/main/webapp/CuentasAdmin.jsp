@@ -32,7 +32,7 @@ if (tipoUsuarioId != 1) {
 <jsp:include page="MenuAdmin.html"></jsp:include>
 
 <%
-    Dominio.Cuenta cuentaModificar = (Dominio.Cuenta) request.getAttribute("cuentaModificar");
+    Cuenta cuentaModificar = (Cuenta) request.getAttribute("cuentaModificar");
     String tipoCuentaFiltroSeleccionado = request.getParameter("tipoCuentaFiltro");
     if (tipoCuentaFiltroSeleccionado == null) {
         tipoCuentaFiltroSeleccionado = ""; // Por defecto, sin filtro
@@ -68,9 +68,9 @@ if (tipoUsuarioId != 1) {
                 <label for="tipoCuenta">Tipo de cuenta:</label>
                 <select name="tipoCuenta" id="tipoCuenta" required>
                     <option value="">Seleccione</option>
-                    <% java.util.List<Dominio.TipoCuenta> tiposCuenta = (List<TipoCuenta>) request.getAttribute("tiposCuenta");
+                    <% java.util.List<TipoCuenta> tiposCuenta = (List<TipoCuenta>) request.getAttribute("tiposCuenta");
                        if (tiposCuenta != null) {
-                           for (Dominio.TipoCuenta tipo : tiposCuenta) { %>
+                           for (TipoCuenta tipo : tiposCuenta) { %>
                                <option value="<%= tipo.getIdTipoCuenta() %>" <%= cuentaModificar != null && cuentaModificar.getTipo() != null && cuentaModificar.getTipo().getIdTipoCuenta() == tipo.getIdTipoCuenta() ? "selected" : "" %>><%= tipo.getDescripcion() %></option>
                     <%     }
                        }
@@ -125,7 +125,7 @@ if (tipoUsuarioId != 1) {
                     <option value="">Seleccione</option>
                     <% 
                        if (tiposCuenta != null) {
-                           for (Dominio.TipoCuenta tipo : tiposCuenta) { 
+                           for (TipoCuenta tipo : tiposCuenta) { 
                                String selected = "";
                                if (tipoCuentaFiltroSeleccionado.equals(String.valueOf(tipo.getIdTipoCuenta()))) {
                                    selected = "selected";
@@ -157,7 +157,7 @@ if (tipoUsuarioId != 1) {
         <% 
             List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas");
             if (listaCuentas != null) {
-                for (Dominio.Cuenta cuenta : listaCuentas) { 
+                for (Cuenta cuenta : listaCuentas) { 
         %>
             <tr>
                 <td><%= cuenta.getId() %></td>

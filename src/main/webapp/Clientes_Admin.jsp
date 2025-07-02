@@ -1,6 +1,7 @@
 <%@page import="Dominio.Provincia"%>
 <%@page import="Dominio.Localidad"%>
 <%@page import="Dominio.Cliente"%>
+<%@page import="Dominio.Usuario"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -154,7 +155,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
 
             <fieldset>
                 <p>
-                    Usuario: <input type="text" name="usuario" required value="<%= (clienteModificar != null && request.getAttribute("usuarioModificar") != null) ? ((Dominio.Usuario)request.getAttribute("usuarioModificar")).getUsuario() : "" %>">
+                    Usuario: <input type="text" name="usuario" required value="<%= (clienteModificar != null && request.getAttribute("usuarioModificar") != null) ? ((Usuario)request.getAttribute("usuarioModificar")).getUsuario() : "" %>">
                 </p>
                 <% if (clienteModificar == null) { %>
                 <p>
