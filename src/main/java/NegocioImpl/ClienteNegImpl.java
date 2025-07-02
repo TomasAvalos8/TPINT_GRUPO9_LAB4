@@ -30,4 +30,9 @@ public class ClienteNegImpl implements ClienteNeg{
 		return cDao.actualizarCliente(cliente);
 		
 	}
+	@Override
+	public Cliente obtenerClientePorIdUsuario(int idUsuario) {
+		// TODO Auto-generated method stub
+		return cDao.obtenerClientePorIdUsuario(idUsuario);
+	}
 }

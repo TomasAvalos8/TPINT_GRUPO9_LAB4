@@ -57,7 +57,7 @@ public class loginServlet extends HttpServlet {
 	            if (usuario.getTipoUsuario().getIdTipoUsuario() == 1) {
 	                response.sendRedirect("InicioAdmin.jsp");
 	            } else {
-	                response.sendRedirect("InicioCliente.jsp");
+	                response.sendRedirect(request.getContextPath() + "/ServletInicioCliente");
 	            }
 	        } else {
 	        	response.sendRedirect("Inicio.jsp?error=1");

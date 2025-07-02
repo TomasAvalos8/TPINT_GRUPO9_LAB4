@@ -12,4 +12,5 @@ public interface CuentaNeg {
 	public int obtenerSiguienteIdCuenta();
 	
 	public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta);
+	List<Cuenta> obtenerCuentasPorDniCliente(int dniCliente);
 }
