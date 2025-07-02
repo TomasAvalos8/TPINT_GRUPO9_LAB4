@@ -1,6 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="Dominio.SolicitudPrestamo"%>
+<%
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("InicioCliente.jsp");
+    return;
+}
+
+if(request.getAttribute("listaPrestamos") == null) {
+    response.sendRedirect("PrestamosAdminServlet");
+    return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +109,7 @@
 </div>
 
 <%
-Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+
 if (tipoUsuarioId == null || tipoUsuarioId == 0) {
     response.sendRedirect("login.jsp");
     return;
