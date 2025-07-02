@@ -8,4 +8,6 @@ public interface ClienteNeg {
 	public List<Cliente> listarClientes();
 	public boolean eliminarCliente(int id);
 	public boolean actualizarCliente(Cliente cliente);
+	
+	Cliente obtenerClientePorIdUsuario(int idUsuario);
 }
