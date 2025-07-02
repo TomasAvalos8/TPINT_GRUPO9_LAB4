@@ -19,7 +19,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
         String sql = "INSERT INTO SolicitudPrestamos (dni_cliente, importe_solicitado, numero_cuenta_deposito, cuotas, fecha_solicitud, autorizacion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setLong(1, prestamo.getDni_cliente());
+            ps.setLong(1, prestamo.getCliente().getDni());
             ps.setLong(2, prestamo.getImporte_solicitado());
             ps.setLong(3, prestamo.getNumero_cuenta_deposito());
             ps.setInt(4, prestamo.getCuotas());
@@ -42,14 +42,14 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
         Connection conn = conexion.Open();
         String sql = "SELECT * FROM SolicitudPrestamos";
         try {
-           
+            ClienteDaoImpl clienteDao = new ClienteDaoImpl();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             int rowCount = 0;
             while (rs.next()) {
                 SolicitudPrestamo sp = new SolicitudPrestamo();
                 sp.setId_solicitud(rs.getInt("id_solicitud"));
-                sp.setDni_cliente(rs.getLong("dni_cliente"));
+                sp.setCliente(clienteDao.obtenerClientePorDni(rs.getLong("dni_cliente")));
                 sp.setImporte_solicitado(rs.getLong("importe_solicitado"));
                 sp.setNumero_cuenta_deposito(rs.getLong("numero_cuenta_deposito"));
                 sp.setCuotas(rs.getInt("cuotas"));

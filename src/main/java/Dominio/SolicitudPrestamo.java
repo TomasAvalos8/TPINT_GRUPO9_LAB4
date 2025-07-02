@@ -2,7 +2,7 @@ package Dominio;
 
 public class SolicitudPrestamo {
     private int id_solicitud;
-    private long dni_cliente;
+    private Cliente cliente;
     private long importe_solicitado;
     private long numero_cuenta_deposito;
     private int cuotas;
@@ -16,11 +16,11 @@ public class SolicitudPrestamo {
     public void setId_solicitud(int id_solicitud) {
         this.id_solicitud = id_solicitud;
     }
-    public long getDni_cliente() {
-        return dni_cliente;
+    public Cliente getCliente() {
+        return cliente;
     }
-    public void setDni_cliente(long dni_cliente) {
-        this.dni_cliente = dni_cliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
     public long getImporte_solicitado() {
         return importe_solicitado;

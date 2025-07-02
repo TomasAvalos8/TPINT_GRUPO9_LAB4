@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import Dominio.Cliente;
 /**
  * Servlet implementation class SolicitudPrestamoServlet
  */
@@ -85,15 +85,12 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			prestamo.setEstado(true); 
 
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
-			Long dniCliente = null;
+			Cliente cliente = null;
 			if (idUsuario != null) {
 				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
-				Dominio.Cliente cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
-				if (cliente != null) {
-					dniCliente = Long.valueOf(cliente.getDni());
-				}
+				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
 			}
-			prestamo.setDni_cliente(dniCliente);
+			prestamo.setCliente(cliente);
 
 			Negocio.SolicitudPrestamoNeg neg = new NegocioImpl.SolicitudPrestamoNegImpl();
 			boolean exito = neg.insertar(prestamo);

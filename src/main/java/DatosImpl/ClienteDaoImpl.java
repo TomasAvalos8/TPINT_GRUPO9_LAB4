@@ -1,12 +1,11 @@
 package DatosImpl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.jdbc.PreparedStatement;
 
 import Datos.ClienteDao;
 import Dominio.Cliente;
@@ -219,5 +218,54 @@ private Conexion conexion;
         }
         return cliente;
     }
+
+	@Override
+	public Cliente obtenerClientePorDni(long dni) {
+		Cliente cliente = null;
+		Conexion conexion = new Conexion();
+		Connection conn = conexion.Open();
+		String sql = "SELECT * FROM Cliente WHERE dni = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setLong(1, dni);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				cliente = new Cliente();
+				cliente.setDni(rs.getInt("dni"));
+				cliente.setCuil(rs.getString("cuil"));
+				cliente.setNombre(rs.getString("nombre"));
+				cliente.setApellido(rs.getString("apellido"));
+				cliente.setSexo(rs.getString("sexo"));
+				cliente.setNacionalidad(rs.getString("nacionalidad"));
+				java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
+				if (fechaNacimientoSQL != null) {
+					cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
+				}
+				cliente.setDireccion(rs.getString("direccion"));
+				
+				Localidad localidad = new Localidad();
+				localidad.setId_localidad(rs.getInt("id_localidad"));
+				cliente.setLocalidad(localidad);
+				
+				Provincia provincia = new Provincia();
+				provincia.setId_provincia(rs.getInt("id_provincia"));
+				cliente.setProvincia(provincia);
+				cliente.setCorreo_electronico(rs.getString("correo_electronico"));
+				cliente.setTelefono(rs.getString("telefono"));
+				
+				Usuario usuario = new Usuario();
+				usuario.setId_usuario(rs.getInt("id_usuario"));
+				cliente.setUsuario(usuario);
+				
+				cliente.setActivo(rs.getBoolean("activo"));
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cliente;
+	}
 
 }
