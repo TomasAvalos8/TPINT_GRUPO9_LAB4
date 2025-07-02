@@ -267,5 +267,71 @@ private Conexion conexion;
 		}
 		return cliente;
 	}
+	
+	
+	public Cliente obtenerClienteConLocalidadProvincia(int idUsuario) {
+	    Cliente cliente = null;
+	    conexion = new Conexion();
+	    conexion.Open();
+
+	    String query = "SELECT c.*, l.id_localidad, l.descripcion AS nombre_localidad, " +
+	                   "p.id_provincia, p.descripcion AS nombre_provincia " +
+	                   "FROM Cliente c " +
+	                   "INNER JOIN Localidad l ON c.id_localidad = l.id_localidad " +
+	                   "INNER JOIN Provincia p ON l.id_provincia = p.id_provincia " +
+	                   "WHERE c.id_usuario = ? AND c.activo = 1";
+
+	    try {
+	        PreparedStatement ps = conexion.connection.prepareStatement(query);
+	        ps.setInt(1, idUsuario);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            cliente = new Cliente();
+	            cliente.setDni(rs.getInt("dni"));
+	            cliente.setCuil(rs.getString("cuil"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setSexo(rs.getString("sexo"));
+	            cliente.setNacionalidad(rs.getString("nacionalidad"));
+
+	            java.sql.Date fechaNacimientoSQL = rs.getDate("fecha_nacimiento");
+	            if (fechaNacimientoSQL != null)
+	                cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
+
+	            cliente.setDireccion(rs.getString("direccion"));
+	            cliente.setCorreo_electronico(rs.getString("correo_electronico"));
+	            cliente.setTelefono(rs.getString("telefono"));
+	            cliente.setActivo(rs.getBoolean("activo"));
+
+	           
+	            UsuarioNeg usuarioNeg = new NegocioImpl.UsuarioNegImpl();
+	            Usuario usuario = usuarioNeg.obtenerUsuarioPorId(rs.getInt("id_usuario"));
+	            cliente.setUsuario(usuario);
+
+	           
+	            Provincia provincia = new Provincia();
+	            provincia.setId_provincia(rs.getInt("id_provincia"));
+	            provincia.setDescripcion(rs.getString("nombre_provincia"));
+
+	            
+	            Localidad localidad = new Localidad();
+	            localidad.setId_localidad(rs.getInt("id_localidad"));
+	            localidad.setDescripcion(rs.getString("nombre_localidad"));
+	            localidad.setProvincia(provincia);
+
+	            cliente.setLocalidad(localidad);
+	            cliente.setProvincia(provincia); 
+	        }
+
+	        ps.close();
+	        conexion.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return cliente;
+	}
+
 
 }

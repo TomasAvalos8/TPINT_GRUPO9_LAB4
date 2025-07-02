@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import DatosImpl.ClienteDaoImpl;
 import DatosImpl.UsuarioDaoImpl;
+import Dominio.Cliente;
 import Dominio.Usuario;
 
 /**
@@ -46,6 +48,11 @@ public class loginServlet extends HttpServlet {
 
 	        UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
 	        Usuario usuario = usuarioDao.login(user, pass);
+	        
+	        ClienteDaoImpl clienteDao = new ClienteDaoImpl();
+	        Cliente cliente = clienteDao.obtenerClienteConLocalidadProvincia(usuario.getId_usuario());
+	        request.getSession().setAttribute("clienteLogueado", cliente);
+
 
 	        if (usuario != null) {
 	        	HttpSession sesion = request.getSession();
