@@ -131,7 +131,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                         if (listaLocalidades != null && !listaLocalidades.isEmpty()) {
                             for (Localidad l : listaLocalidades) {
                                 String selLocalidad = "";
-                                if (clienteModificar != null && l.getId_localidad() == clienteModificar.getId_localidad()) {
+                                if (clienteModificar != null && clienteModificar.getLocalidad() != null && l.getId_localidad() == clienteModificar.getLocalidad().getId_localidad()) {
                                     selLocalidad = "selected";
                                 }
                         %>

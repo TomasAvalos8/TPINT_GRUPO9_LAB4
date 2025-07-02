@@ -114,7 +114,10 @@ public class ServletClientes extends HttpServlet {
                 cliente.setNacionalidad(request.getParameter("nacionalidad"));
                 cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
                 cliente.setDireccion(request.getParameter("direccion"));
-                cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
+                String idLocalidadStr = request.getParameter("idLocalidad");
+                Localidad localidad = new Localidad();
+                localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+                cliente.setLocalidad(localidad);
                 Provincia provincia = new Provincia();
                 provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
                 cliente.setProvincia(provincia);
@@ -202,7 +205,10 @@ public class ServletClientes extends HttpServlet {
                 cliente.setNacionalidad(request.getParameter("nacionalidad"));
                 cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
                 cliente.setDireccion(request.getParameter("direccion"));
-                cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
+                String idLocalidadStr = request.getParameter("idLocalidad");
+                Localidad localidad = new Localidad();
+                localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+                cliente.setLocalidad(localidad);
                 Provincia provincia = new Provincia();
                 provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
                 cliente.setProvincia(provincia);

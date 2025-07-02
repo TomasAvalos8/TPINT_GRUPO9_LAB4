@@ -11,6 +11,7 @@ import com.mysql.jdbc.PreparedStatement;
 import Datos.ClienteDao;
 import Dominio.Cliente;
 import Dominio.Provincia;
+import Dominio.Localidad;
 
 public class ClienteDaoImpl implements ClienteDao {
 private Conexion conexion;
@@ -33,7 +34,7 @@ private Conexion conexion;
 	        ps.setString(6, cliente.getNacionalidad());
 	        ps.setDate(7, java.sql.Date.valueOf(cliente.getFecha_nacimiento()));
 	        ps.setString(8, cliente.getDireccion());
-	        ps.setInt(9, cliente.getId_localidad());
+	        ps.setInt(9, cliente.getLocalidad().getId_localidad());
 	        ps.setInt(10, cliente.getProvincia().getId_provincia());
 	        ps.setString(11, cliente.getCorreo_electronico());
 	        ps.setString(12, cliente.getTelefono());
@@ -77,7 +78,11 @@ private Conexion conexion;
                     cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
                 }
                 cliente.setDireccion(rs.getString("direccion"));
-                cliente.setId_localidad(rs.getInt("id_localidad"));
+                
+                Localidad localidad = new Localidad();
+                localidad.setId_localidad(rs.getInt("id_localidad"));
+                cliente.setLocalidad(localidad);
+                
                 Provincia provincia = new Provincia();
                 provincia.setId_provincia(rs.getInt("id_provincia"));
                 cliente.setProvincia(provincia);
@@ -143,8 +148,8 @@ private Conexion conexion;
             ps.setString(5, cliente.getNacionalidad());
             ps.setDate(6, java.sql.Date.valueOf(cliente.getFecha_nacimiento()));
             ps.setString(7, cliente.getDireccion());
-            ps.setInt(8, cliente.getId_localidad());
-            ps.setInt(9, cliente.getProvincia() != null ? cliente.getProvincia().getId_provincia() : 0);
+            ps.setInt(8, cliente.getLocalidad().getId_localidad());
+            ps.setInt(9, cliente.getProvincia().getId_provincia());
             ps.setString(10, cliente.getCorreo_electronico());
             ps.setString(11, cliente.getTelefono());
             ps.setInt(12, cliente.getIdUsuario());
@@ -188,7 +193,7 @@ private Conexion conexion;
                     cliente.setFecha_nacimiento(fechaNacimientoSQL.toLocalDate());
                 }
                 cliente.setDireccion(rs.getString("direccion"));
-                cliente.setId_localidad(rs.getInt("id_localidad"));
+                cliente.setLocalidad(new Localidad(rs.getInt("id_localidad"), null, null));
                 Provincia provincia2 = new Provincia();
                 provincia2.setId_provincia(rs.getInt("id_provincia"));
                 cliente.setProvincia(provincia2);
