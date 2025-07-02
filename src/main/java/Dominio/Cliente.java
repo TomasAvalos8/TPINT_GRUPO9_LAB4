@@ -15,12 +15,12 @@ public class Cliente {
 	private Provincia provincia;
 	private String correo_electronico;
 	private String telefono;
-	private int IdUsuario;
+	private Usuario usuario;
 	private boolean activo;
 	
 	public Cliente(int dni, String cuil, String nombre, String apellido, String sexo, String nacionalidad,
 			LocalDate fecha_nacimiento, String direccion, Localidad localidad, Provincia provincia, String correo_electronico,
-			String telefono, int  IdUsuario, boolean activo) {
+			String telefono, Usuario usuario, boolean activo) {
 		super();
 		this.dni = dni;
 		this.cuil = cuil;
@@ -34,7 +34,7 @@ public class Cliente {
 		this.provincia = provincia;
 		this.correo_electronico = correo_electronico;
 		this.telefono = telefono;
-		this.IdUsuario = IdUsuario;
+		this.usuario = usuario;
 		this.activo = activo;
 	}
 	
@@ -143,12 +143,12 @@ public class Cliente {
 		this.telefono = telefono;
 	}
 
-	public int getIdUsuario() {
-		return IdUsuario;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(int IdUsuario) {
-		this.IdUsuario = IdUsuario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public boolean getActivo() {

@@ -12,6 +12,8 @@ import Datos.ClienteDao;
 import Dominio.Cliente;
 import Dominio.Provincia;
 import Dominio.Localidad;
+import Dominio.Usuario;
+import Negocio.UsuarioNeg;
 
 public class ClienteDaoImpl implements ClienteDao {
 private Conexion conexion;
@@ -38,7 +40,7 @@ private Conexion conexion;
 	        ps.setInt(10, cliente.getProvincia().getId_provincia());
 	        ps.setString(11, cliente.getCorreo_electronico());
 	        ps.setString(12, cliente.getTelefono());
-	        ps.setInt(13, cliente.getIdUsuario());
+	        ps.setInt(13, cliente.getUsuario() != null ? cliente.getUsuario().getId_usuario() : 0);
 	        ps.setBoolean(14, cliente.getActivo());
 
 	        estado = ps.executeUpdate() > 0;
@@ -88,7 +90,11 @@ private Conexion conexion;
                 cliente.setProvincia(provincia);
                 cliente.setCorreo_electronico(rs.getString("correo_electronico"));
                 cliente.setTelefono(rs.getString("telefono"));
-                cliente.setIdUsuario(rs.getInt("id_usuario"));
+                
+                Usuario usuario = new Usuario();
+                usuario.setId_usuario(rs.getInt("id_usuario"));
+                cliente.setUsuario(usuario);
+                
                 cliente.setActivo(rs.getBoolean("activo"));
                 listaClientes.add(cliente);
             }
@@ -152,7 +158,7 @@ private Conexion conexion;
             ps.setInt(9, cliente.getProvincia().getId_provincia());
             ps.setString(10, cliente.getCorreo_electronico());
             ps.setString(11, cliente.getTelefono());
-            ps.setInt(12, cliente.getIdUsuario());
+            ps.setInt(12, cliente.getUsuario() != null ? cliente.getUsuario().getId_usuario() : 0);
             ps.setBoolean(13, cliente.getActivo());
             ps.setInt(14, cliente.getDni());
 
@@ -199,7 +205,11 @@ private Conexion conexion;
                 cliente.setProvincia(provincia2);
                 cliente.setCorreo_electronico(rs.getString("correo_electronico"));
                 cliente.setTelefono(rs.getString("telefono"));
-                cliente.setIdUsuario(rs.getInt("id_usuario"));
+                
+                UsuarioNeg usuarioNeg = new NegocioImpl.UsuarioNegImpl();
+                Usuario usuario = usuarioNeg.obtenerUsuarioPorId(rs.getInt("id_usuario"));
+                cliente.setUsuario(usuario);
+                
                 cliente.setActivo(rs.getBoolean("activo"));
             }
             ps.close();

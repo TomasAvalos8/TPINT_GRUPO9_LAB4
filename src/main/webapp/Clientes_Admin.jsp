@@ -165,7 +165,7 @@ Cliente clienteModificar = (Cliente) request.getAttribute("clienteModificar");
                 </p>
                 <% } %>
                 <% if (clienteModificar != null && request.getAttribute("usuarioModificar") != null) { %>
-                <input type="hidden" name="idUsuario" value="<%= ((Dominio.Usuario)request.getAttribute("usuarioModificar")).getId_usuario() %>" />
+                <input type="hidden" name="idUsuario" value="<%= (clienteModificar != null && clienteModificar.getUsuario() != null) ? clienteModificar.getUsuario().getId_usuario() : "" %>" />
                 <% } %>
             </fieldset>
         </div>

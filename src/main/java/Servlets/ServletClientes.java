@@ -105,25 +105,27 @@ public class ServletClientes extends HttpServlet {
 			int IdGuardado = 0;
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if (IdGuardado > 0) {
-                cliente.setIdUsuario(IdGuardado);
-                cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-                cliente.setCuil(request.getParameter("cuil"));
-                cliente.setNombre(request.getParameter("nombre"));
-                cliente.setApellido(request.getParameter("apellido"));
-                cliente.setSexo(request.getParameter("sexo"));
-                cliente.setNacionalidad(request.getParameter("nacionalidad"));
-                cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
-                cliente.setDireccion(request.getParameter("direccion"));
-                String idLocalidadStr = request.getParameter("idLocalidad");
-                Localidad localidad = new Localidad();
-                localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
-                cliente.setLocalidad(localidad);
-                Provincia provincia = new Provincia();
-                provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
-                cliente.setProvincia(provincia);
-                cliente.setCorreo_electronico(request.getParameter("email"));
-                cliente.setTelefono(request.getParameter("telefono"));
-                cliente.setActivo(true);
+    Usuario usuarioGuardado = new Usuario();
+    usuarioGuardado.setId_usuario(IdGuardado);
+    cliente.setUsuario(usuarioGuardado);
+    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+    cliente.setCuil(request.getParameter("cuil"));
+    cliente.setNombre(request.getParameter("nombre"));
+    cliente.setApellido(request.getParameter("apellido"));
+    cliente.setSexo(request.getParameter("sexo"));
+    cliente.setNacionalidad(request.getParameter("nacionalidad"));
+    cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+    cliente.setDireccion(request.getParameter("direccion"));
+    String idLocalidadStr = request.getParameter("idLocalidad");
+    Localidad localidad = new Localidad();
+    localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+    cliente.setLocalidad(localidad);
+    Provincia provincia = new Provincia();
+    provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+    cliente.setProvincia(provincia);
+    cliente.setCorreo_electronico(request.getParameter("email"));
+    cliente.setTelefono(request.getParameter("telefono"));
+    cliente.setActivo(true);
 			    boolean estado= true;
 			    estado=clienteNeg.insertar(cliente);
 			    if (estado) {
@@ -187,7 +189,7 @@ public class ServletClientes extends HttpServlet {
                 Provincia provincia = clienteModificar.getProvincia();
                 List<Localidad> localidades = locNeg.obtenerLocalidades(provincia);
                 request.setAttribute("localidades", localidades);
-                Usuario usuarioModificar = usuarioNeg.obtenerUsuarioPorId(clienteModificar.getIdUsuario());
+                Usuario usuarioModificar = usuarioNeg.obtenerUsuarioPorId(clienteModificar.getUsuario().getId_usuario());
                 request.setAttribute("usuarioModificar", usuarioModificar);
             }
             request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
@@ -214,14 +216,16 @@ public class ServletClientes extends HttpServlet {
                 cliente.setProvincia(provincia);
                 cliente.setCorreo_electronico(request.getParameter("email"));
                 cliente.setTelefono(request.getParameter("telefono"));
-                cliente.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
+                Usuario usuarioActual = new Usuario();
+                usuarioActual.setId_usuario(Integer.parseInt(request.getParameter("idUsuario")));
+                cliente.setUsuario(usuarioActual);
                 cliente.setActivo(true);
 
                 boolean actualizado = clienteNeg.actualizarCliente(cliente);
 
                 String nuevoUsuario = request.getParameter("usuario");
                 if (actualizado && nuevoUsuario != null && !nuevoUsuario.isEmpty()) {
-                    Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getIdUsuario());
+                    Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getUsuario().getId_usuario());
                     if (usuario != null && !nuevoUsuario.equals(usuario.getUsuario())) {
                         usuario.setUsuario(nuevoUsuario);
                         usuarioNeg.actualizarUsuario(usuario);
