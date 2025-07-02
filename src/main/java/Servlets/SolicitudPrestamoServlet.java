@@ -82,7 +82,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			prestamo.setNumero_cuenta_deposito(cuenta);
 			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
 			prestamo.setAutorizacion(0);
-			prestamo.setEstado("activo");
+			prestamo.setEstado(true); 
 
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 			Long dniCliente = null;
@@ -98,14 +98,15 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			Negocio.SolicitudPrestamoNeg neg = new NegocioImpl.SolicitudPrestamoNegImpl();
 			boolean exito = neg.insertar(prestamo);
 			if (exito) {
-				request.setAttribute("mensajeExito", "Préstamo solicitado correctamente");
+				request.setAttribute("mensaje", "Préstamo solicitado exitosamente");
 			} else {
-				request.setAttribute("mensajeError", "Ocurrió un error al solicitar el préstamo");
+				request.setAttribute("mensaje", "Ocurrió un error al solicitar el préstamo");
 			}
+			cargarClienteYCuentas(request);
 		} catch (Exception e) {
-			request.setAttribute("mensajeError", "Ocurrió un error al solicitar el préstamo");
+			cargarClienteYCuentas(request);
+			request.setAttribute("mensaje", "Ocurrió un error al solicitar el préstamo");
 		}
-		cargarClienteYCuentas(request);
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 	}
 

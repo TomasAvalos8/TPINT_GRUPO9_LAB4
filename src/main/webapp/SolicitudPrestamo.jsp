@@ -213,11 +213,22 @@ position: relative;
                 </select>
             </div>
             <button type="submit" class="btn-solicitar">Solicitar Préstamo</button>
-            <% if (request.getAttribute("mensajeExito") != null) { %>
-                <div class="info-box" style="background:#d4edda;color:#155724;margin-top:15px;">
-                    <%= request.getAttribute("mensajeExito") %>
-                </div>
-            <% } %>
+             <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        String claseMensaje = "";
+        if (mensaje != null) {
+            if (mensaje.contains("Error")) {
+                claseMensaje = "error";
+            } else if (mensaje.contains("exitosamente")) {
+                claseMensaje = "success";
+            }
+        }
+    %>
+    <% if (mensaje != null) { %>
+        <div class="mensajeServlet <%= claseMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
         </form>
     </div>
     

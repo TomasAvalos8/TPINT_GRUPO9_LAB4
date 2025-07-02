@@ -25,7 +25,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
             ps.setInt(4, prestamo.getCuotas());
             ps.setDate(5, prestamo.getFecha_solicitud());
             ps.setInt(6, prestamo.getAutorizacion());
-            ps.setString(7, prestamo.getEstado());
+            ps.setBoolean(7, prestamo.getEstado());
             exito = ps.executeUpdate() > 0;
             ps.close();
             conn.close();
@@ -55,7 +55,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
                 sp.setCuotas(rs.getInt("cuotas"));
                 sp.setFecha_solicitud(rs.getDate("fecha_solicitud"));
                 sp.setAutorizacion(rs.getInt("autorizacion"));
-                sp.setEstado(rs.getString("estado"));
+                sp.setEstado(rs.getBoolean("estado"));
                 lista.add(sp);
                 rowCount++;
             }
