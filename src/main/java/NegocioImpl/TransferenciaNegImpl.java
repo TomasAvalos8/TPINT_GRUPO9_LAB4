@@ -12,7 +12,7 @@ public class TransferenciaNegImpl implements TransferenciaNeg{
 	private TransferenciaDao transferenciadao = new TransferenciaDaoImpl();
 
 	@Override
-	public boolean transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, Float monto, Date fecha) {
+	public boolean transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha) {
 		
 		return transferenciadao.Transferir(CuentaSaliente, CuentaDestino, monto, fecha);
 	}

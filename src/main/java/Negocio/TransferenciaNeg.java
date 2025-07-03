@@ -6,5 +6,5 @@ import Dominio.Cuenta;
 
 public interface TransferenciaNeg {
 	
-	public boolean transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, Float monto, Date fecha);
+	public boolean transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha);
 }
