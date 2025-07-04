@@ -110,6 +110,7 @@ CREATE TABLE Cuotas (
     numero_cuota INT NOT NULL,
     monto DECIMAL(15,2) NOT NULL,
     fecha_pago DATE NOT NULL,
+    pagado BOOLEAN,
     PRIMARY KEY (id_prestamo, numero_cuota),
     FOREIGN KEY (id_prestamo) REFERENCES Prestamo(id_prestamo)
 );

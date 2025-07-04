@@ -1,7 +1,9 @@
 package Servlets;
 
+import Dominio.Cuota;
 import Dominio.Prestamo;
 import Dominio.SolicitudPrestamo;
+import Negocio.CuotaNeg;
 import Negocio.PrestamoNeg;
 import Negocio.SolicitudPrestamoNeg;
 import NegocioImpl.SolicitudPrestamoNegImpl;
@@ -47,7 +49,27 @@ public class PrestamosAdminServlet extends HttpServlet {
                     prestamo.setImporte_solicitado(solicitud.getImporte_solicitado());
                     prestamo.setActivo(true);
                     PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
-                    prestamoNeg.insertar(prestamo);
+                    int idPrestamo = prestamoNeg.insertar(prestamo);
+                    prestamo.setId_prestamo(idPrestamo);
+
+
+                    for (int i = 1; i <= solicitud.getCuotas(); i++) {
+                        Cuota cuota = new Cuota();
+                        cuota.setPrestamo(prestamo);
+                        cuota.setNumeroCuota(i);
+                        cuota.setMonto(prestamo.getImporte_pagar_por_mes());
+                        java.util.Calendar calendar = java.util.Calendar.getInstance();
+                        calendar.setTime(prestamo.getFecha_alta());
+                        calendar.add(java.util.Calendar.MONTH, i - 1); 
+                        cuota.setFechaPago(calendar.getTime());
+                        cuota.setPagado(false); 
+                        CuotaNeg cuotaNeg = new NegocioImpl.CuotaNegImpl();
+                        cuotaNeg.insertar(cuota);
+
+
+
+                        
+                    }
 
                 }
             }

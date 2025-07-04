@@ -4,5 +4,6 @@ import Dominio.Prestamo;
 import java.util.List;
 
 public interface PrestamoDao {
-    boolean insertar(Prestamo prestamo);
+    int insertar(Prestamo prestamo); 
+    boolean eliminarPrestamoPorSolicitud(int id);
 }

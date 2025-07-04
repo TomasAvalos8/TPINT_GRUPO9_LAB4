@@ -10,7 +10,7 @@ public class PrestamoNegImpl implements PrestamoNeg {
     private PrestamoDao prestamoDao = new PrestamoDaoImpl();
 
     @Override
-    public boolean insertar(Prestamo prestamo) {
+    public int insertar(Prestamo prestamo) {
         return prestamoDao.insertar(prestamo);
     }
 
@@ -18,6 +18,5 @@ public class PrestamoNegImpl implements PrestamoNeg {
     public boolean eliminarPrestamoPorSolicitud(int id) {
         return prestamoDao.eliminarPrestamoPorSolicitud(id);
     }
-
 
 }
