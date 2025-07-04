@@ -52,4 +52,9 @@ public class CuentaNegImpl implements CuentaNeg {
 		// TODO Auto-generated method stub
 		return cuentadao.obtenerCuentasPorDni(dniCliente);
 	}
+
+	@Override
+	public void depositarEnCuenta(int idCuenta, double monto) {
+		cuentadao.depositarEnCuenta(idCuenta, monto);
+	}
 }

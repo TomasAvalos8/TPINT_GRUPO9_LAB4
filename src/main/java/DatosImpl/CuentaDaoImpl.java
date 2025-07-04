@@ -303,4 +303,21 @@ public class CuentaDaoImpl implements CuentaDao {
 	    }
 	    return cuenta;
 	}
+
+	@Override
+	public void depositarEnCuenta(int idCuenta, double monto) {
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        try {
+            String sql = "UPDATE Cuenta SET saldo = saldo + ? WHERE id = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setDouble(1, monto);
+            ps.setInt(2, idCuenta);
+            ps.executeUpdate();
+            ps.close();
+            conexion.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

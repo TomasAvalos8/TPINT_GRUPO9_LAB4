@@ -55,6 +55,28 @@ public class PrestamoDaoImpl implements PrestamoDao {
         }
     }
 
+    @Override
+    public Prestamo obtenerPorSolicitud(int idSolicitud) {
+        Prestamo prestamo = null;
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        String sql = "SELECT * FROM Prestamo WHERE id_solicitud = ?";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idSolicitud);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                prestamo = new Prestamo();
+                prestamo.setId_prestamo(rs.getInt("id_prestamo"));
+                prestamo.setImporte_solicitado(rs.getDouble("importe_solicitado"));
+            }
+            rs.close();
+            ps.close();
+            conexion.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prestamo;
+    }
 
- 
 }

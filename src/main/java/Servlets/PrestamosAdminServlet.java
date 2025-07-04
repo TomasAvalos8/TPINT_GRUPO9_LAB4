@@ -31,20 +31,17 @@ public class PrestamosAdminServlet extends HttpServlet {
             } else if ("rechazar".equals(accion)) {
                 nuevaAutorizacion = 1;
             }
-            solPrestamoNeg.actualizarAutorizacion(id, nuevaAutorizacion);
 
             Prestamo prestamo = new Prestamo();
+            SolicitudPrestamo solicitud = solPrestamoNeg.obtenerSolicitudPorId(id);
             if (nuevaAutorizacion == 2) {
-                SolicitudPrestamo solicitud = solPrestamoNeg.obtenerSolicitudPorId(id);
-                
                 if (solicitud != null) {
-                    
                     prestamo.setSolicitud(solicitud);
                     prestamo.setCliente(solicitud.getCliente());
                     prestamo.setCuenta(solicitud.getCuentaDeposito());
                     prestamo.setFecha_alta(new java.util.Date());
                     prestamo.setCuotas(solicitud.getCuotas());
-                    prestamo.setImporte_pagar_por_mes(solicitud.getImporte_solicitado() / solicitud.getCuotas()); 
+                    prestamo.setImporte_pagar_por_mes(solicitud.getImporte_solicitado() / solicitud.getCuotas());
                     prestamo.setPlazo_pago_meses(solicitud.getCuotas());
                     prestamo.setImporte_solicitado(solicitud.getImporte_solicitado());
                     prestamo.setActivo(true);
@@ -52,6 +49,10 @@ public class PrestamosAdminServlet extends HttpServlet {
                     int idPrestamo = prestamoNeg.insertar(prestamo);
                     prestamo.setId_prestamo(idPrestamo);
 
+                    int idCuentaDestino = solicitud.getCuentaDeposito().getId();
+                    double monto = solicitud.getImporte_solicitado();
+                    Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
+                    cuentaNeg.depositarEnCuenta(idCuentaDestino, monto);
 
                     for (int i = 1; i <= solicitud.getCuotas(); i++) {
                         Cuota cuota = new Cuota();
@@ -65,29 +66,33 @@ public class PrestamosAdminServlet extends HttpServlet {
                         cuota.setPagado(false); 
                         CuotaNeg cuotaNeg = new NegocioImpl.CuotaNegImpl();
                         cuotaNeg.insertar(cuota);
-
-
-
-                        
                     }
-
                 }
             }
 
-            if (nuevaAutorizacion == 1){
-                int idPrestamo = prestamo.getId_prestamo();
-               
-                
+            if (nuevaAutorizacion == 1 && solicitud != null && solicitud.getAutorizacion() == 2) {
                 PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
-                prestamoNeg.eliminarPrestamoPorSolicitud(id);
+                Prestamo prestamoExistente = prestamoNeg.obtenerPorSolicitud(id); 
 
-                 CuotaNeg cuotaNeg = new NegocioImpl.CuotaNegImpl();
-                if(prestamo != null && prestamo.getId_prestamo() > 0) {
-                cuotaNeg.eliminarCuotasPorPrestamo(idPrestamo);
+                if (prestamoExistente != null && prestamoExistente.getId_prestamo() > 0) {
+                    int idPrestamo = prestamoExistente.getId_prestamo();
+
+                    CuotaNeg cuotaNeg = new NegocioImpl.CuotaNegImpl();
+                    cuotaNeg.eliminarCuotasPorPrestamo(idPrestamo);
+
+                    prestamoNeg.eliminarPrestamoPorSolicitud(id);
+
+                    int idCuentaDestino = solicitud.getCuentaDeposito().getId();
+                    double monto = solicitud.getImporte_solicitado();
+                    Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
+                    cuentaNeg.depositarEnCuenta(idCuentaDestino, -monto);
                 }
 
           
             }
+
+            solPrestamoNeg.actualizarAutorizacion(id, nuevaAutorizacion);
+
         }
         request.setAttribute("listaPrestamos", solPrestamoNeg.obtenerTodos());
         request.getRequestDispatcher("PrestamosAdmin.jsp").forward(request, response);
