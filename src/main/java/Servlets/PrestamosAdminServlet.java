@@ -33,12 +33,12 @@ public class PrestamosAdminServlet extends HttpServlet {
             }
             solPrestamoNeg.actualizarAutorizacion(id, nuevaAutorizacion);
 
+            Prestamo prestamo = new Prestamo();
             if (nuevaAutorizacion == 2) {
                 SolicitudPrestamo solicitud = solPrestamoNeg.obtenerSolicitudPorId(id);
                 
                 if (solicitud != null) {
                     
-                    Prestamo prestamo = new Prestamo();
                     prestamo.setSolicitud(solicitud);
                     prestamo.setCliente(solicitud.getCliente());
                     prestamo.setCuenta(solicitud.getCuentaDeposito());
@@ -75,8 +75,18 @@ public class PrestamosAdminServlet extends HttpServlet {
             }
 
             if (nuevaAutorizacion == 1){
+                int idPrestamo = prestamo.getId_prestamo();
+               
+                
                 PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
                 prestamoNeg.eliminarPrestamoPorSolicitud(id);
+
+                 CuotaNeg cuotaNeg = new NegocioImpl.CuotaNegImpl();
+                if(prestamo != null && prestamo.getId_prestamo() > 0) {
+                cuotaNeg.eliminarCuotasPorPrestamo(idPrestamo);
+                }
+
+          
             }
         }
         request.setAttribute("listaPrestamos", solPrestamoNeg.obtenerTodos());

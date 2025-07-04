@@ -36,4 +36,29 @@ public class CuotaDaoImpl implements CuotaDao {
         }
         return resultado;
     }
+
+
+    @Override
+    public boolean eliminarCuotasPorPrestamo(int id_prestamo) {
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        boolean resultado = false;
+        PreparedStatement ps = null;
+        try {
+            String sql = "DELETE FROM Cuotas WHERE id_prestamo = ?";
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id_prestamo);
+            resultado = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conexion != null) conexion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return resultado;
+    }
 }

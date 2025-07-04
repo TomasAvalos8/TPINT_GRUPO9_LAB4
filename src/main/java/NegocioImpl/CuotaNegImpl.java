@@ -13,4 +13,9 @@ public class CuotaNegImpl implements CuotaNeg {
     public boolean insertar(Cuota cuota) {
         return cuotaDao.insertar(cuota);
     }
+
+    @Override
+    public boolean eliminarCuotasPorPrestamo(int id_prestamo) {
+        return cuotaDao.eliminarCuotasPorPrestamo(id_prestamo);
+    }
 }
