@@ -1,6 +1,8 @@
 package Servlets;
 
+import Dominio.Prestamo;
 import Dominio.SolicitudPrestamo;
+import Negocio.PrestamoNeg;
 import Negocio.SolicitudPrestamoNeg;
 import NegocioImpl.SolicitudPrestamoNegImpl;
 import javax.servlet.ServletException;
@@ -16,7 +18,7 @@ public class PrestamosAdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SolicitudPrestamoNeg prestamoNeg = new SolicitudPrestamoNegImpl();
+        SolicitudPrestamoNeg solPrestamoNeg = new SolicitudPrestamoNegImpl();
         String accion = request.getParameter("accion");
         String idParam = request.getParameter("id");
         if (accion != null && idParam != null) {
@@ -27,9 +29,30 @@ public class PrestamosAdminServlet extends HttpServlet {
             } else if ("rechazar".equals(accion)) {
                 nuevaAutorizacion = 1;
             }
-            prestamoNeg.actualizarAutorizacion(id, nuevaAutorizacion);
+            solPrestamoNeg.actualizarAutorizacion(id, nuevaAutorizacion);
+
+            if (nuevaAutorizacion == 2) {
+                SolicitudPrestamo solicitud = solPrestamoNeg.obtenerSolicitudPorId(id);
+                
+                if (solicitud != null) {
+                    
+                    Prestamo prestamo = new Prestamo();
+                    prestamo.setSolicitud(solicitud);
+                    prestamo.setCliente(solicitud.getCliente());
+                    prestamo.setCuenta(solicitud.getCuentaDeposito());
+                    prestamo.setFecha_alta(new java.util.Date());
+                    prestamo.setCuotas(solicitud.getCuotas());
+                    prestamo.setImporte_pagar_por_mes(solicitud.getImporte_solicitado() / solicitud.getCuotas()); 
+                    prestamo.setPlazo_pago_meses(solicitud.getCuotas());
+                    prestamo.setImporte_solicitado(solicitud.getImporte_solicitado());
+                    prestamo.setActivo(true);
+                    PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
+                    prestamoNeg.insertar(prestamo);
+
+                }
+            }
         }
-        request.setAttribute("listaPrestamos", prestamoNeg.obtenerTodos());
+        request.setAttribute("listaPrestamos", solPrestamoNeg.obtenerTodos());
         request.getRequestDispatcher("PrestamosAdmin.jsp").forward(request, response);
     }
 

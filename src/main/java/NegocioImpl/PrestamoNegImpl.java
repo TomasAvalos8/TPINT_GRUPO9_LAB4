@@ -9,5 +9,10 @@ import java.util.List;
 public class PrestamoNegImpl implements PrestamoNeg {
     private PrestamoDao prestamoDao = new PrestamoDaoImpl();
 
+    @Override
+    public boolean insertar(Prestamo prestamo) {
+        return prestamoDao.insertar(prestamo);
+    }
+
 
 }

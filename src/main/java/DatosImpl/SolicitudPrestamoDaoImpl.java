@@ -83,4 +83,33 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
         }
         return exito;
     }
+
+    public SolicitudPrestamo obtenerSolicitudPorId(int idSolicitud){
+        Conexion conexion = new Conexion();
+        Connection conn = conexion.Open();
+        SolicitudPrestamo solicitud = null;
+        String sql = "SELECT * FROM SolicitudPrestamos WHERE id_solicitud = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idSolicitud);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                solicitud = new SolicitudPrestamo();
+                solicitud.setId_solicitud(rs.getInt("id_solicitud"));
+                solicitud.setCliente(new ClienteDaoImpl().obtenerClientePorDni(rs.getLong("dni_cliente")));
+                solicitud.setImporte_solicitado(rs.getLong("importe_solicitado"));
+                solicitud.setCuotas(rs.getInt("cuotas"));
+                solicitud.setFecha_solicitud(rs.getDate("fecha_solicitud"));
+                solicitud.setAutorizacion(rs.getInt("autorizacion"));
+                solicitud.setEstado(rs.getBoolean("estado"));
+                solicitud.setCuentaDeposito(new DatosImpl.CuentaDaoImpl().obtenerCuentaPorId(rs.getInt("numero_cuenta_deposito")));
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitud;
+    }
 }
