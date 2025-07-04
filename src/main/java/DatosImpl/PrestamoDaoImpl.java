@@ -30,6 +30,22 @@ public class PrestamoDaoImpl implements PrestamoDao {
         }
     }
 
+    @Override
+    public boolean eliminarPrestamoPorSolicitud(int id) {
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+
+        String sql = "DELETE FROM Prestamo WHERE id_solicitud = ?";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
  
 }

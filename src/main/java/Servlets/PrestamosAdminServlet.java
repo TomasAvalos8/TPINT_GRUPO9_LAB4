@@ -51,6 +51,11 @@ public class PrestamosAdminServlet extends HttpServlet {
 
                 }
             }
+
+            if (nuevaAutorizacion == 1){
+                PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
+                prestamoNeg.eliminarPrestamoPorSolicitud(id);
+            }
         }
         request.setAttribute("listaPrestamos", solPrestamoNeg.obtenerTodos());
         request.getRequestDispatcher("PrestamosAdmin.jsp").forward(request, response);

@@ -14,5 +14,10 @@ public class PrestamoNegImpl implements PrestamoNeg {
         return prestamoDao.insertar(prestamo);
     }
 
+    @Override
+    public boolean eliminarPrestamoPorSolicitud(int id) {
+        return prestamoDao.eliminarPrestamoPorSolicitud(id);
+    }
+
 
 }
