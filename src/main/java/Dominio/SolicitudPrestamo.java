@@ -5,6 +5,7 @@ public class SolicitudPrestamo {
     private Cliente cliente;
     private long importe_solicitado;
     private Cuenta cuentaDeposito;
+    private double importe_pagar_intereses;
     private int cuotas;
     private java.sql.Date fecha_solicitud;
     private int autorizacion;
@@ -57,5 +58,12 @@ public class SolicitudPrestamo {
     }
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public double getImporte_pagar_intereses() {
+        return importe_pagar_intereses;
+    }
+    public void setImporte_pagar_intereses(double importe_pagar_intereses) {
+        this.importe_pagar_intereses = importe_pagar_intereses;
     }
 }

@@ -43,8 +43,6 @@ public class loginServlet extends HttpServlet {
 		 String user = request.getParameter("usuario").trim();
 	        String pass = request.getParameter("pass").trim();
 	        
-	        System.out.println("Usuario ingresado: " + user);
-	        System.out.println("Contraseña ingresada: " + pass);
 
 	        UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
 	        Usuario usuario = usuarioDao.login(user, pass);

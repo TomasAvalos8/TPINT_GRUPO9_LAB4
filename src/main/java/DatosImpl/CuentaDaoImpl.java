@@ -48,7 +48,6 @@ public class CuentaDaoImpl implements CuentaDao {
         } catch (ClienteNoExisteException e) {
             throw e;
         } catch (Exception e) {
-            System.out.println("catch");
             e.printStackTrace();
         } finally {
             try {
@@ -249,7 +248,6 @@ public class CuentaDaoImpl implements CuentaDao {
                 nCuenta.setTipo(tipoCuenta);
                 lista.add(nCuenta);
             }
-            System.out.println("Cuentas obtenidas: " + lista.size());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

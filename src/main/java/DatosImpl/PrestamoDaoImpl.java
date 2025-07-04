@@ -13,7 +13,7 @@ public class PrestamoDaoImpl implements PrestamoDao {
         Conexion cn = new Conexion();
         Connection conexion = cn.Open();
         int idGenerado = -1;
-        String sql = "INSERT INTO Prestamo (id_solicitud, dni_cliente, numero_cuenta, fecha_alta, cuotas, importe_pagar_por_mes, plazo_pago_meses, importe_solicitado, activo) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, 1)";
+        String sql = "INSERT INTO Prestamo (id_solicitud, dni_cliente, numero_cuenta, fecha_alta, cuotas, importe_pagar_por_mes, plazo_pago_meses, importe_solicitado, importe_pagar_intereses, activo) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, ?, 1)";
         try {
             PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, prestamo.getSolicitud().getId_solicitud());
@@ -23,6 +23,7 @@ public class PrestamoDaoImpl implements PrestamoDao {
             ps.setDouble(5, prestamo.getImporte_pagar_por_mes());
             ps.setInt(6, prestamo.getPlazo_pago_meses());
             ps.setDouble(7, prestamo.getImporte_solicitado());
+            ps.setDouble(8, prestamo.getImporte_total_intereses());
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
@@ -69,6 +70,7 @@ public class PrestamoDaoImpl implements PrestamoDao {
                 prestamo = new Prestamo();
                 prestamo.setId_prestamo(rs.getInt("id_prestamo"));
                 prestamo.setImporte_solicitado(rs.getDouble("importe_solicitado"));
+                prestamo.setImporte_pagar_por_mes(rs.getDouble("importe_pagar_intereses"));
             }
             rs.close();
             ps.close();

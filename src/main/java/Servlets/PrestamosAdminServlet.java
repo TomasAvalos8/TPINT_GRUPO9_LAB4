@@ -41,8 +41,9 @@ public class PrestamosAdminServlet extends HttpServlet {
                     prestamo.setCuenta(solicitud.getCuentaDeposito());
                     prestamo.setFecha_alta(new java.util.Date());
                     prestamo.setCuotas(solicitud.getCuotas());
-                    prestamo.setImporte_pagar_por_mes(solicitud.getImporte_solicitado() / solicitud.getCuotas());
+                    prestamo.setImporte_pagar_por_mes(solicitud.getImporte_pagar_intereses() / solicitud.getCuotas());
                     prestamo.setPlazo_pago_meses(solicitud.getCuotas());
+                    prestamo.setImporte_total_intereses(solicitud.getImporte_pagar_intereses());
                     prestamo.setImporte_solicitado(solicitud.getImporte_solicitado());
                     prestamo.setActivo(true);
                     PrestamoNeg prestamoNeg = new NegocioImpl.PrestamoNegImpl();
@@ -83,7 +84,7 @@ public class PrestamosAdminServlet extends HttpServlet {
                     prestamoNeg.eliminarPrestamoPorSolicitud(id);
 
                     int idCuentaDestino = solicitud.getCuentaDeposito().getId();
-                    double monto = solicitud.getImporte_solicitado();
+                    double monto = solicitud.getImporte_pagar_intereses();
                     Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
                     cuentaNeg.depositarEnCuenta(idCuentaDestino, -monto);
                 }

@@ -10,6 +10,7 @@ public class Prestamo {
     private Date fecha_alta;
     private int cuotas;
     private double importe_pagar_por_mes;
+    private double importe_total_intereses;
     private int plazo_pago_meses;
     private double importe_solicitado;
     private boolean activo;
@@ -77,5 +78,11 @@ public class Prestamo {
     }
     public void setActivo(boolean activo) { 
         this.activo = activo; 
+    }
+    public double getImporte_total_intereses() {
+        return importe_total_intereses;
+    }
+    public void setImporte_total_intereses(double importe_total_intereses) {
+        this.importe_total_intereses = importe_total_intereses;
     }
 }

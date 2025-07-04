@@ -39,6 +39,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
+		
 		if ("calcular".equals(accion)) {
 			try {
 				String cuotasParam = request.getParameter("cuotas");
@@ -78,9 +79,23 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			long importe = Long.parseLong(importeParam);
 			long cuenta = Long.parseLong(cuentaParam);
 
+			double interes = 0;
+			switch (cuotas) {
+				case 6: interes = 0.05; break;
+				case 12: interes = 0.10; break;
+				case 18: interes = 0.15; break;
+				case 24: interes = 0.20; break;
+				case 30: interes = 0.25; break;
+				case 36: interes = 0.30; break;
+				case 42: interes = 0.35; break;
+				default: interes = 0; break;
+			}
+			double totalPagarConInteres = importe + (importe * interes);
+
 			SolicitudPrestamo prestamo = new SolicitudPrestamo();
 			prestamo.setCuotas(cuotas);
 			prestamo.setImporte_solicitado(importe);
+			prestamo.setImporte_pagar_intereses(totalPagarConInteres); 
 
 			Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
 			Cuenta  cuentaDeposito = cuentaDao.obtenerCuentaPorId((int) cuenta); 
@@ -116,17 +131,14 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	private void cargarClienteYCuentas(HttpServletRequest request) {
 		try {
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
-			System.out.println("id_usuario en sesión: " + idUsuario);
 			Cliente cliente = null;
 			if (idUsuario != null) {
 				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
 				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
-				System.out.println("Cliente obtenido: " + (cliente != null ? cliente.getDni() : "null"));
 			}
 			if (cliente != null) {
 				Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
 				java.util.List<Cuenta> cuentas = cuentaDao.obtenerCuentasPorDni(cliente.getDni());
-				System.out.println("Cuentas obtenidas: " + (cuentas != null ? cuentas.size() : 0));
 				request.setAttribute("cuentasCliente", cuentas);
 				if (cuentas == null || cuentas.isEmpty()) {
 					request.setAttribute("mensajeSinCuentas", "No tiene cuentas disponibles para seleccionar.");
