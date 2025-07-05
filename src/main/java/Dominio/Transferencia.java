@@ -4,12 +4,15 @@ import java.sql.Date;
 
 public class Transferencia {
 	private int idTransferencia;
-    private int numeroCuentaSaliente;
-    private int numeroCuentaDestino;
+    private Cuenta numeroCuentaSaliente;
+    private Cuenta numeroCuentaDestino;
     private float monto;
     private Date fecha;
     
-	public Transferencia(int idTransferencia, int numeroCuentaSaliente, int numeroCuentaDestino, float monto,
+    public Transferencia() {
+    }
+    
+	public Transferencia(int idTransferencia, Cuenta numeroCuentaSaliente, Cuenta numeroCuentaDestino, float monto,
 			Date fecha) {
 		super();
 		this.idTransferencia = idTransferencia;
@@ -27,19 +30,19 @@ public class Transferencia {
 		this.idTransferencia = idTransferencia;
 	}
 
-	public int getNumeroCuentaSaliente() {
+	public Cuenta getNumeroCuentaSaliente() {
 		return numeroCuentaSaliente;
 	}
 
-	public void setNumeroCuentaSaliente(int numeroCuentaSaliente) {
+	public void setNumeroCuentaSaliente(Cuenta numeroCuentaSaliente) {
 		this.numeroCuentaSaliente = numeroCuentaSaliente;
 	}
 
-	public int getNumeroCuentaDestino() {
+	public Cuenta getNumeroCuentaDestino() {
 		return numeroCuentaDestino;
 	}
 
-	public void setNumeroCuentaDestino(int numeroCuentaDestino) {
+	public void setNumeroCuentaDestino(Cuenta numeroCuentaDestino) {
 		this.numeroCuentaDestino = numeroCuentaDestino;
 	}
 

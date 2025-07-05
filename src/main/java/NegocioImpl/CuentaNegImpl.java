@@ -46,4 +46,15 @@ public class CuentaNegImpl implements CuentaNeg {
 		CuentaDao cuentaDao = new CuentaDaoImpl();
 	    return cuentaDao.obtenerCuentasPorTipo(idTipoCuenta);
 	}
+
+	@Override
+	public List<Cuenta> obtenerCuentasPorDniCliente(int dniCliente) {
+		// TODO Auto-generated method stub
+		return cuentadao.obtenerCuentasPorDni(dniCliente);
+	}
+
+	@Override
+	public void depositarEnCuenta(int idCuenta, double monto) {
+		cuentadao.depositarEnCuenta(idCuenta, monto);
+	}
 }

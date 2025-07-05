@@ -13,7 +13,7 @@ import Dominio.Provincia;
 
 public class LocalidadDaoImpl implements LocalidadDao {
 
-	public List<Localidad>obtenerLocalidadesPorProvincia(int provincia) {
+	public List<Localidad>obtenerLocalidadesPorProvincia(Provincia provincia) {
 	    List<Localidad> lista = new ArrayList<>();
 	    Conexion cn = new Conexion();
 	    Connection conexion = cn.Open();
@@ -23,14 +23,16 @@ public class LocalidadDaoImpl implements LocalidadDao {
 	    try {
 	        String sql = "SELECT id_localidad, descripcion, id_provincia FROM Localidad WHERE id_provincia = ?";
 	        ps = conexion.prepareStatement(sql);
-	        ps.setInt(1, provincia);
+	        ps.setInt(1, provincia.getId_provincia());
 	        rs = ps.executeQuery();
 
 	        while (rs.next()) {
 	            Localidad localidad = new Localidad();
 	            localidad.setId_localidad(rs.getInt("id_localidad"));
 	            localidad.setDescripcion(rs.getString("descripcion"));
-	            localidad.setId_provincia(rs.getInt("id_provincia"));
+	            Provincia prov = new Provincia();
+	            prov.setId_provincia(rs.getInt("id_provincia"));
+	            localidad.setProvincia(prov);
 	            lista.add(localidad);
 	        }
 	    } catch (Exception e) {

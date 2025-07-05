@@ -7,5 +7,5 @@ import Dominio.Provincia;
 
 public interface LocalidadDao {
 
-	public List<Localidad>obtenerLocalidadesPorProvincia(int provincia);
+	public List<Localidad> obtenerLocalidadesPorProvincia(Provincia provincia);
 }

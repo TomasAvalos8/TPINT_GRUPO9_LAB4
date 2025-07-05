@@ -13,4 +13,6 @@ public interface CuentaDao {
     public boolean actualizarCuenta(Cuenta cuenta);
     public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta);
     public List<Cuenta> obtenerCuentasPorDni(int dni);
+    public Cuenta obtenerCuentaPorId(int id);
+    public void depositarEnCuenta(int idCuenta, double monto);
 }

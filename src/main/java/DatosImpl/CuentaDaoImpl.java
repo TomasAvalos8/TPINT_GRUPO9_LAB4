@@ -48,7 +48,6 @@ public class CuentaDaoImpl implements CuentaDao {
         } catch (ClienteNoExisteException e) {
             throw e;
         } catch (Exception e) {
-            System.out.println("catch");
             e.printStackTrace();
         } finally {
             try {
@@ -249,7 +248,6 @@ public class CuentaDaoImpl implements CuentaDao {
                 nCuenta.setTipo(tipoCuenta);
                 lista.add(nCuenta);
             }
-            System.out.println("Cuentas obtenidas: " + lista.size());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -262,5 +260,62 @@ public class CuentaDaoImpl implements CuentaDao {
             }
         }
         return lista;
+    }
+
+	@Override
+	public Cuenta obtenerCuentaPorId(int id) {
+	    Cuenta cuenta = null;
+	    Conexion cn = new Conexion();
+	    Connection conexion = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+	    String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, tc.descripcion AS descripcion_tipo " +
+	            "FROM Cuenta c LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta WHERE c.id = ? AND c.activo = 1;";
+	    try {
+	        conexion = cn.Open();
+	        ps = conexion.prepareStatement(query);
+	        ps.setInt(1, id);
+	        rs = ps.executeQuery();
+	        if (rs.next()) {
+	            cuenta = new Cuenta();
+	            cuenta.setId(rs.getInt("id"));
+	            cuenta.setDni(rs.getInt("dni_cliente"));
+	            cuenta.setCBU(rs.getString("CBU"));
+	            cuenta.setSaldo(rs.getFloat("saldo"));
+	            cuenta.setCreacion(rs.getDate("fecha_creacion"));
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setIdTipoCuenta(rs.getInt("tipo_cuenta"));
+	            tipoCuenta.setDescripcion(rs.getString("descripcion_tipo"));
+	            cuenta.setTipo(tipoCuenta);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (ps != null) ps.close();
+	            if (conexion != null) conexion.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return cuenta;
+	}
+
+	@Override
+	public void depositarEnCuenta(int idCuenta, double monto) {
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        try {
+            String sql = "UPDATE Cuenta SET saldo = saldo + ? WHERE id = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setDouble(1, monto);
+            ps.setInt(2, idCuenta);
+            ps.executeUpdate();
+            ps.close();
+            conexion.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -29,7 +29,7 @@ body{
 	</p>
 	<section class = "container">
 		<div class = "trans-card card" >
-			<form action="">
+			<form action="TransferenciaServlet" method="post">
 				<div class = "header">
 					<h4 class = "card-title mb-0">
 						<i class="bi bi-arrow-left-right me-2"></i>
@@ -39,6 +39,7 @@ body{
 				</div>	
 				<div class="mb-3">
                    <label for="sourceAccount" class="form-label">Cuenta de Origen</label>
+                   		<!--
                        <select class="form-select" id="selectCuenta" name="selectCuenta" required >
                           <option value="">Selecciona tu cuenta de origen</option>
                           <option value="1" >
@@ -47,7 +48,14 @@ body{
                           <option value="2" >
                                 Cuenta USD - 1122334455 (USD $5.000,00)
                           </option>
-                        </select>
+                        </select> -->
+                        
+                        <div class="mb-3">
+                        <label for="cuentaorigen" class="form-label">Cuenta Origen</label>
+                        <input type="text" class="form-control" id="cuentaorigen" name="cuentaorigen" 
+                               placeholder="Ingrese la cuenta de origen" maxlength="50" required>
+                    	</div>
+                        
                         <div id="saldoInfo" class="saldo-info d-none">
                         <i class="bi bi-info-circle me-2"></i>
                         <span id="balanceText">Saldo disponible: <strong>$0</strong></span>

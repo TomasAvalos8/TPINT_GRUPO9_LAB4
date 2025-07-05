@@ -22,4 +22,9 @@ public class SolicitudPrestamoNegImpl implements SolicitudPrestamoNeg {
     public boolean actualizarAutorizacion(int idSolicitud, int nuevaAutorizacion) {
         return dao.actualizarAutorizacion(idSolicitud, nuevaAutorizacion);
     }
+
+    @Override
+    public SolicitudPrestamo obtenerSolicitudPorId(int idSolicitud) {
+        return dao.obtenerSolicitudPorId(idSolicitud);
+    }
 }

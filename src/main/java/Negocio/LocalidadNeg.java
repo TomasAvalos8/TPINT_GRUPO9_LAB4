@@ -6,6 +6,5 @@ import Dominio.Localidad;
 import Dominio.Provincia;
 
 public interface LocalidadNeg {
-
-public List<Localidad>obtenerLocalidades(int provincia);
+    public List<Localidad> obtenerLocalidades(Provincia provincia);
 }

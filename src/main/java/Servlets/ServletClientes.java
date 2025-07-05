@@ -43,35 +43,37 @@ public class ServletClientes extends HttpServlet {
 
 	
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    try {
-	        String idProvincia = request.getParameter("idProvincia");
-	        if (idProvincia != null && !idProvincia.isEmpty()) {
-	            int id = Integer.parseInt(idProvincia);
-	            List<Localidad> localidades = locNeg.obtenerLocalidades(id);
+        try {
+            String idProvincia = request.getParameter("idProvincia");
+            if (idProvincia != null && !idProvincia.isEmpty()) {
+                int id = Integer.parseInt(idProvincia);
+                Provincia provincia = new Provincia();
+                provincia.setId_provincia(id);
+                List<Localidad> localidades = locNeg.obtenerLocalidades(provincia);
 
-	            response.setContentType("application/json");
-	            response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
 
 	     
-	            StringBuilder json = new StringBuilder("[");
-	            for (int i = 0; i < localidades.size(); i++) {
-	                Localidad localidad = localidades.get(i);
-	                json.append("{")
-	                    .append("\"id_localidad\":").append(localidad.getId_localidad()).append(",")
-	                    .append("\"descripcion\":\"").append(localidad.getDescripcion()).append("\"")
-	                    .append("}");
-	                if (i < localidades.size() - 1) {
-	                    json.append(",");
-	                }
-	            }
-	            json.append("]");
+                StringBuilder json = new StringBuilder("[");
+                for (int i = 0; i < localidades.size(); i++) {
+                    Localidad localidad = localidades.get(i);
+                    json.append("{")
+                        .append("\"id_localidad\":").append(localidad.getId_localidad()).append(",")
+                        .append("\"descripcion\":\"").append(localidad.getDescripcion()).append("\"")
+                        .append("}");
+                    if (i < localidades.size() - 1) {
+                        json.append(",");
+                    }
+                }
+                json.append("]");
 
-	            response.getWriter().write(json.toString());
-	            return;
-	        }
+                response.getWriter().write(json.toString());
+                return;
+            }
 
-	        List<Provincia> provincias = provNeg.obtenerProvincias();
-	        request.setAttribute("provincias", provincias);
+            List<Provincia> provincias = provNeg.obtenerProvincias();
+            request.setAttribute("provincias", provincias);
 	        
 	      
 	        
@@ -103,20 +105,27 @@ public class ServletClientes extends HttpServlet {
 			int IdGuardado = 0;
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if (IdGuardado > 0) {
-			    cliente.setIdUsuario(IdGuardado);
-			    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-			    cliente.setCuil(request.getParameter("cuil"));
-			    cliente.setNombre(request.getParameter("nombre"));
-			    cliente.setApellido(request.getParameter("apellido"));
-			    cliente.setSexo(request.getParameter("sexo"));
-			    cliente.setNacionalidad(request.getParameter("nacionalidad"));
-			    cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
-			    cliente.setDireccion(request.getParameter("direccion"));
-			    cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
-			    cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
-			    cliente.setCorreo_electronico(request.getParameter("email"));
-			    cliente.setTelefono(request.getParameter("telefono"));
-			    cliente.setActivo(true);
+    Usuario usuarioGuardado = new Usuario();
+    usuarioGuardado.setId_usuario(IdGuardado);
+    cliente.setUsuario(usuarioGuardado);
+    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+    cliente.setCuil(request.getParameter("cuil"));
+    cliente.setNombre(request.getParameter("nombre"));
+    cliente.setApellido(request.getParameter("apellido"));
+    cliente.setSexo(request.getParameter("sexo"));
+    cliente.setNacionalidad(request.getParameter("nacionalidad"));
+    cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+    cliente.setDireccion(request.getParameter("direccion"));
+    String idLocalidadStr = request.getParameter("idLocalidad");
+    Localidad localidad = new Localidad();
+    localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+    cliente.setLocalidad(localidad);
+    Provincia provincia = new Provincia();
+    provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+    cliente.setProvincia(provincia);
+    cliente.setCorreo_electronico(request.getParameter("email"));
+    cliente.setTelefono(request.getParameter("telefono"));
+    cliente.setActivo(true);
 			    boolean estado= true;
 			    estado=clienteNeg.insertar(cliente);
 			    if (estado) {
@@ -177,9 +186,10 @@ public class ServletClientes extends HttpServlet {
             List<Provincia> provincias = provNeg.obtenerProvincias();
             request.setAttribute("provincias", provincias);
             if (clienteModificar != null) {
-                List<Localidad> localidades = locNeg.obtenerLocalidades(clienteModificar.getId_provincia());
+                Provincia provincia = clienteModificar.getProvincia();
+                List<Localidad> localidades = locNeg.obtenerLocalidades(provincia);
                 request.setAttribute("localidades", localidades);
-                Usuario usuarioModificar = usuarioNeg.obtenerUsuarioPorId(clienteModificar.getIdUsuario());
+                Usuario usuarioModificar = usuarioNeg.obtenerUsuarioPorId(clienteModificar.getUsuario().getId_usuario());
                 request.setAttribute("usuarioModificar", usuarioModificar);
             }
             request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
@@ -197,18 +207,25 @@ public class ServletClientes extends HttpServlet {
                 cliente.setNacionalidad(request.getParameter("nacionalidad"));
                 cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
                 cliente.setDireccion(request.getParameter("direccion"));
-                cliente.setId_localidad(Integer.parseInt(request.getParameter("idLocalidad")));
-                cliente.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+                String idLocalidadStr = request.getParameter("idLocalidad");
+                Localidad localidad = new Localidad();
+                localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+                cliente.setLocalidad(localidad);
+                Provincia provincia = new Provincia();
+                provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+                cliente.setProvincia(provincia);
                 cliente.setCorreo_electronico(request.getParameter("email"));
                 cliente.setTelefono(request.getParameter("telefono"));
-                cliente.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
+                Usuario usuarioActual = new Usuario();
+                usuarioActual.setId_usuario(Integer.parseInt(request.getParameter("idUsuario")));
+                cliente.setUsuario(usuarioActual);
                 cliente.setActivo(true);
 
                 boolean actualizado = clienteNeg.actualizarCliente(cliente);
 
                 String nuevoUsuario = request.getParameter("usuario");
                 if (actualizado && nuevoUsuario != null && !nuevoUsuario.isEmpty()) {
-                    Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getIdUsuario());
+                    Usuario usuario = usuarioNeg.obtenerUsuarioPorId(cliente.getUsuario().getId_usuario());
                     if (usuario != null && !nuevoUsuario.equals(usuario.getUsuario())) {
                         usuario.setUsuario(nuevoUsuario);
                         usuarioNeg.actualizarUsuario(usuario);

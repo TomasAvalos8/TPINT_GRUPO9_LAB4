@@ -1,0 +1,10 @@
+package Datos;
+
+import Dominio.Prestamo;
+import java.util.List;
+
+public interface PrestamoDao {
+    int insertar(Prestamo prestamo); 
+    boolean eliminarPrestamoPorSolicitud(int id);
+    Prestamo obtenerPorSolicitud(int idSolicitud);
+}

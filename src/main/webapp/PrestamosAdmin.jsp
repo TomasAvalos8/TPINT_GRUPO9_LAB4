@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="Dominio.SolicitudPrestamo"%>
+<%
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("InicioCliente.jsp");
+    return;
+}
+
+if(request.getAttribute("listaPrestamos") == null) {
+    response.sendRedirect("PrestamosAdminServlet");
+    return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,9 +55,9 @@
         </thead>
         <tbody>
         <% 
-            java.util.List<Dominio.SolicitudPrestamo> listaPrestamos = (java.util.List<Dominio.SolicitudPrestamo>) request.getAttribute("listaPrestamos");
+            java.util.List<SolicitudPrestamo> listaPrestamos = (java.util.List<SolicitudPrestamo>) request.getAttribute("listaPrestamos");
             if (listaPrestamos != null) {
-                for (Dominio.SolicitudPrestamo sp : listaPrestamos) { 
+                for (SolicitudPrestamo sp : listaPrestamos) { 
                     String rowClass = "";
                     String autorizacionText = "";
                     int autorizacion = sp.getAutorizacion();
@@ -56,9 +73,9 @@
         %>
             <tr class="<%= rowClass %>">
                 <td><%= sp.getId_solicitud() %></td>
-                <td><%= sp.getDni_cliente() %></td>
+                <td><%= sp.getCliente().getDni() %></td>
                 <td><%= sp.getImporte_solicitado() %></td>
-                <td><%= sp.getNumero_cuenta_deposito() %></td>
+                <td><%= sp.getCuentaDeposito().getId() %></td>
                 <td><%= sp.getCuotas() %></td>
                 <td><%= sp.getFecha_solicitud() %></td>
                 <td><%= autorizacionText %></td>
@@ -92,7 +109,7 @@
 </div>
 
 <%
-Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+
 if (tipoUsuarioId == null || tipoUsuarioId == 0) {
     response.sendRedirect("login.jsp");
     return;

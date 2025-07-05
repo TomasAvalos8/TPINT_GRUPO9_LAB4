@@ -11,16 +11,16 @@ public class Cliente {
 	private String nacionalidad ;
 	private LocalDate fecha_nacimiento;
 	private String direccion;
-	private int id_localidad;
-	private int id_provincia;
+	private Localidad localidad;
+	private Provincia provincia;
 	private String correo_electronico;
 	private String telefono;
-	private int IdUsuario;
+	private Usuario usuario;
 	private boolean activo;
 	
 	public Cliente(int dni, String cuil, String nombre, String apellido, String sexo, String nacionalidad,
-			LocalDate fecha_nacimiento, String direccion, int id_localidad, int id_provincia, String correo_electronico,
-			String telefono, int  IdUsuario, boolean activo) {
+			LocalDate fecha_nacimiento, String direccion, Localidad localidad, Provincia provincia, String correo_electronico,
+			String telefono, Usuario usuario, boolean activo) {
 		super();
 		this.dni = dni;
 		this.cuil = cuil;
@@ -30,11 +30,11 @@ public class Cliente {
 		this.nacionalidad = nacionalidad;
 		this.fecha_nacimiento = fecha_nacimiento;
 		this.direccion = direccion;
-		this.id_localidad = id_localidad;
-		this.id_provincia = id_provincia;
+		this.localidad = localidad;
+		this.provincia = provincia;
 		this.correo_electronico = correo_electronico;
 		this.telefono = telefono;
-		this.IdUsuario = IdUsuario;
+		this.usuario = usuario;
 		this.activo = activo;
 	}
 	
@@ -111,20 +111,20 @@ public class Cliente {
 		this.direccion = direccion;
 	}
 
-	public int getId_localidad() {
-		return id_localidad;
+	public Localidad getLocalidad() {
+		return localidad;
 	}
 
-	public void setId_localidad(int id_localidad) {
-		this.id_localidad = id_localidad;
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
 	}
 
-	public int getId_provincia() {
-		return id_provincia;
+	public Provincia getProvincia() {
+		return provincia;
 	}
 
-	public void setId_provincia(int id_provincia) {
-		this.id_provincia = id_provincia;
+	public void setProvincia(Provincia provincia) {
+		this.provincia = provincia;
 	}
 
 	public String getCorreo_electronico() {
@@ -143,12 +143,12 @@ public class Cliente {
 		this.telefono = telefono;
 	}
 
-	public int getIdUsuario() {
-		return IdUsuario;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(int IdUsuario) {
-		this.IdUsuario = IdUsuario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public boolean getActivo() {

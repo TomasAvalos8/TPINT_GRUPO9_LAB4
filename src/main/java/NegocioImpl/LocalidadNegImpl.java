@@ -13,7 +13,7 @@ public class LocalidadNegImpl implements LocalidadNeg {
 	LocalidadDao LDao= new LocalidadDaoImpl();
 
 	@Override
-	public List<Localidad> obtenerLocalidades(int provincia) {
+	public List<Localidad> obtenerLocalidades(Provincia provincia) {
 	
 		return LDao.obtenerLocalidadesPorProvincia(provincia);
 	}
