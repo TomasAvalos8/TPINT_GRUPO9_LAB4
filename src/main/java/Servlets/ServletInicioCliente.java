@@ -44,6 +44,7 @@ public class ServletInicioCliente extends HttpServlet {
                 request.setAttribute("cliente", cliente);
                 List<Cuenta> cuentas = cuentaNeg.obtenerCuentasPorDniCliente(cliente.getDni()); 
                 request.setAttribute("cuentas", cuentas);
+                session.setAttribute("cuentas", cuentas);
 
                 String cuentaSeleccionada = request.getParameter("cuentaSeleccionada");
                 int indiceCuentaSeleccionada = -1;

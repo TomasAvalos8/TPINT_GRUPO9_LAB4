@@ -6,6 +6,6 @@ import Dominio.Movimiento;
 
 public interface MovimientoDao {
 
-List<Movimiento> listarMovimientos();
+public List<Movimiento> listarMovimientosPorCuenta(int NroCuenta);
 	
 }

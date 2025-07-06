@@ -1,3 +1,7 @@
+<%@page import="Dominio.Movimiento"%>
+<%@page import="Dominio.Cuenta"%>
+<%@page import="java.util.List"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -26,15 +30,39 @@
 
 </style>
 </head>
+
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
-<% String usuario = (String)session.getAttribute("usuario"); %>
+<% String usuario = (String)session.getAttribute("usuario");%>
+
 <p class="userLoguedText">
   <i class="fas fa-user"></i> <%= usuario %>
 </p>
+
+
 <div class="formulariosWrapper listadoContainer ">
 
     <h2>Historial de movimientos</h2>
+<div>
+   <form method="post" action="ServletMovimientos">
+  <label for="cuenta">Cuenta:</label>
+  <select name="numeroCuenta" onchange="this.form.submit()">
+    <option value="">Seleccione una cuenta</option>
+    <%
+      List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentas");
+      if (cuentas != null) {
+        for (Cuenta c : cuentas) {
+    %>
+      <option value="<%= c.getId() %>">Cuenta Nº <%= c.getId() %></option>
+    <%
+        }
+      }
+    %>
+  </select>
+</form>
+
+
+  </div>
      <form class="formMovimiento" method="post" action=" ">
     	<fieldset>
         	<div>
@@ -51,46 +79,42 @@
 
     <div class="tablaMovimientoContainer ">
 
-        <table id="table_id" class="display">
+        <table id="tablaMov" class="display">
             <thead>
                 <tr>
                     <th>Fecha</th>
-                    <th>Concepto</th>
+                    <th>Numero cuenta</th>
+                    <th>Detalle</th>
                     <th>Tipo</th>
                     <th>Importe</th>
-                    <th>Comprobante</th>
                 </tr>
             	</thead>
-           	 	<tbody>
-                	<tr>
-                    	<td data-order="2024-12-15">15/12/2024</td>
-                    	<td>Transferencia recibida de Juan Perez</td>
-                    	<td><span class="badge ingreso">Ingreso</span></td>
-                    	<td data-order="25000.00">+$25,000.00</td>
-                    	<td><input type="submit" name="btnComprobante" value = "Comprobante"  /></td>
-                	</tr>
-                	<tr>
-                    	<td data-order="2024-12-13">13/12/2024</td>
-                    	<td>Deposito en efectivo</td>
-                    	<td><span class="badge ingreso">Ingreso</span></td>
-                    	<td data-order="15000.00">+$15,000.00</td>
-                    	<td></td>
-                	</tr>
-                	<tr>
-                    	<td data-order="2024-12-12">12/12/2024</td>
-                    	<td>Compra en comercio - SUPERMERCADO PLAZA VEA</td>
-                    	<td><span class="badge egreso">Egreso</span></td>
-                    	<td data-order="12350.75">-$12,350.75</td>
-                    	<td></td>
-                	</tr>
-               		<tr>
-                    	<td data-order= "10-01-2025">10/01/2025</td>
-                    	<td>Trasferencia a Martin Galmarini</td>
-                    	<td><span class="badge egreso">Egreso</span></td>
-                    	<td data-order="1000.00">-$1,000.00</td>
-                    	<td></td>
-                	</tr>
+           	 	<tbody><%
+           	 	List<Movimiento> ListaMovimientos = (List<Movimiento>)request.getAttribute("ListaMovimientos");
+                	if(ListaMovimientos != null && !ListaMovimientos.isEmpty()){
+                	for (Movimiento movimiento : ListaMovimientos){
+                	    String fechaFormateada = "";
+                        if (movimiento.getFecha() != null) {
+                            fechaFormateada = String.format("%02d/%02d/%d", 
+                                movimiento.getFecha().getDayOfMonth(),
+                                movimiento.getFecha().getMonthValue(),
+                                movimiento.getFecha().getYear());
+                        }
                 	
+                	
+                	
+                	%><tr>
+                	
+                	<td><%= fechaFormateada%></td>
+                	<td><%= movimiento.getNumeroCuenta()%></td>
+                	<td><%= movimiento.getDetalle()%></td>
+                	<td><%= movimiento.getTipoMovimiento().getDescripcion()%></td>
+                	<td><%= movimiento.getMonto()%></td>
+                	
+                	</tr><%
+                	}
+                	}
+                	%>
             	</tbody>
         	</table>
     </div>
@@ -107,16 +131,18 @@
 		
 <script type="text/javascript">
 	$(document).ready(function() {
-	    $('#table_id').DataTable({
-	        "language": {
-	            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+	    $('#tablaMov').DataTable({
+	        language: {
+	            url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json",
+	            emptyTable: "No se encontraron movimientos"
+	            
 	        },
-	        "columnDefs": [
+	        columnDefs: [
 	            { "type": "date-eu", "targets": 0 },
-	            { "type": "currency", "targets": 3 },
+	            { "type": "currency", "targets": 4 }
 	        ],
-	        "order": [[0, "desc"]],
-	        "responsive": true
+	        order: [[0, "desc"]],
+	        responsive: true
 	    });
 	});
 </script>

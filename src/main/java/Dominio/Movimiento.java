@@ -1,6 +1,7 @@
 package Dominio;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 
 public class Movimiento {
 	
@@ -9,12 +10,12 @@ public class Movimiento {
 	private TipoMovimiento tipoMovimiento;
 	private String detalle;
 	private float monto;
-	private Date fecha;
+	private LocalDate fecha;
 	
 	public Movimiento() {}
 	
 	public Movimiento(int idMovimiento, int numeroCuenta, TipoMovimiento tipoMovimiento, String detalle, float monto,
-			Date fecha) {
+			LocalDate fecha) {
 		super();
 		this.idMovimiento = idMovimiento;
 		this.numeroCuenta = numeroCuenta;
@@ -53,10 +54,10 @@ public class Movimiento {
 	public void setMonto(float monto) {
 		this.monto = monto;
 	}
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	
