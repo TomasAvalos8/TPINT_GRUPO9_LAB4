@@ -41,4 +41,9 @@ public class UsuarioNegImpl implements UsuarioNeg {
 	public boolean eliminarUsuario(int usuario) {
 		return usDao.eliminarUsuario(usuario);
 	}
+	
+	@Override
+	public boolean recuperarContraseña(String usuario, String dni, String nuevaContraseña) {
+	    return usDao.recuperarContraseña(usuario, dni, nuevaContraseña);
+	}
 }

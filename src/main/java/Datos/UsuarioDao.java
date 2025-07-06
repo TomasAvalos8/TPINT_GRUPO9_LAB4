@@ -12,4 +12,5 @@ public interface UsuarioDao {
 	public boolean actualizarUsuario(Usuario usuario);
 	public ArrayList<Usuario> listarUsuarios();
 	public boolean eliminarUsuario(int usuario);
+	boolean recuperarContraseña(String usuario, String dni, String nuevaContraseña);
 }
