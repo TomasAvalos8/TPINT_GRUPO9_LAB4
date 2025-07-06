@@ -115,7 +115,8 @@
     <div class="success-message"><%= request.getParameter("success") %></div>
 <% } %>
 
-<form action="RecuperarPasswordServlet" method="post"> 
+<form action="RecuperarPasswordServlet" method="post">
+    <input type="hidden" name="contexto" value="login">
     <h1>Recuperar Contraseña</h1>
     
     <label for="usuario">Usuario</label>
