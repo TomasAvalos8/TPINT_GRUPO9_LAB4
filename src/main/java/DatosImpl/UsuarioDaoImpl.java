@@ -13,7 +13,9 @@ import Dominio.Usuario;
 public class UsuarioDaoImpl implements UsuarioDao {
 	
 	private Conexion conexion;
-
+	 public UsuarioDaoImpl() {
+	        this.conexion = new Conexion();
+	    }
 	@Override
 	public boolean insertarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
@@ -218,6 +220,51 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		
 		return eliminado;
 	}
+	
+	@Override
+    public boolean recuperarContraseña(String usuario, String dni, String nuevaContraseña) {
+        Connection conn = null;
+        PreparedStatement psValidacion = null;
+        PreparedStatement psActualizacion = null;
+        ResultSet rs = null;
+        boolean actualizado = false;
+        
+        try {
+            conn = conexion.Open(); 
+            String validacionQuery = "SELECT u.id_usuario FROM Usuarios u " +
+                                   "INNER JOIN Cliente c ON u.id_usuario = c.id_usuario " +
+                                   "WHERE u.usuario = ? AND c.dni = ?";
+            
+            psValidacion = conn.prepareStatement(validacionQuery);
+            psValidacion.setString(1, usuario);
+            psValidacion.setString(2, dni);
+            rs = psValidacion.executeQuery();
+            
+            if (rs.next()) {
+                int idUsuario = rs.getInt("id_usuario");
+                
+                String updateQuery = "UPDATE Usuarios SET `contraseña` = ? WHERE id_usuario = ?";
+                psActualizacion = conn.prepareStatement(updateQuery);
+                psActualizacion.setString(1, nuevaContraseña);
+                psActualizacion.setInt(2, idUsuario);
+                
+                actualizado = psActualizacion.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en recuperarContraseña: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (psValidacion != null) psValidacion.close();
+                if (psActualizacion != null) psActualizacion.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return actualizado;
+    }
 
 }
 

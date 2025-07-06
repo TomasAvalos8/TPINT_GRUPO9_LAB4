@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Inicio de sesion</title>
+<title>Recuperar Contraseña</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -21,12 +21,13 @@
         border-radius: 10px;
         box-shadow: 0px 0px 10px #ccc;
         width: 300px;
-        margin-top: 10%;
+        margin-top: 5%;
     }
     
     h1 {
         margin-top: 0;
         color: #333;
+        margin-bottom: 20px;
     }
     
     label {
@@ -46,7 +47,7 @@
         border-radius: 4px;
     }
     
-    .btn-ingresar {
+    .btn-confirmar {
         width: 100%;
         padding: 12px;
         background-color: #4CAF50;
@@ -59,11 +60,11 @@
         display: block;
     }
     
-    .btn-ingresar:hover {
+    .btn-confirmar:hover {
         background-color: #45a049;
     }
     
-    .btn-recuperar {
+    .btn-volver {
         width: 100%;
         padding: 12px;
         background-color: #1e6f9f;
@@ -75,32 +76,64 @@
         display: block;
     }
     
-    .btn-recuperar:hover {
+    .btn-volver:hover {
         background-color: #1a5d85;
     }
     
     .error-message {
         color: red;
         margin-bottom: 15px;
+        padding: 10px;
+        background-color: #ffeeee;
+        border-radius: 4px;
+    }
+    
+    .success-message {
+        color: green;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #eeffee;
+        border-radius: 4px;
+    }
+    
+    .password-requirements {
+        font-size: 0.8em;
+        color: #666;
+        text-align: left;
+        margin-top: -10px;
+        margin-bottom: 15px;
     }
 </style>
 </head>
-<body class="login">
+<body class="recuperar">
 
 <% if (request.getParameter("error") != null) { %>
-    <p class="error-message">Usuario o contraseña incorrectos.</p>
+    <div class="error-message"><%= request.getParameter("error") %></div>
 <% } %>
 
-<form action="loginServlet" method="post">
-    <h1>Login</h1>
+<% if (request.getParameter("success") != null) { %>
+    <div class="success-message"><%= request.getParameter("success") %></div>
+<% } %>
+
+<form action="RecuperarPasswordServlet" method="post"> 
+    <h1>Recuperar Contraseña</h1>
+    
     <label for="usuario">Usuario</label>
     <input type="text" id="usuario" name="usuario" required>
+    
+    <label for="dni">DNI</label>
+    <input type="text" id="dni" name="dni" required minlength="7" maxlength="8" 
+           pattern="\d{7,8}" title="Ingrese un DNI válido (7 u 8 dígitos)">
+    
+  	<label for="pass">Nueva Contraseña</label>
+	<input type="password" id="pass" name="pass" required minlength="6">
+    <div class="password-requirements">Mínimo 6 caracteres</div>
+    
+    <label for="confirmpass">Confirmar Contraseña</label>
+	<input type="password" id="confirmpass" name="confirmpass" required>
 
-    <label for="contraseña">Contraseña</label>
-    <input type="password" id="pass" name="pass" required>
-
-    <input type="submit" value="Ingresar" class="btn-ingresar">
-    <button type="button" onclick="location.href='RecuperarPassword.jsp'" class="btn-recuperar">Recuperar contraseña</button>
+    <input type="submit" value="Confirmar" class="btn-confirmar">
+    <input type="button" value="Volver" onclick="location.href='Inicio.jsp'" class="btn-volver">
 </form>
 
 </body>

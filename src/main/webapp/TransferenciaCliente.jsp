@@ -19,10 +19,12 @@ body{
     line-height: 1.5;
     }
 </style>
-
+<%@ page import="Dominio.Cuenta" %>
+<%@ page import="java.util.List" %>
 <body>
 
 <jsp:include page="MenuCliente.html"></jsp:include>
+
 	<% String usuario = (String)session.getAttribute("usuario"); %>
 	<p class="userLoguedText">
 	  <i class="fas fa-user"></i> <%= usuario %>
@@ -38,24 +40,31 @@ body{
 					<p class="card-description">Transfiere dinero entre tus cuentas o a cuentas de terceros</p>
 				</div>	
 				<div class="mb-3">
+				
                    <label for="sourceAccount" class="form-label">Cuenta de Origen</label>
-                   		<!--
-                       <select class="form-select" id="selectCuenta" name="selectCuenta" required >
-                          <option value="">Selecciona tu cuenta de origen</option>
-                          <option value="1" >
-                              Caja de Ahorro - 0987654321 ($75.000,00)
-                          </option>
-                          <option value="2" >
-                                Cuenta USD - 1122334455 (USD $5.000,00)
-                          </option>
-                        </select> -->
-                        
+                       <label for="sourceAccount" class="form-label">Cuenta de Origen</label>
+                       <select class="form-select" id="selectCuenta" name="cuentaorigen" required>
+					    <option value="">Selecciona tu cuenta de origen</option>
+					    <% 
+					    	List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentas");
+					        if (cuentas != null) {
+					            for (Cuenta c : cuentas) {
+					    %>
+					        <option value="<%= c.getId() %>">
+					            <%= c.getTipo().getDescripcion() %> - <%= c.getCBU() %> ($<%= String.format("%.2f", c.getSaldo()) %>)
+					        </option>
+					    <%
+					            }
+					        }
+					    %>
+						</select>
+                        <!--
                         <div class="mb-3">
                         <label for="cuentaorigen" class="form-label">Cuenta Origen</label>
                         <input type="text" class="form-control" id="cuentaorigen" name="cuentaorigen" 
                                placeholder="Ingrese la cuenta de origen" maxlength="50" required>
                     	</div>
-                        
+                        -->
                         <div id="saldoInfo" class="saldo-info d-none">
                         <i class="bi bi-info-circle me-2"></i>
                         <span id="balanceText">Saldo disponible: <strong>$0</strong></span>
@@ -96,7 +105,7 @@ body{
                         <div class="input-group">
                             <span class="input-group-text">$</span>
                             <input type="number" class="form-control " id="cantidad" name="cantidad" 
-                                   placeholder="0.00" min="0" step="100" required>                         
+                                   placeholder="0.00" min="1" step="0.01" required>                         
                         </div>
                     </div>
                     <div class="mb-3">
@@ -124,5 +133,14 @@ body{
 
 <jsp:include page="Footer.html"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<% if (request.getAttribute("mensaje") != null) { %>
+    <script>
+        alert("<%= request.getAttribute("mensaje").toString().replace("\"", "\\\"") %>");
+    </script>
+<% } %>
+
+
+
 </body>
 </html>
