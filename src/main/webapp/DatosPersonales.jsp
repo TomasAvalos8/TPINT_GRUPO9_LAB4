@@ -44,6 +44,24 @@
   border-radius: 0 0 8px 8px;
 }
 
+
+.boton-restablecer {
+    background-color: #1a237e;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px 0;
+    width: 300px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-restablecer:hover {
+    background-color: #303f9f;
+}
+
 </style>
 
 </head>
@@ -111,7 +129,7 @@
 
 
 <div class="BotonRestablecer" style="width: 100%; text-align: center;">
-    <button class="boton-restablecer">Restablecer nueva contraseña</button>
+    <button class="boton-restablecer" onclick="location.href='RecuperarPasswordCliente.jsp'">Restablecer nueva contraseña</button>
 </div>
 
 
