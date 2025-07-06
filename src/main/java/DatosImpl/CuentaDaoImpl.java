@@ -318,4 +318,55 @@ public class CuentaDaoImpl implements CuentaDao {
             e.printStackTrace();
         }
     }
+
+	@Override
+	public List<Cuenta> obtenerCuentasPorIdUsuario(int idUsuario) {
+		List<Cuenta> lista = new ArrayList<>();
+	    Conexion cn = new Conexion();
+	    Connection conexion = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+
+	    String query = "SELECT c.id, c.dni_cliente, c.fecha_creacion, c.CBU, c.saldo, c.tipo_cuenta, " +
+	                   "tc.descripcion AS descripcion_tipo " +
+	                   "FROM Cuenta c " +
+	                   "INNER JOIN Cliente cl ON c.dni_cliente = cl.dni " +
+	                   "LEFT JOIN TipoCuenta tc ON c.tipo_cuenta = tc.id_tipo_cuenta " +
+	                   "WHERE cl.id_usuario = ? AND c.activo = 1";
+
+	    try {
+	        conexion = cn.Open();
+	        ps = conexion.prepareStatement(query);
+	        ps.setInt(1, idUsuario);
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Cuenta nCuenta = new Cuenta();
+	            nCuenta.setId(rs.getInt("id"));
+	            nCuenta.setDni(rs.getInt("dni_cliente"));
+	            nCuenta.setCBU(rs.getString("CBU"));
+	            nCuenta.setSaldo(rs.getFloat("saldo"));
+	            nCuenta.setCreacion(rs.getDate("fecha_creacion"));
+
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setIdTipoCuenta(rs.getInt("tipo_cuenta"));
+	            tipoCuenta.setDescripcion(rs.getString("descripcion_tipo"));
+
+	            nCuenta.setTipo(tipoCuenta);
+	            lista.add(nCuenta);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (ps != null) ps.close();
+	            if (conexion != null) conexion.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    return lista;
+	}
 }

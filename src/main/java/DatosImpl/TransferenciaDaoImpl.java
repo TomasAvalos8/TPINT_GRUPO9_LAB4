@@ -16,6 +16,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	    String sqlDebito = "UPDATE cuenta SET saldo = saldo - ? WHERE id = ?";
 	    String sqlCredito = "UPDATE cuenta SET saldo = saldo + ? WHERE id = ?";
 	    String sqlMovimiento = "INSERT INTO movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES (?, ?, ?, ?, ?)";
+	    String sqlTransferencia = "INSERT INTO transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES (?, ?, ?, ?)";
 
 	    Conexion cn = new Conexion();
 	    Connection conexion = cn.Open();
@@ -24,11 +25,12 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	    PreparedStatement stmtDebito = null;
 	    PreparedStatement stmtCredito = null;
 	    PreparedStatement stmtMovimiento = null;
+	    PreparedStatement stmtTransferencia = null;
 
 	    try {
 	        conexion.setAutoCommit(false);
 
-	        //Saldo
+	        // Verificar saldo
 	        stmtSaldo = conexion.prepareStatement(sqlSaldo);
 	        stmtSaldo.setInt(1, CuentaSaliente.getId());
 	        ResultSet rs = stmtSaldo.executeQuery();
@@ -36,19 +38,19 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	            return false;
 	        }
 
-	        //Debitar cuenta saliente
+	        // Debitar cuenta saliente
 	        stmtDebito = conexion.prepareStatement(sqlDebito);
 	        stmtDebito.setFloat(1, monto);
 	        stmtDebito.setInt(2, CuentaSaliente.getId());
 	        stmtDebito.executeUpdate();
 
-	        //Acreditar cuenta destino
+	        // Acreditar cuenta destino
 	        stmtCredito = conexion.prepareStatement(sqlCredito);
 	        stmtCredito.setFloat(1, monto);
 	        stmtCredito.setInt(2, CuentaDestino.getId());
 	        stmtCredito.executeUpdate();
 
-	        //Registrar movimiento débito (monto negativo)
+	        // Registrar movimiento débito (monto negativo)
 	        stmtMovimiento = conexion.prepareStatement(sqlMovimiento);
 	        stmtMovimiento.setInt(1, CuentaSaliente.getId());
 	        stmtMovimiento.setInt(2, 1); // 1 = Débito
@@ -57,7 +59,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        stmtMovimiento.setDate(5, new java.sql.Date(fecha.getTime()));
 	        stmtMovimiento.executeUpdate();
 
-	        //Registrar movimiento crédito (monto positivo)
+	        // Registrar movimiento crédito (monto positivo)
 	        stmtMovimiento.setInt(1, CuentaDestino.getId());
 	        stmtMovimiento.setInt(2, 2); // 2 = Crédito
 	        stmtMovimiento.setString(3, "Transferencia desde cuenta " + CuentaSaliente.getId());
@@ -65,7 +67,14 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        stmtMovimiento.setDate(5, new java.sql.Date(fecha.getTime()));
 	        stmtMovimiento.executeUpdate();
 
-	        //Confirmar transacción
+	        // Insertar en tabla transferencias
+	        stmtTransferencia = conexion.prepareStatement(sqlTransferencia);
+	        stmtTransferencia.setInt(1, CuentaSaliente.getId());
+	        stmtTransferencia.setInt(2, CuentaDestino.getId());
+	        stmtTransferencia.setFloat(3, monto);
+	        stmtTransferencia.setDate(4, new java.sql.Date(fecha.getTime()));
+	        stmtTransferencia.executeUpdate();
+
 	        conexion.commit();
 	        return true;
 
@@ -75,9 +84,11 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        } catch (SQLException ex) {
 	            ex.printStackTrace();
 	        }
+	        e.printStackTrace();
 	        return false;
 	    } finally {
 	        try {
+	            if (stmtTransferencia != null) stmtTransferencia.close();
 	            if (stmtMovimiento != null) stmtMovimiento.close();
 	            if (stmtCredito != null) stmtCredito.close();
 	            if (stmtDebito != null) stmtDebito.close();

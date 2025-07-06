@@ -57,4 +57,9 @@ public class CuentaNegImpl implements CuentaNeg {
 	public void depositarEnCuenta(int idCuenta, double monto) {
 		cuentadao.depositarEnCuenta(idCuenta, monto);
 	}
+
+	@Override
+	public List<Cuenta> obtenerCuentasPorIdUsuario(int idUsuario) {
+		return cuentadao.obtenerCuentasPorIdUsuario(idUsuario);
+	}
 }

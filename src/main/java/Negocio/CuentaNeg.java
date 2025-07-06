@@ -12,6 +12,7 @@ public interface CuentaNeg {
 	public int obtenerSiguienteIdCuenta();
 	
 	public List<Cuenta> obtenerCuentasPorTipo(int idTipoCuenta);
+	public List<Cuenta> obtenerCuentasPorIdUsuario(int idUsuario);
 	List<Cuenta> obtenerCuentasPorDniCliente(int dniCliente);
 	void depositarEnCuenta(int idCuenta, double monto);
 }
