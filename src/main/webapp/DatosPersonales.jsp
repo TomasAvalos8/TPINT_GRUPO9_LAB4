@@ -9,58 +9,94 @@
 <link rel="stylesheet" type="text/css" href="estilos/estilosCliente.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
+body {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.Titulo {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.userLoguedText {
+  text-align: right;
+  padding: 15px 30px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
 .ContenedorPersonal {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 20px auto;
   max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 20px;
 }
 
 .ContenedorPersonal > div {
-  width: 45%;
-  margin: 15px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  width: 280px;
+  transition: transform 0.2s ease;
 }
 
+.ContenedorPersonal > div:hover {
+  transform: translateY(-5px);
+}
 
 .ContenedorPersonal h3:first-child {
-  background-color: #1a237e;
+  background-color: #3949ab;
   color: white;
-  padding: 10px;
+  padding: 12px;
+  border-radius: 16px 16px 0 0;
   margin: 0;
-  border-radius: 8px 8px 0 0;
   text-align: center;
+  font-size: 1rem;
 }
-
 
 .ContenedorPersonal h3:last-child {
-  background-color: white;
-  padding: 10px;
+  padding: 16px;
   margin: 0;
-  font-weight: bold;
-  border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #2c3e50;
+  border-radius: 0 0 16px 16px;
+  background-color: #f9f9f9;
 }
 
+.BotonRestablecer {
+  width: 100%;
+  text-align: center;
+  margin: 30px 0;
+}
 
 .boton-restablecer {
-    background-color: #1a237e;
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 20px 0;
-    width: 300px;
-    transition: background-color 0.3s ease;
+  background-color: #3949ab;
+  color: white;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(57, 73, 171, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 .boton-restablecer:hover {
-    background-color: #303f9f;
+  background-color: #0f24ad;
 }
+
 
 </style>
 
