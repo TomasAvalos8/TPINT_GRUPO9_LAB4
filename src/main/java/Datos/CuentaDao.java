@@ -16,4 +16,6 @@ public interface CuentaDao {
     public List<Cuenta> obtenerCuentasPorDni(int dni);
     public Cuenta obtenerCuentaPorId(int id);
     public void depositarEnCuenta(int idCuenta, double monto);
+    
+    public Cuenta obtenerCuentaPorCBU(String cbu);
 }

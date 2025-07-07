@@ -6,6 +6,6 @@ import Dominio.Cuenta;
 
 public interface TransferenciaDao {
 	
-	boolean Transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha);
+	public int transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha);
 
 }

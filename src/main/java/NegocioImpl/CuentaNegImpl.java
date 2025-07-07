@@ -62,4 +62,9 @@ public class CuentaNegImpl implements CuentaNeg {
 	public List<Cuenta> obtenerCuentasPorIdUsuario(int idUsuario) {
 		return cuentadao.obtenerCuentasPorIdUsuario(idUsuario);
 	}
+
+	@Override
+	public Cuenta obtenerCuentaPorCBU(String cbu) {
+		return cuentadao.obtenerCuentaPorCBU(cbu);
+	}
 }
