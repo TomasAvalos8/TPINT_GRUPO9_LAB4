@@ -13,5 +13,9 @@ public class MovimientoNegImpl implements MovimientoNeg {
 		public List<Movimiento> listarMovimientosPorCuenta(int NroCuenta) {
 			return mDao.listarMovimientosPorCuenta(NroCuenta);
 	}
+		@Override
+		public void insertarMovimiento(Movimiento mov) {
+			mDao.insertarMovimiento(mov);
+		}
 
 }

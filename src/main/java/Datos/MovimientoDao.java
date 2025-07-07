@@ -7,5 +7,7 @@ import Dominio.Movimiento;
 public interface MovimientoDao {
 
 public List<Movimiento> listarMovimientosPorCuenta(int NroCuenta);
+
+public void insertarMovimiento(Movimiento mov);
 	
 }

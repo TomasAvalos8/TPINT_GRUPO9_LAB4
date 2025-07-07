@@ -6,4 +6,5 @@ import Dominio.Movimiento;
 public interface MovimientoNeg {
 
 	public List<Movimiento> listarMovimientosPorCuenta(int NroCuenta);
+	public void insertarMovimiento(Movimiento mov);
 }

@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,10 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Dominio.Cuenta;
+import Dominio.Movimiento;
+import Dominio.TipoMovimiento;
 import Negocio.TransferenciaNeg;
 import NegocioImpl.TransferenciaNegImpl;
 import Negocio.CuentaNeg;
+import Negocio.MovimientoNeg;
 import NegocioImpl.CuentaNegImpl;
+import NegocioImpl.MovimientoNegImpl;
 
 /**
  * Servlet implementation class TransferenciaServlet
@@ -94,8 +99,19 @@ public class TransferenciaServlet extends HttpServlet {
 
 	        // Llamar al método Transferir
 	        TransferenciaNeg negocio = new TransferenciaNegImpl();
+	        MovimientoNeg movNeg = new MovimientoNegImpl();
 	        boolean exito = negocio.transferirCuenta(cuentaSaliente, cuentaDestino, monto, fecha);
-
+	        
+	        Movimiento mov=new Movimiento();
+	        mov.setNumeroCuenta(idCuentaSaliente);
+	        mov.setFecha(LocalDate.now());
+	        mov.setMonto(-monto);
+	        TipoMovimiento tm = new TipoMovimiento();
+	        tm.setIdTipoMovimiento(4);
+	        mov.setTipoMovimiento(tm);
+	        mov.setDetalle("Transferencia enviada a cuenta "+idCuentaDestino);
+	        movNeg.insertarMovimiento(mov);
+	        
 	        // Resultado y redirección
 	        if (exito) {
 	            request.setAttribute("mensaje", "Transferencia realizada con éxito.");

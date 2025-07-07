@@ -69,6 +69,37 @@ public class MovimientoDaoImpl implements MovimientoDao{
 	    return lista;
 	}
 
+	@Override
+	public void insertarMovimiento(Movimiento movimiento) {
+		  Conexion cn = new Conexion();
+		    Connection con = cn.Open();
+		    PreparedStatement ps = null;
+
+		    try {
+		        String sql = "INSERT INTO Movimiento (numero_cuenta, detalle, monto, fecha, id_tipo_movimiento) " +
+		                     "VALUES (?, ?, ?, ?, ?)";
+		        ps = con.prepareStatement(sql);
+		        ps.setInt(1, movimiento.getNumeroCuenta());
+		        ps.setString(2, movimiento.getDetalle());
+		        ps.setFloat(3, movimiento.getMonto());
+		        ps.setDate(4, java.sql.Date.valueOf(movimiento.getFecha()));
+		        ps.setInt(5, movimiento.getTipoMovimiento().getIdTipoMovimiento());
+
+		        ps.executeUpdate();
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (ps != null) ps.close();
+		            if (con != null) con.close();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        }
+		
+	}
+
 
 
 }
