@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import DatosImpl.UsuarioDaoImpl;
 
@@ -17,42 +18,66 @@ public class RecuperarPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-    	 String usuario = request.getParameter("usuario");
-    	 String dni = request.getParameter("dni");
-    	 String nuevaContraseña = request.getParameter("pass"); 
-    	 String confirmarContraseña = request.getParameter("confirmpass"); 
+        HttpSession session = request.getSession();
+        String contexto = request.getParameter("contexto");
+        String usuario = request.getParameter("usuario");
+        String dni = request.getParameter("dni");
+        String nuevaContraseña = request.getParameter("pass");
+        String confirmarContraseña = request.getParameter("confirmpass");
+
         
-        if (usuario == null || dni == null || nuevaContraseña == null || confirmarContraseña == null) {
-            response.sendRedirect("RecuperarPassword.jsp?error=Datos incompletos");
+        if (!validarContraseñas(nuevaContraseña, confirmarContraseña)) {
+            redirigirConError(response, contexto, "Las contraseñas no coinciden o no cumplen los requisitos");
             return;
         }
-        
-        usuario = usuario.trim();
-        dni = dni.trim();
-        nuevaContraseña = nuevaContraseña.trim();
-        confirmarContraseña = confirmarContraseña.trim();
-        
-        if (nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty()) {
-            response.sendRedirect("RecuperarPassword.jsp?error=Las contraseñas no pueden estar vacías");
-            return;
+
+        try {
+            boolean actualizado;
+            if ("perfil".equals(contexto)) {
+            	 String usuarioSesion = (String) session.getAttribute("usuario");
+                 actualizado = usuarioDao.recuperarContraseñaCliente(usuarioSesion, nuevaContraseña);
+            } else {
+                if (!validarCamposLogin(usuario, dni)) {
+                    redirigirConError(response, contexto, "Usuario y DNI son requeridos");
+                    return;
+                }
+                actualizado = usuarioDao.recuperarContraseña(usuario, dni, nuevaContraseña);
+            }
+
+            if (actualizado) {
+                redirigirConExito(response, contexto);
+            } else {
+                String mensajeError = "perfil".equals(contexto) ? 
+                    "Error al actualizar contraseña" : "Usuario o DNI incorrectos";
+                redirigirConError(response, contexto, mensajeError);
+            }
+        } catch (Exception e) {
+            redirigirConError(response, contexto, "Error en el servidor");
         }
-        
-        if (!nuevaContraseña.equals(confirmarContraseña)) {
-            response.sendRedirect("RecuperarPassword.jsp?error=Las contraseñas no coinciden");
-            return;
-        }
-        
-        if (nuevaContraseña.length() < 6) {
-            response.sendRedirect("RecuperarPassword.jsp?error=La contraseña debe tener al menos 6 caracteres");
-            return;
-        }
-        
-        boolean actualizado = usuarioDao.recuperarContraseña(usuario, dni, nuevaContraseña);
-        
-        if (actualizado) {
-            response.sendRedirect("Inicio.jsp?success=Contraseña actualizada correctamente");
-        } else {
-            response.sendRedirect("RecuperarPassword.jsp?error=Usuario o DNI incorrectos");
-        }
+    }
+
+    private boolean validarContraseñas(String pass, String confirmPass) {
+        return pass != null && confirmPass != null &&
+               pass.equals(confirmPass) && 
+               pass.length() >= 6;
+    }
+
+    private boolean validarCamposLogin(String usuario, String dni) {
+        return usuario != null && !usuario.trim().isEmpty() &&
+               dni != null && !dni.trim().isEmpty();
+    }
+
+    private void redirigirConError(HttpServletResponse response, String contexto, String error) 
+            throws IOException {
+        String pagina = "perfil".equals(contexto) ? 
+            "RecuperarPasswordCliente.jsp" : "RecuperarPassword.jsp";
+        response.sendRedirect(pagina + "?error=" + java.net.URLEncoder.encode(error, "UTF-8"));
+    }
+
+    private void redirigirConExito(HttpServletResponse response, String contexto) 
+            throws IOException {
+        String pagina = "perfil".equals(contexto) ? 
+            "DatosPersonales.jsp" : "Inicio.jsp";
+        response.sendRedirect(pagina + "?success=Contraseña actualizada correctamente");
     }
 }

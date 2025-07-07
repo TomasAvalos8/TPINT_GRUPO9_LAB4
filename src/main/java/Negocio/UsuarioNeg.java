@@ -12,4 +12,5 @@ public interface UsuarioNeg {
 	public ArrayList<Usuario> listarUsuarios();
 	public boolean eliminarUsuario(int usuario);
 	boolean recuperarContraseña(String usuario, String dni, String nuevaContraseña);
+	boolean recuperarContraseñaCliente(String usuario, String NuevaContraseña);
 }
