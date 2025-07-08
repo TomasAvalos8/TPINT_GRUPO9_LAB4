@@ -47,6 +47,11 @@ public class loginServlet extends HttpServlet {
 	        UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
 	        Usuario usuario = usuarioDao.login(user, pass);
 	        
+	        if (usuario == null) {
+	            response.sendRedirect("Inicio.jsp?error=Usuario o contraseña incorrectos");
+	            return;
+	        }
+	        
 	        ClienteDaoImpl clienteDao = new ClienteDaoImpl();
 	        Cliente cliente = clienteDao.obtenerClienteConLocalidadProvincia(usuario.getId_usuario());
 	        request.getSession().setAttribute("clienteLogueado", cliente);

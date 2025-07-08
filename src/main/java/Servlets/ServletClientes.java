@@ -131,6 +131,7 @@ public class ServletClientes extends HttpServlet {
 			    try {
                     estado = clienteNeg.insertar(cliente);
 			    } catch (Excepciones.ClienteYaExisteException e) {
+                    usuarioNeg.eliminarUsuario(IdGuardado); 
                     request.setAttribute("mensajeServlet", e.getMessage());
                     List<Cliente> listaClientes = clienteNeg.listarClientes();
                     request.setAttribute("listaClientes", listaClientes);
@@ -149,6 +150,7 @@ public class ServletClientes extends HttpServlet {
                     List<Provincia> provincias = provNeg.obtenerProvincias();
                     request.setAttribute("provincias", provincias);
                 } else {
+                    usuarioNeg.eliminarUsuario(IdGuardado); 
                     request.setAttribute("mensajeServlet", "Error al registrar el cliente.");
                 }
 			} else {
