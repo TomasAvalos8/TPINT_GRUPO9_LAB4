@@ -48,11 +48,36 @@ public class ServletMovimientos extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String nroCuentaParam = request.getParameter("numeroCuenta");
+		  String fechaDesde = request.getParameter("fechaDesde");
+		    String fechaHasta = request.getParameter("fechaHasta");
+		    
 		    if (nroCuentaParam != null && !nroCuentaParam.isEmpty()) {
-		        int nroCuenta = Integer.parseInt(nroCuentaParam);
-		        List<Movimiento> ListaMovimientos = movimiento.listarMovimientosPorCuenta(nroCuenta);
+		    	int nroCuenta = Integer.parseInt(nroCuentaParam);
+		    	
+		    	List<Movimiento> ListaMovimientos;	
+		    	
+		    	if (request.getParameter("btnLimpiar") != null) {
+		            ListaMovimientos = movimiento.listarMovimientosPorCuenta(nroCuenta);
+		            fechaDesde = "";
+		            fechaHasta = "";
+		        }
+		    	
+		    	if (request.getParameter("btnFiltrar") != null && fechaDesde != null && fechaHasta != null &&
+		                !fechaDesde.isEmpty() && !fechaHasta.isEmpty()) {
+		                ListaMovimientos = movimiento.listarMovimientosPorCuentaYFechas(nroCuenta, fechaDesde, fechaHasta);
+		            } else {
+		                
+		                ListaMovimientos = movimiento.listarMovimientosPorCuenta(nroCuenta);
+		            }
+		    	
 		        request.setAttribute("ListaMovimientos", ListaMovimientos);
+		        request.setAttribute("cuentaSeleccionada", nroCuentaParam);
+		        request.setAttribute("fechaDesde", fechaDesde);
+		        request.setAttribute("fechaHasta", fechaHasta);
+
 		    }
+		    List<Cuenta>cuentas=(List<Cuenta>)request.getSession().getAttribute("cuentas");
+		    if(cuentas!=null)request.setAttribute("cuentas", cuentas);
 		request.getRequestDispatcher("HistorialMovimientosCliente.jsp").forward(request, response);
 	}
 

@@ -17,5 +17,9 @@ public class MovimientoNegImpl implements MovimientoNeg {
 		public void insertarMovimiento(Movimiento mov) {
 			mDao.insertarMovimiento(mov);
 		}
+		@Override
+		public List<Movimiento> listarMovimientosPorCuentaYFechas(int nroCuenta, String fechaDesde, String fechaHasta) {
+			return mDao.listarMovimientosPorCuentaYFechas(nroCuenta, fechaDesde, fechaHasta);
+		}
 
 }

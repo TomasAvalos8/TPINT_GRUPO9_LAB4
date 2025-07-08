@@ -102,16 +102,6 @@ public class TransferenciaServlet extends HttpServlet {
             TransferenciaNeg negocio = new TransferenciaNegImpl();
             int resultado = negocio.transferirCuenta(cuentaSaliente, cuentaDestinoObj, monto, fecha);
 
-            MovimientoNeg movNeg = new MovimientoNegImpl();
-            Movimiento mov = new Movimiento();
-            mov.setNumeroCuenta(cuentaSaliente.getId());
-            mov.setFecha(LocalDate.now());
-            mov.setMonto(-monto);
-            TipoMovimiento tm = new TipoMovimiento();
-            tm.setIdTipoMovimiento(4);
-            mov.setTipoMovimiento(tm);
-            mov.setDetalle("Transferencia enviada a cuenta " + cuentaDestinoObj.getCBU());
-            movNeg.insertarMovimiento(mov);
 
             switch (resultado) {
                 case 0:
