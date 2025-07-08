@@ -41,7 +41,6 @@ body{
 				</div>	
 				<div class="mb-3">
 				
-                   <label for="sourceAccount" class="form-label">Cuenta de Origen</label>
                        <label for="sourceAccount" class="form-label">Cuenta de Origen</label>
                        <select class="form-select" id="selectCuenta" name="cuentaorigen" required>
 					    <option value="">Selecciona tu cuenta de origen</option>
@@ -50,21 +49,15 @@ body{
 					        if (cuentas != null) {
 					            for (Cuenta c : cuentas) {
 					    %>
-					        <option value="<%= c.getId() %>">
-					            <%= c.getTipo().getDescripcion() %> - <%= c.getCBU() %> ($<%= String.format("%.2f", c.getSaldo()) %>)
+					        <option value="<%= c.getCBU() %>">
+					            <%= c.getTipo().getDescripcion() %> - CBU <%= c.getCBU() %> ($<%= String.format("%.2f", c.getSaldo()) %>)
 					        </option>
 					    <%
 					            }
 					        }
 					    %>
 						</select>
-                        <!--
-                        <div class="mb-3">
-                        <label for="cuentaorigen" class="form-label">Cuenta Origen</label>
-                        <input type="text" class="form-control" id="cuentaorigen" name="cuentaorigen" 
-                               placeholder="Ingrese la cuenta de origen" maxlength="50" required>
-                    	</div>
-                        -->
+                        
                         <div id="saldoInfo" class="saldo-info d-none">
                         <i class="bi bi-info-circle me-2"></i>
                         <span id="balanceText">Saldo disponible: <strong>$0</strong></span>
@@ -97,8 +90,8 @@ body{
                     </div>
                     <div class="mb-3">
                         <label for="cuentadestino" class="form-label">Cuenta</label>
-                        <input type="text" class="form-control" id="cuentadestino" name="cuentadestino" 
-                               placeholder="Ingrese la cuenta de destino" maxlength="50" required>
+                        <input type="text" inputmode="numeric" pattern="\d+" maxlength="30" class="form-control" id="cuentadestino" name="cuentadestino"
+       					placeholder="Ingrese el CBU de destino" required title="Solo se permiten números (sin espacios ni símbolos)">
                     </div>
                     <div class="mb-3">
                         <label for="cantidad" class="form-label">Importe</label>

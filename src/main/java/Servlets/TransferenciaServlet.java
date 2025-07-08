@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Datos.CuentaDao;
+import DatosImpl.Conexion;
+import DatosImpl.CuentaDaoImpl;
 import Dominio.Cuenta;
 import Dominio.Movimiento;
 import Dominio.TipoMovimiento;
@@ -44,7 +48,6 @@ public class TransferenciaServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         
         if (session == null || session.getAttribute("id_usuario") == null) {
-            // No hay sesión activa o no está seteado id_usuario, redirigir al login
             response.sendRedirect("Login.jsp");
             return;
         }
@@ -57,17 +60,11 @@ public class TransferenciaServlet extends HttpServlet {
 
             if (cuentas == null || cuentas.isEmpty()) {
                 request.setAttribute("mensaje", "No se encontraron cuentas para el usuario.");
-            } else {
-                System.out.println("Cuentas encontradas: " + cuentas.size());
-                for (Cuenta c : cuentas) {
-                    System.out.println("Cuenta ID: " + c.getId() + ", CBU: " + c.getCBU());
-                }
             }
-            
+
             request.setAttribute("cuentas", cuentas);
             request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("mensaje", "Error al cargar las cuentas: " + e.getMessage());
             request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
         }
@@ -76,55 +73,63 @@ public class TransferenciaServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		try {
-			
-			
-	        // Obtener parámetros según nombres del JSP
-	        int idCuentaSaliente = Integer.parseInt(request.getParameter("cuentaorigen"));
-	        int idCuentaDestino = Integer.parseInt(request.getParameter("cuentadestino"));
-	        float monto = Float.parseFloat(request.getParameter("cantidad"));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String cuentaOrigen = request.getParameter("cuentaorigen");
+            String cuentaDestino = request.getParameter("cuentadestino");
+            String cantidadStr = request.getParameter("cantidad");
 
-	        // Fecha actual del sistema
-	        java.util.Date fechaUtil = new java.util.Date();
-	        java.sql.Date fecha = new java.sql.Date(fechaUtil.getTime());
 
-	        
-	        // Crear objetos Cuenta
-	        Cuenta cuentaSaliente = new Cuenta();
-	        cuentaSaliente.setId(idCuentaSaliente);
-	        Cuenta cuentaDestino = new Cuenta();
-	        cuentaDestino.setId(idCuentaDestino);
+            cantidadStr = cantidadStr.replace(',', '.');
+            float monto = Float.parseFloat(cantidadStr);
 
-	        // Llamar al método Transferir
-	        TransferenciaNeg negocio = new TransferenciaNegImpl();
-	        MovimientoNeg movNeg = new MovimientoNegImpl();
-	        boolean exito = negocio.transferirCuenta(cuentaSaliente, cuentaDestino, monto, fecha);
-	        
-	        Movimiento mov=new Movimiento();
-	        mov.setNumeroCuenta(idCuentaSaliente);
-	        mov.setFecha(LocalDate.now());
-	        mov.setMonto(-monto);
-	        TipoMovimiento tm = new TipoMovimiento();
-	        tm.setIdTipoMovimiento(4);
-	        mov.setTipoMovimiento(tm);
-	        mov.setDetalle("Transferencia enviada a cuenta "+idCuentaDestino);
-	        movNeg.insertarMovimiento(mov);
-	        
-	        // Resultado y redirección
-	        if (exito) {
-	            request.setAttribute("mensaje", "Transferencia realizada con éxito.");
-	        } else {
-	            request.setAttribute("mensaje", "Error: saldo insuficiente o error en la transferencia.");
-	        }
-	        request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
+            java.util.Date fechaUtil = new java.util.Date();
+            java.sql.Date fecha = new java.sql.Date(fechaUtil.getTime());
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        request.setAttribute("mensaje", "Error en la operación: " + e.getMessage());
-	        request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
-	    }
-	}
+            Conexion cn = new Conexion();
+            Connection conexion = cn.Open();
+
+            CuentaDao cuentaDAO = new CuentaDaoImpl();
+            Cuenta cuentaSaliente = cuentaDAO.obtenerCuentaPorCBU(cuentaOrigen);
+            Cuenta cuentaDestinoObj = cuentaDAO.obtenerCuentaPorCBU(cuentaDestino);
+
+            if (cuentaSaliente == null) throw new Exception("Cuenta origen no encontrada.");
+            if (cuentaDestinoObj == null) throw new Exception("Cuenta destino no encontrada.");
+
+            conexion.close();
+
+            //transferencia
+            TransferenciaNeg negocio = new TransferenciaNegImpl();
+            int resultado = negocio.transferirCuenta(cuentaSaliente, cuentaDestinoObj, monto, fecha);
+
+
+            switch (resultado) {
+                case 0:
+                    request.setAttribute("mensaje", "Transferencia realizada con éxito.");
+                    break;
+                case 1:
+                    request.setAttribute("mensaje", "Error: saldo insuficiente.");
+                    break;
+                case 2:
+                    request.setAttribute("mensaje", "Error: las cuentas no pueden ser iguales.");
+                    break;
+                case 3:
+                    request.setAttribute("mensaje", "Error: una de las cuentas está inactiva.");
+                    break;
+                default:
+                    request.setAttribute("mensaje", "Error al realizar la transferencia.");
+                    break;
+            }
+
+            request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error en la operación: " + e.getMessage());
+            request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
+        }
+    }
+
+
 
 }

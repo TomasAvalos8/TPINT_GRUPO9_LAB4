@@ -15,4 +15,6 @@ public interface CuentaNeg {
 	public List<Cuenta> obtenerCuentasPorIdUsuario(int idUsuario);
 	List<Cuenta> obtenerCuentasPorDniCliente(int dniCliente);
 	void depositarEnCuenta(int idCuenta, double monto);
+	
+	public Cuenta obtenerCuentaPorCBU(String cbu); 
 }

@@ -33,7 +33,11 @@
 
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
-<% String usuario = (String)session.getAttribute("usuario");%>
+<% String usuario = (String)session.getAttribute("usuario");
+  String cuentaSeleccionada = (String) request.getAttribute("cuentaSeleccionada");
+  String fechaDesde = (String)request.getAttribute("fechaDesde");
+  String fechaHasta = (String)request.getAttribute("fechaHasta");
+%>
 
 <p class="userLoguedText">
   <i class="fas fa-user"></i> <%= usuario %>
@@ -52,8 +56,9 @@
       List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentas");
       if (cuentas != null) {
         for (Cuenta c : cuentas) {
+    String selected = (cuentaSeleccionada != null && cuentaSeleccionada.equals(String.valueOf(c.getId()))) ? "selected" : "";
     %>
-      <option value="<%= c.getId() %>">Cuenta Nº <%= c.getId() %></option>
+      <option value="<%= c.getId() %>" <%= selected %>>Cuenta Nº <%= c.getId() %></option>
     <%
         }
       }
@@ -63,15 +68,17 @@
 
 
   </div>
-     <form class="formMovimiento" method="post" action=" ">
+     <form class="formMovimiento" method="post" action="ServletMovimientos ">
     	<fieldset>
         	<div>
-            	 Fecha desde: 
-            	<input type="date" name="startDate" required>
-           	 	 Fecha hasta:
-            	<input type="date" name="endDate" required>
+            	<label for="fechaDesde">Fecha desde:</label>
+            	<input type="date" name="fechaDesde" value="<%= fechaDesde != null ? fechaDesde : "" %>">
+            	<label for="fechaHasta">Fecha hasta:</label>
+            	<input type="date" name="fechaHasta" value="<%= fechaHasta != null ? fechaHasta : "" %>">
+            	<input type="hidden" name="numeroCuenta" value="<%= cuentaSeleccionada != null ? cuentaSeleccionada : "" %>">
             	
-            	<button class="btnGenerar" > <i class="bi bi-arrow-counterclockwise"></i>   Limpiar</button>
+            	<button name="btnFiltrar" class="btnGenerar" style="background-color:blue;" > <i class="bi bi-funnel"></i>Filtrar</button>
+            	<button name="btnLimpiar" class="btnGenerar" > <i class="bi bi-arrow-counterclockwise"></i>   Limpiar</button>
         	</div>
 
     	</fieldset>
