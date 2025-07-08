@@ -339,10 +339,123 @@ INSERT INTO Cuenta (id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo, ac
 
 
 
-INSERT INTO SolicitudPrestamos (dni_cliente, importe_solicitado, importe_a_pagar, numero_cuenta_deposito, cuotas, fecha_solicitud, autorizacion, estado) VALUES
-(10000001, 100000.00, 120000.00, 1, 12, CURDATE(), 1, 1),
-(10000004, 50000.00, 60000.00, 5, 6, CURDATE(), 0, 0),
-(10000007, 15000.00, 18000.00, 10, 3, CURDATE(), 1, 1),
-(10000010, 20000.00, 24000.00, 13, 12, CURDATE(), 1, 1),
-(10000014, 30000.00, 34500.00, 18, 6, CURDATE(), 0, 0);
+INSERT INTO SolicitudPrestamos (
+    id_solicitud, dni_cliente, importe_solicitado, importe_a_pagar, numero_cuenta_deposito,
+    cuotas, fecha_solicitud, autorizacion, estado
+) VALUES
+(1, 10000001, 100000.00, 120000.00, 1, 12, CURDATE(), 2, 1),
+(2, 10000004, 50000.00, 60000.00, 5, 6, CURDATE(), 0, 0),
+(3, 10000007, 15000.00, 18000.00, 10, 3, CURDATE(), 2, 1),
+(4, 10000010, 20000.00, 24000.00, 13, 12, CURDATE(), 2, 1),
+(5, 10000014, 30000.00, 34500.00, 18, 6, CURDATE(), 0, 0);  
+
+
+INSERT INTO Prestamo (
+    id_prestamo, id_solicitud, dni_cliente, numero_cuenta,
+    fecha_alta, cuotas, importe_pagar_por_mes, plazo_pago_meses,
+    importe_solicitado, importe_pagar_intereses, activo
+) VALUES
+(1, 1, 10000001, 1, CURDATE(), 12, 10000.00, 12, 100000.00, 20000.00, 1),
+(2, 3, 10000007, 10, CURDATE(), 3, 6000.00, 3, 15000.00, 3000.00, 1),
+(3, 4, 10000010, 13, CURDATE(), 12, 2000.00, 12, 20000.00, 4000.00, 1);
+
+
+-- Cuotas para el préstamo 1 (12 cuotas de $10000.00)
+INSERT INTO Cuotas (id_prestamo, numero_cuota, monto, fecha_pago, pagado) VALUES
+(1, 1, 10000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), 0),
+(1, 2, 10000.00, DATE_ADD(CURDATE(), INTERVAL 2 MONTH), 0),
+(1, 3, 10000.00, DATE_ADD(CURDATE(), INTERVAL 3 MONTH), 0),
+(1, 4, 10000.00, DATE_ADD(CURDATE(), INTERVAL 4 MONTH), 0),
+(1, 5, 10000.00, DATE_ADD(CURDATE(), INTERVAL 5 MONTH), 0),
+(1, 6, 10000.00, DATE_ADD(CURDATE(), INTERVAL 6 MONTH), 0),
+(1, 7, 10000.00, DATE_ADD(CURDATE(), INTERVAL 7 MONTH), 0),
+(1, 8, 10000.00, DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 0),
+(1, 9, 10000.00, DATE_ADD(CURDATE(), INTERVAL 9 MONTH), 0),
+(1, 10, 10000.00, DATE_ADD(CURDATE(), INTERVAL 10 MONTH), 0),
+(1, 11, 10000.00, DATE_ADD(CURDATE(), INTERVAL 11 MONTH), 0),
+(1, 12, 10000.00, DATE_ADD(CURDATE(), INTERVAL 12 MONTH), 0);
+
+-- Cuotas para el préstamo 2 (3 cuotas de $6000.00)
+INSERT INTO Cuotas (id_prestamo, numero_cuota, monto, fecha_pago, pagado) VALUES
+(2, 1, 6000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), 0),
+(2, 2, 6000.00, DATE_ADD(CURDATE(), INTERVAL 2 MONTH), 0),
+(2, 3, 6000.00, DATE_ADD(CURDATE(), INTERVAL 3 MONTH), 0);
+
+-- Cuotas para el préstamo 3 (12 cuotas de $2000.00)
+INSERT INTO Cuotas (id_prestamo, numero_cuota, monto, fecha_pago, pagado) VALUES
+(3, 1, 2000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), 0),
+(3, 2, 2000.00, DATE_ADD(CURDATE(), INTERVAL 2 MONTH), 0),
+(3, 3, 2000.00, DATE_ADD(CURDATE(), INTERVAL 3 MONTH), 0),
+(3, 4, 2000.00, DATE_ADD(CURDATE(), INTERVAL 4 MONTH), 0),
+(3, 5, 2000.00, DATE_ADD(CURDATE(), INTERVAL 5 MONTH), 0),
+(3, 6, 2000.00, DATE_ADD(CURDATE(), INTERVAL 6 MONTH), 0),
+(3, 7, 2000.00, DATE_ADD(CURDATE(), INTERVAL 7 MONTH), 0),
+(3, 8, 2000.00, DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 0),
+(3, 9, 2000.00, DATE_ADD(CURDATE(), INTERVAL 9 MONTH), 0),
+(3, 10, 2000.00, DATE_ADD(CURDATE(), INTERVAL 10 MONTH), 0),
+(3, 11, 2000.00, DATE_ADD(CURDATE(), INTERVAL 11 MONTH), 0),
+(3, 12, 2000.00, DATE_ADD(CURDATE(), INTERVAL 12 MONTH), 0);
+
+
+INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES
+(1, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(2, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(3, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(4, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(5, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(6, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(7, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(8, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(9, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(10, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(11, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(12, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(13, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(14, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(15, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(16, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(17, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(18, 1, 'Alta de cuenta', 0.00, CURDATE()),
+(19, 1, 'Alta de cuenta', 0.00, CURDATE());
+
+
+INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES
+(1, 2, 'Alta de préstamo ID 1', 100000.00, CURDATE()),
+(10, 2, 'Alta de préstamo ID 2', 15000.00, CURDATE()),
+(13, 2, 'Alta de préstamo ID 3', 20000.00, CURDATE());
+
+
+-- Marcamos cuotas como pagadas
+UPDATE Cuotas SET pagado = 1 WHERE id_prestamo = 1 AND numero_cuota IN (1, 2);
+UPDATE Cuotas SET pagado = 1 WHERE id_prestamo = 2 AND numero_cuota = 1;
+UPDATE Cuotas SET pagado = 1 WHERE id_prestamo = 3 AND numero_cuota IN (1, 2, 3);
+
+-- Insertamos los movimientos por cuotas pagadas
+INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES
+(1, 3, 'Pago cuota 1 préstamo 1', 10000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),
+(1, 3, 'Pago cuota 2 préstamo 1', 10000.00, DATE_ADD(CURDATE(), INTERVAL 2 MONTH)),
+
+(10, 3, 'Pago cuota 1 préstamo 2', 6000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),
+
+(13, 3, 'Pago cuota 1 préstamo 3', 2000.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),
+(13, 3, 'Pago cuota 2 préstamo 3', 2000.00, DATE_ADD(CURDATE(), INTERVAL 2 MONTH)),
+(13, 3, 'Pago cuota 3 préstamo 3', 2000.00, DATE_ADD(CURDATE(), INTERVAL 3 MONTH));
+
+
+-- Transferencias entre cuentas
+INSERT INTO Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES
+(1, 5, 5000.00, NOW()),
+(10, 3, 2000.00, NOW()),
+(7, 13, 8000.00, NOW());
+
+-- Movimientos asociados a las transferencias (tipo 4)
+INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES
+(1, 4, 'Transferencia a cuenta 5', -5000.00, NOW()),
+(5, 4, 'Transferencia desde cuenta 1', 5000.00, NOW()),
+
+(10, 4, 'Transferencia a cuenta 3', -2000.00, NOW()),
+(3, 4, 'Transferencia desde cuenta 10', 2000.00, NOW()),
+
+(7, 4, 'Transferencia a cuenta 13', -8000.00, NOW()),
+(13, 4, 'Transferencia desde cuenta 7', 8000.00, NOW());
 
