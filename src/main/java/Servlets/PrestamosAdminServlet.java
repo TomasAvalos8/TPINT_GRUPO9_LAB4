@@ -3,10 +3,16 @@ package Servlets;
 import Dominio.Cuota;
 import Dominio.Prestamo;
 import Dominio.SolicitudPrestamo;
+import Dominio.Movimiento;
+import Dominio.TipoMovimiento;
 import Negocio.CuotaNeg;
 import Negocio.PrestamoNeg;
 import Negocio.SolicitudPrestamoNeg;
+import Negocio.MovimientoNeg;
 import NegocioImpl.SolicitudPrestamoNegImpl;
+import NegocioImpl.MovimientoNegImpl;
+import Datos.TipoMovimientoDao;
+import DatosImpl.TipoMovimientoDaoImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.time.LocalDate;
 
 @WebServlet("/PrestamosAdminServlet")
 public class PrestamosAdminServlet extends HttpServlet {
@@ -54,6 +61,18 @@ public class PrestamosAdminServlet extends HttpServlet {
                     double monto = solicitud.getImporte_solicitado();
                     Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
                     cuentaNeg.depositarEnCuenta(idCuentaDestino, monto);
+
+                
+                        Movimiento movimiento = new Movimiento();
+                        movimiento.setNumeroCuenta(idCuentaDestino);
+                        TipoMovimiento tipoMovimiento = new TipoMovimiento();
+                        tipoMovimiento.setIdTipoMovimiento(2);
+                        movimiento.setTipoMovimiento(tipoMovimiento);
+                        movimiento.setDetalle("Alta de préstamo");
+                        movimiento.setMonto((float)monto);
+                        movimiento.setFecha(LocalDate.now());
+                        MovimientoNeg movimientoNeg = new MovimientoNegImpl();
+                        movimientoNeg.insertarMovimiento(movimiento);
 
                     for (int i = 1; i <= solicitud.getCuotas(); i++) {
                         Cuota cuota = new Cuota();

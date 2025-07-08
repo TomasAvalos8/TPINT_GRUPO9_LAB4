@@ -15,6 +15,11 @@ import Excepciones.ClienteNoExisteException;
 import java.util.List;
 import Datos.TipoCuentaDao;
 import DatosImpl.TipoCuentaDaoImpl;
+import Dominio.Movimiento;
+import Dominio.TipoMovimiento;
+import Negocio.MovimientoNeg;
+import NegocioImpl.MovimientoNegImpl;
+import java.time.LocalDate;
 
 
 @WebServlet("/CuentasAdminServlet")
@@ -195,6 +200,17 @@ public class CuentasAdminServlet extends HttpServlet {
                 }
                 if (exito) {
                     request.setAttribute("mensajeServlet", "Cuenta registrada exitosamente.");
+                    
+                    Movimiento movimiento = new Movimiento();
+                    movimiento.setNumeroCuenta(id);
+                    TipoMovimiento tipoMovimiento = new TipoMovimiento();
+                    tipoMovimiento.setIdTipoMovimiento(1); 
+                    movimiento.setTipoMovimiento(tipoMovimiento);
+                    movimiento.setDetalle("Alta de cuenta");
+                    movimiento.setMonto(saldo);
+                    movimiento.setFecha(LocalDate.now());
+                    MovimientoNeg movimientoNeg = new MovimientoNegImpl();
+                    movimientoNeg.insertarMovimiento(movimiento);
                 } else {
                     request.setAttribute("mensajeServlet", "Error al registrar la cuenta.");
                 }

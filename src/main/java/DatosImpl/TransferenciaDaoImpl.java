@@ -20,11 +20,11 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        return 3;
 	    }
 	    
-	    String sqlSaldo = "SELECT saldo FROM cuenta WHERE id = ?";
-	    String sqlDebito = "UPDATE cuenta SET saldo = saldo - ? WHERE id = ?";
-	    String sqlCredito = "UPDATE cuenta SET saldo = saldo + ? WHERE id = ?";
-	    String sqlMovimiento = "INSERT INTO movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES (?, ?, ?, ?, ?)";
-	    String sqlTransferencia = "INSERT INTO transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES (?, ?, ?, ?)";
+	    String sqlSaldo = "SELECT saldo FROM Cuenta WHERE id = ?";
+	    String sqlDebito = "UPDATE Cuenta SET saldo = saldo - ? WHERE id = ?";
+	    String sqlCredito = "UPDATE Cuenta SET saldo = saldo + ? WHERE id = ?";
+	    String sqlMovimiento = "INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES (?, ?, ?, ?, ?)";
+	    String sqlTransferencia = "INSERT INTO 	Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES (?, ?, ?, ?)";
 
 	    Conexion cn = new Conexion();
 	    Connection conexion = cn.Open();
@@ -61,7 +61,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        //Registrar movimiento debito
 	        stmtMovimiento = conexion.prepareStatement(sqlMovimiento);
 	        stmtMovimiento.setInt(1, CuentaSaliente.getId());
-	        stmtMovimiento.setInt(2, 1); // 1 = Débito
+	        stmtMovimiento.setInt(2, 4); 
 	        stmtMovimiento.setString(3, "Transferencia a cuenta " + CuentaDestino.getId());
 	        stmtMovimiento.setFloat(4, -monto);
 	        stmtMovimiento.setDate(5, new java.sql.Date(fecha.getTime()));
@@ -69,7 +69,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 
 	        //Registrar movimiento credito
 	        stmtMovimiento.setInt(1, CuentaDestino.getId());
-	        stmtMovimiento.setInt(2, 2); // 2 = Crédito
+	        stmtMovimiento.setInt(2, 4); 
 	        stmtMovimiento.setString(3, "Transferencia desde cuenta " + CuentaSaliente.getId());
 	        stmtMovimiento.setFloat(4, monto);
 	        stmtMovimiento.setDate(5, new java.sql.Date(fecha.getTime()));

@@ -275,3 +275,6 @@ INSERT INTO Localidad (descripcion, id_provincia) VALUES
 -- Tucumán
 INSERT INTO Localidad (descripcion, id_provincia) VALUES
 ('San Miguel de Tucumán', 23), ('Tafí Viejo', 23), ('Yerba Buena', 23);
+
+INSERT INTO TipoMovimiento (id_tipo_movimiento, descripcion)
+VALUES (1, 'Alta de cuenta'), (2, 'Alta de un prestamo'), (3, 'Pago de prestamo'), (4, 'Transferencia');
