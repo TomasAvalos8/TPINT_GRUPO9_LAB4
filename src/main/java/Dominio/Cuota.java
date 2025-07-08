@@ -4,11 +4,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Cuota {
+    private int id;
     private Prestamo prestamo; 
     private int numeroCuota;
     private double monto;
     private Date fechaPago;
     private boolean pagado;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Prestamo getPrestamo() {
         return prestamo;
