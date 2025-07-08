@@ -25,6 +25,7 @@ import Dominio.TipoUsuario;
 import Dominio.Usuario;
 import Dominio.Provincia;
 import Dominio.Localidad;
+import Excepciones.ClienteYaExisteException;
 /**
  * Servlet implementation class ServletClientes
  */
@@ -105,39 +106,51 @@ public class ServletClientes extends HttpServlet {
 			int IdGuardado = 0;
 			IdGuardado = usuarioNeg.insertarYDevuelveId(usuario);
 			if (IdGuardado > 0) {
-    Usuario usuarioGuardado = new Usuario();
-    usuarioGuardado.setId_usuario(IdGuardado);
-    cliente.setUsuario(usuarioGuardado);
-    cliente.setDni(Integer.parseInt(request.getParameter("dni")));
-    cliente.setCuil(request.getParameter("cuil"));
-    cliente.setNombre(request.getParameter("nombre"));
-    cliente.setApellido(request.getParameter("apellido"));
-    cliente.setSexo(request.getParameter("sexo"));
-    cliente.setNacionalidad(request.getParameter("nacionalidad"));
-    cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
-    cliente.setDireccion(request.getParameter("direccion"));
-    String idLocalidadStr = request.getParameter("idLocalidad");
-    Localidad localidad = new Localidad();
-    localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
-    cliente.setLocalidad(localidad);
-    Provincia provincia = new Provincia();
-    provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
-    cliente.setProvincia(provincia);
-    cliente.setCorreo_electronico(request.getParameter("email"));
-    cliente.setTelefono(request.getParameter("telefono"));
-    cliente.setActivo(true);
-			    boolean estado= true;
-			    estado=clienteNeg.insertar(cliente);
-			    if (estado) {
-				request.setAttribute("estadoCliente", estado);
-				request.setAttribute("mensajeServlet", "El cliente fue registrado exitosamente.");
-				List<Cliente> listaClientes = clienteNeg.listarClientes();
-				request.setAttribute("listaClientes", listaClientes);
-				List<Provincia> provincias = provNeg.obtenerProvincias();
-				request.setAttribute("provincias", provincias);
-				} else {
-				request.setAttribute("mensajeServlet", "Error al registrar el cliente.");
-				}
+                Usuario usuarioGuardado = new Usuario();
+                usuarioGuardado.setId_usuario(IdGuardado);
+                cliente.setUsuario(usuarioGuardado);
+                cliente.setDni(Integer.parseInt(request.getParameter("dni")));
+                cliente.setCuil(request.getParameter("cuil"));
+                cliente.setNombre(request.getParameter("nombre"));
+                cliente.setApellido(request.getParameter("apellido"));
+                cliente.setSexo(request.getParameter("sexo"));
+                cliente.setNacionalidad(request.getParameter("nacionalidad"));
+                cliente.setFecha_nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+                cliente.setDireccion(request.getParameter("direccion"));
+                String idLocalidadStr = request.getParameter("idLocalidad");
+                Localidad localidad = new Localidad();
+                localidad.setId_localidad(Integer.parseInt(idLocalidadStr));
+                cliente.setLocalidad(localidad);
+                Provincia provincia = new Provincia();
+                provincia.setId_provincia(Integer.parseInt(request.getParameter("idProvincia")));
+                cliente.setProvincia(provincia);
+                cliente.setCorreo_electronico(request.getParameter("email"));
+                cliente.setTelefono(request.getParameter("telefono"));
+                cliente.setActivo(true);
+                boolean estado = false;
+			    try {
+                    estado = clienteNeg.insertar(cliente);
+			    } catch (Excepciones.ClienteYaExisteException e) {
+                    request.setAttribute("mensajeServlet", e.getMessage());
+                    List<Cliente> listaClientes = clienteNeg.listarClientes();
+                    request.setAttribute("listaClientes", listaClientes);
+                    List<Provincia> provincias = provNeg.obtenerProvincias();
+                    request.setAttribute("provincias", provincias);
+			        request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
+
+                    return; 
+			    }
+
+            if (estado) {
+                    request.setAttribute("estadoCliente", estado);
+                    request.setAttribute("mensajeServlet", "El cliente fue registrado exitosamente.");
+                    List<Cliente> listaClientes = clienteNeg.listarClientes();
+                    request.setAttribute("listaClientes", listaClientes);
+                    List<Provincia> provincias = provNeg.obtenerProvincias();
+                    request.setAttribute("provincias", provincias);
+                } else {
+                    request.setAttribute("mensajeServlet", "Error al registrar el cliente.");
+                }
 			} else {
 			    request.setAttribute("mensajeServlet", "Error al registrar el usuario.");
 			}
@@ -153,7 +166,7 @@ public class ServletClientes extends HttpServlet {
 		}
 		
 		String eliminarId = request.getParameter("eliminarId");
-		
+
 		if (eliminarId != null) {
 		    int dniEliminar = Integer.parseInt(eliminarId);
 		    boolean eliminado = clienteNeg.eliminarCliente(dniEliminar);
@@ -166,6 +179,8 @@ public class ServletClientes extends HttpServlet {
 
 		    List<Cliente> listaClientes = clienteNeg.listarClientes();
 		    request.setAttribute("listaClientes", listaClientes);
+		    List<Provincia> provincias = provNeg.obtenerProvincias();
+		    request.setAttribute("provincias", provincias);
 		    request.getRequestDispatcher("Clientes_Admin.jsp").forward(request, response);
 		    return;
 		}

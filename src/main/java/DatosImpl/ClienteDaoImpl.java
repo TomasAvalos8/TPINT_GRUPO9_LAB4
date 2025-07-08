@@ -13,19 +13,34 @@ import Dominio.Provincia;
 import Dominio.Localidad;
 import Dominio.Usuario;
 import Negocio.UsuarioNeg;
+import Excepciones.ClienteYaExisteException;
 
 public class ClienteDaoImpl implements ClienteDao {
 private Conexion conexion;
 	@Override
-	public boolean insertarCliente(Cliente cliente) {
+	public boolean insertarCliente(Cliente cliente) throws ClienteYaExisteException {
 	    PreparedStatement ps = null;
-	    Conexion cn = new Conexion();
-	    Connection conexion = cn.Open();
+	    Connection conexion = null;
 	    boolean estado = false;
 
 	    try {
+	        Conexion cn = new Conexion();
+	        conexion = cn.Open();
+
+	        String checkSql = "SELECT COUNT(*) FROM Cliente WHERE dni = ? AND activo = 1";
+	        ps = conexion.prepareStatement(checkSql);
+	        ps.setInt(1, cliente.getDni());
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            rs.close();
+	            ps.close();
+	            throw new ClienteYaExisteException("Error: el cliente ya existe");
+	        }
+	        rs.close();
+	        ps.close();
+
 	        String sql = "INSERT INTO Cliente (dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo_electronico, telefono, id_usuario, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	        ps = (PreparedStatement) conexion.prepareStatement(sql);
+	        ps = conexion.prepareStatement(sql);
 	        
 	        ps.setInt(1, cliente.getDni());
 	        ps.setString(2, cliente.getCuil());
@@ -43,8 +58,12 @@ private Conexion conexion;
 	        ps.setBoolean(14, cliente.getActivo());
 
 	        estado = ps.executeUpdate() > 0;
+	        return estado;
+	    } catch (ClienteYaExisteException e) {
+	        throw e;
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        return false;
 	    } finally {
 	        try {
 	            if (ps != null) ps.close();
@@ -53,7 +72,6 @@ private Conexion conexion;
 	            e.printStackTrace();
 	        }
 	    }
-	    return estado;
 	}
 	@Override
 	public List<Cliente> listarClientes() {

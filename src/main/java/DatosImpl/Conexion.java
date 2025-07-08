@@ -10,8 +10,8 @@ import java.sql.Statement;
 public class Conexion {
 	private String host = "jdbc:mysql://localhost:3306/";
 	private String user = "root";
-	//private String pass = "password";
-	private String pass = "root";
+	private String pass = "password";
+//	private String pass = "root";
 	private String dbName = "BancoDB"; //poner nombre de tu base
 	
 	protected Connection connection;

@@ -15,11 +15,6 @@ if (tipoUsuarioId != 1) {
     response.sendRedirect("InicioCliente.jsp");
     return;
 }
-
-if(request.getAttribute("listaClientes") == null || request.getAttribute("provincias") == null) {
-    response.sendRedirect("ServletClientes");
-    return;
-}
 %>
 <!DOCTYPE html>
 <html>

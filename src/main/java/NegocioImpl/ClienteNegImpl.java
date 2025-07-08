@@ -7,14 +7,14 @@ import java.util.List;
 
 import Datos.ClienteDao;
 import DatosImpl.ClienteDaoImpl;
+import Excepciones.ClienteYaExisteException;
 
 public class ClienteNegImpl implements ClienteNeg{
 
 	private ClienteDao cDao= new ClienteDaoImpl();
 
 	@Override
-	public boolean insertar(Cliente c) {
-		
+	public boolean insertar(Cliente c) throws ClienteYaExisteException {
 		return cDao.insertarCliente(c);
 	}
 	@Override

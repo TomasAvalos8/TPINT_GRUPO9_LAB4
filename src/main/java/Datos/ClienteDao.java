@@ -3,10 +3,11 @@ package Datos;
 import java.util.List;
 
 import Dominio.Cliente;
+import Excepciones.ClienteYaExisteException;
 
 public interface ClienteDao {
 
-	public boolean insertarCliente(Cliente cliente);
+	public boolean insertarCliente(Cliente cliente) throws ClienteYaExisteException;
 
 	List<Cliente> listarClientes();
 	public boolean eliminarCliente(int id);
