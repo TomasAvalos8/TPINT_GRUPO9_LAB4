@@ -11,6 +11,7 @@
 <title>Cliente Dashboard</title>
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilosCliente.css">
+
 </head>
 <%
 String nombreUsuario= (String)session.getAttribute("usuario");
@@ -128,6 +129,24 @@ DecimalFormat df = new DecimalFormat("#,##0.00");
     	background-color: #157347;
     	transition: .2s;
     }
+    
+    .modal-copiado {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2ecc71;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-size: 16px;
+    z-index: 9999;
+    animation: fadeinout 2s ease-in-out;
+}
+
+  
 </style>
 
 <body>
@@ -225,6 +244,29 @@ if (cuentas != null && !cuentas.isEmpty()) {
 <footer>
 <jsp:include page="Footer.html"></jsp:include>
 </footer>
+<div id="modal-copiado" class="modal-copiado">
+    <p>Texto copiado</p>
+</div>
+<script>
+function copiarTexto(texto) {
+    const input = document.createElement("input");
+    input.setAttribute("value", texto);
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+
+    mostrarModalCopiado();
+}
+function mostrarModalCopiado() {
+    const modal = document.getElementById("modal-copiado");
+    modal.style.display = "block";
+
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 2500);
+}
+</script>
 
 </body>
 </html>
