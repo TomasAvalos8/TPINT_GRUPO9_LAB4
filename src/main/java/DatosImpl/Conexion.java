@@ -107,6 +107,15 @@ public class Conexion {
 	    return idGenerado;
 	}
 
+	public PreparedStatement prepareStatement(String sql) {
+		PreparedStatement ps = null;
+		try {
+			ps = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ps;
+	}
 
 	
 }
