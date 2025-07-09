@@ -21,4 +21,10 @@ public class ReportesNegocioImpl implements ReportesNegocio {
 	    ReportesDao rp = new ReportesDaoImpl(); 
 	    return rp.obtenerReporteUsuarios(fechaInicio, fechaFin); 
 	}
+	
+	@Override
+	public List<Reporte> generarReporteCuentasPorTipo(Date fechaInicio, Date fechaFin) {  
+		ReportesDao rp = new ReportesDaoImpl(); 
+	    return new ReportesDaoImpl().obtenerReporteCuentasPorTipo(fechaInicio, fechaFin);
+	}
 }

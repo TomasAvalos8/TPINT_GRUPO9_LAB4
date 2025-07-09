@@ -236,6 +236,7 @@
                             <option value="completo">Seleccionar Tipo de reporte</option>
                             <option value="prestamos">Prestamos</option>
                             <option value="usuarios">Usuarios</option>
+                            <option value="cuentas">Cuentas</option>
                         </select>
                     </div>
                     
@@ -316,6 +317,31 @@
         </table>
     </div>
 <% } %>
+<% List<Reporte> reporteCuentas = (List<Reporte>)request.getAttribute("reporteCuentas"); %>
+<% if ("cuentas".equals(request.getAttribute("tipoReporte")) && reporteCuentas != null && !reporteCuentas.isEmpty()) { %>
+    <div class="reporte-section">
+        <div class="reporte-header">
+            <i class="fas fa-piggy-bank"></i>
+            <h2 class="reporte-title">Reporte de Cuentas por Tipo</h2>
         </div>
+        <table class="reporte-table">
+            <thead>
+                <tr>
+                    <th>Tipo de Cuenta</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (Reporte reporte : reporteCuentas) { %>
+                <tr>
+                    <td><%= reporte.getDescripcionTipoCuenta() %></td>
+                    <td><%= reporte.getCantidadCuentas() %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+<% } %>
+</div>
 </body>
 </html>

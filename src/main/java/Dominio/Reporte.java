@@ -20,11 +20,14 @@ public class Reporte {
     private float porcActivos;
     private float porcInactivos;
     
+    private String descripcionTipoCuenta;
+    private int cantidadCuentas;
+    
     public Reporte() {}
     
     public Reporte(String tipoReporte, Date fechaInicio, Date fechaFin, 
                   float montoTotal, int cantidadTotal, String descripcion, int totalPrestamos, float porcAprobados, float porcRechazados, float porcPendientes, int totalUsuarios, float porcActivos,
-                  float porcInactivos ) {
+                  float porcInactivos, String descripcionTipoCuenta, int cantidadCuentas ) {
     	
     	
         this.tipoReporte = tipoReporte;
@@ -40,6 +43,8 @@ public class Reporte {
         this.totalUsuarios = totalUsuarios;
         this.porcActivos = porcActivos;
         this.porcInactivos = porcInactivos;
+        this.descripcionTipoCuenta = descripcionTipoCuenta;
+        this.cantidadCuentas = cantidadCuentas;
     }
     
     // Getters y Setters
@@ -149,5 +154,15 @@ public class Reporte {
     public float getPorcInactivos() { return porcInactivos; }
     public void setPorcInactivos(float porcInactivos) { this.porcInactivos = porcInactivos; }
 	
+    public String getDescripcionTipoCuenta() { return descripcionTipoCuenta; }
+    public void setDescripcionTipoCuenta(String descripcionTipoCuenta) { 
+        this.descripcionTipoCuenta = descripcionTipoCuenta; 
+    }
+    
+    public int getCantidadCuentas() { return cantidadCuentas; }
+    public void setCantidadCuentas(int cantidadCuentas) { 
+        this.cantidadCuentas = cantidadCuentas; 
+    }
+    
 }
 

@@ -65,6 +65,9 @@ public class ServletReportes extends HttpServlet {
             }else if (tipoReporte.equals("usuarios")) {
                 List<Reporte> reporteUsuarios = reportesNegocio.generarReporteUsuarios(fechaInicio, fechaFin);
                 request.setAttribute("reporteUsuarios", reporteUsuarios);
+            } else if (tipoReporte.equals("cuentas")) {
+            	 List<Reporte> reporteCuentas = reportesNegocio.generarReporteCuentasPorTipo(fechaInicio, fechaFin);
+            	 request.setAttribute("reporteCuentas", reporteCuentas);
             }
             
             request.setAttribute("fechaInicio", fechaInicioStr);

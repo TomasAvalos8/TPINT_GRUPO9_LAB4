@@ -31,6 +31,14 @@ public class ReportesDaoImpl implements ReportesDao {
     				    + "(SUM(CASE WHEN activo = FALSE THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_inactivos "
     				    + "FROM Usuarios "
     				    + "WHERE fecha_alta BETWEEN ? AND ?";
+    
+    private static final String queryCuentasPorTipo = 
+    	    "SELECT tc.id_tipo_cuenta, tc.descripcion, COUNT(c.id) AS cantidad " +
+    	    "FROM TipoCuenta tc " +
+    	    "LEFT JOIN Cuenta c ON tc.id_tipo_cuenta = c.tipo_cuenta " +
+    	    "WHERE c.activo = TRUE " +  
+    	    "AND c.fecha_creacion BETWEEN ? AND ? " +
+    	    "GROUP BY tc.id_tipo_cuenta, tc.descripcion";
     Conexion conexion;
     
     public ReportesDaoImpl() {
@@ -105,6 +113,41 @@ public class ReportesDaoImpl implements ReportesDao {
                 reporte.setPorcActivos(rs.getFloat("porcentaje_activos")); 
                 reporte.setPorcInactivos(rs.getFloat("porcentaje_inactivos")); 
                 
+                reportes.add(reporte);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                conexion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return reportes;
+    }
+    
+    
+    @Override
+    public List<Reporte> obtenerReporteCuentasPorTipo(Date fechaInicio, Date fechaFin) {
+        List<Reporte> reportes = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            conexion.Open();
+            ps = conexion.prepareStatement(queryCuentasPorTipo);
+            ps.setDate(1, new java.sql.Date(fechaInicio.getTime()));
+            ps.setDate(2, new java.sql.Date(fechaFin.getTime()));
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Reporte reporte = new Reporte();
+                reporte.setTipoReporte("CuentasPorTipo");
+                reporte.setDescripcionTipoCuenta(rs.getString("descripcion")); 
+                reporte.setCantidadCuentas(rs.getInt("cantidad")); 
                 reportes.add(reporte);
             }
         } catch (Exception e) {

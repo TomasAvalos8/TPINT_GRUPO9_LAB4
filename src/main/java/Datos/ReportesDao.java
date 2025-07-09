@@ -10,4 +10,6 @@ public interface ReportesDao {
     List<Reporte> obtenerReportePrestamos(Date fechaInicio, Date fechaFin);
 
 	List<Reporte> obtenerReporteUsuarios(Date fechaInicio, Date fechaFin);
+
+	List<Reporte> obtenerReporteCuentasPorTipo(Date fechaInicio, Date fechaFin);
 }
