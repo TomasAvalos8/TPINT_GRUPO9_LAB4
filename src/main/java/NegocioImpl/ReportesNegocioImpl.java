@@ -15,5 +15,10 @@ public class ReportesNegocioImpl implements ReportesNegocio {
         ReportesDao rp = new ReportesDaoImpl(); 
         return rp.obtenerReportePrestamos(fechaInicio, fechaFin) ;
 	}
-
+	
+	@Override
+	public List<Reporte> generarReporteUsuarios(Date fechaInicio, Date fechaFin) {
+	    ReportesDao rp = new ReportesDaoImpl(); 
+	    return rp.obtenerReporteUsuarios(fechaInicio, fechaFin); 
+	}
 }

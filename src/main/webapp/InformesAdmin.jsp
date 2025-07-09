@@ -235,6 +235,7 @@
                         <select id="tipoReporte" name="tipoReporte">
                             <option value="completo">Seleccionar Tipo de reporte</option>
                             <option value="prestamos">Prestamos</option>
+                            <option value="usuarios">Usuarios</option>
                         </select>
                     </div>
                     
@@ -253,7 +254,8 @@
 
         <% List<Reporte> reportePrestamos = (List<Reporte>)request.getAttribute("reportePrestamos"); %>
 
-        <% if (reportePrestamos != null && !reportePrestamos.isEmpty()) { %>
+        <%--<% if (reportePrestamos != null && !reportePrestamos.isEmpty()) { %>--%>
+        <% if ("prestamos".equals(request.getAttribute("tipoReporte")) && reportePrestamos != null && !reportePrestamos.isEmpty()) { %>
             <div class="reporte-section">
                 <div class="reporte-header">
                     <i class="fas fa-hand-holding-usd"></i>
@@ -287,6 +289,33 @@
                 </table>
             </div>
         <% } %>
+        <% List<Reporte> reporteUsuarios = (List<Reporte>)request.getAttribute("reporteUsuarios"); %>
+		<% if ("usuarios".equals(request.getAttribute("tipoReporte")) && reporteUsuarios != null && !reporteUsuarios.isEmpty()) { %>
+    	<div class="reporte-section">
+        <div class="reporte-header">
+            <i class="fas fa-users"></i>
+            <h2 class="reporte-title">Reporte de Usuarios</h2>
+        </div>
+        <table class="reporte-table">
+            <thead>
+                <tr>
+                    <th>Total de Usuarios</th>
+                    <th>% Usuarios Activos</th>
+                    <th>% Usuarios Inactivos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (Reporte reporte : reporteUsuarios) { %>
+                <tr>
+                    <td><%= reporte.getTotalUsuarios() %></td>
+                    <td><%= String.format("%.2f", reporte.getPorcActivos()) %> %</td>
+                    <td><%= String.format("%.2f", reporte.getPorcInactivos()) %> %</td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+<% } %>
         </div>
 </body>
 </html>

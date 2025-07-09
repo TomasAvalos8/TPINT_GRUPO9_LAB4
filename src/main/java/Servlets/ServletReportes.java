@@ -55,11 +55,16 @@ public class ServletReportes extends HttpServlet {
                 request.getRequestDispatcher("InformesAdmin.jsp").forward(request, response);
                 return;
             }
-
+            
+            
+            //if (tipoReporte == null || tipoReporte.equals("completo") || tipoReporte.equals("prestamos")) {
             if (tipoReporte == null || tipoReporte.equals("completo") || tipoReporte.equals("prestamos")) {
                 List<Reporte> reportePrestamos = reportesNegocio.generarReportePrestamos(fechaInicio, fechaFin);
                 request.setAttribute("reportePrestamos", reportePrestamos);
                 
+            }else if (tipoReporte.equals("usuarios")) {
+                List<Reporte> reporteUsuarios = reportesNegocio.generarReporteUsuarios(fechaInicio, fechaFin);
+                request.setAttribute("reporteUsuarios", reporteUsuarios);
             }
             
             request.setAttribute("fechaInicio", fechaInicioStr);
