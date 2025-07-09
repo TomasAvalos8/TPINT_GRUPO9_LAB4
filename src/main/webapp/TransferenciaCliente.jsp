@@ -21,6 +21,18 @@ body{
 </style>
 <%@ page import="Dominio.Cuenta" %>
 <%@ page import="java.util.List" %>
+<%
+String tipo= (String)session.getAttribute("tipoUsuario");
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("Inicio.jsp");
+    return;
+}
+if (tipoUsuarioId != 2) {
+    response.sendRedirect("InicioAdmin.jsp");
+    return;
+}
+%>
 <body>
 
 <jsp:include page="MenuCliente.html"></jsp:include>

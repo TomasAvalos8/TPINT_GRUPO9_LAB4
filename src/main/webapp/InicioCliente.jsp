@@ -11,8 +11,21 @@
 <title>Cliente Dashboard</title>
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilosCliente.css">
-
 </head>
+
+<%
+String tipoo= (String)session.getAttribute("tipoUsuario");
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("Inicio.jsp");
+    return;
+}
+if (tipoUsuarioId != 2) {
+    response.sendRedirect("InicioAdmin.jsp");
+    return;
+}
+%>
+
 <%
 String nombreUsuario= (String)session.getAttribute("usuario");
 String tipo= (String)session.getAttribute("tipoUsuario");

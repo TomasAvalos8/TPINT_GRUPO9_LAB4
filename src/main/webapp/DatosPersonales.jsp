@@ -105,13 +105,17 @@ body {
 <%@ page import="Dominio.Cliente" %>
 <%
     Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
-    if (cliente == null) {
-        response.sendRedirect("Inicio.jsp");
+	String tipo= (String)session.getAttribute("tipoUsuario");
+	Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+	if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+	    response.sendRedirect("Inicio.jsp");
+	    return;
+	}
+    if (tipoUsuarioId != 2) {
+        response.sendRedirect("InicioAdmin.jsp");
         return;
     }
 %>
-
-
 
 <body>
 <jsp:include page="MenuCliente.html"></jsp:include>
