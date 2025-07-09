@@ -89,7 +89,7 @@ body{
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="cuentadestino" class="form-label">Cuenta</label>
+                        <label for="cuentadestino" class="form-label">Cuenta de Destino</label>
                         <input type="text" inputmode="numeric" pattern="\d+" maxlength="30" class="form-control" id="cuentadestino" name="cuentadestino"
        					placeholder="Ingrese el CBU de destino" required title="Solo se permiten números (sin espacios ni símbolos)">
                     </div>

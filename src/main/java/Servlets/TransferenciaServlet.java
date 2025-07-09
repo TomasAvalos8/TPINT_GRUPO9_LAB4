@@ -79,7 +79,6 @@ public class TransferenciaServlet extends HttpServlet {
             String cuentaDestino = request.getParameter("cuentadestino");
             String cantidadStr = request.getParameter("cantidad");
 
-
             cantidadStr = cantidadStr.replace(',', '.');
             float monto = Float.parseFloat(cantidadStr);
 
@@ -98,10 +97,16 @@ public class TransferenciaServlet extends HttpServlet {
 
             conexion.close();
 
-            //transferencia
+            // Transferencia
             TransferenciaNeg negocio = new TransferenciaNegImpl();
             int resultado = negocio.transferirCuenta(cuentaSaliente, cuentaDestinoObj, monto, fecha);
 
+            HttpSession session = request.getSession(false);
+            Integer idUsuario = (Integer) session.getAttribute("id_usuario");
+
+            CuentaNeg cuentaneg = new CuentaNegImpl();
+            List<Cuenta> cuentas = cuentaneg.obtenerCuentasPorIdUsuario(idUsuario);
+            request.setAttribute("cuentas", cuentas);
 
             switch (resultado) {
                 case 0:
@@ -125,10 +130,19 @@ public class TransferenciaServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
+
+            HttpSession session = request.getSession(false);
+            Integer idUsuario = (Integer) session.getAttribute("id_usuario");
+
+            CuentaNeg cuentaneg = new CuentaNegImpl();
+            List<Cuenta> cuentas = cuentaneg.obtenerCuentasPorIdUsuario(idUsuario);
+            request.setAttribute("cuentas", cuentas);
+
             request.setAttribute("mensaje", "Error en la operación: " + e.getMessage());
             request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
         }
     }
+
 
 
 
