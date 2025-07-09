@@ -12,7 +12,7 @@ if (tipoUsuarioId == null || tipoUsuarioId == 0) {
     return;
 }
 if (tipoUsuarioId != 1) {
-    response.sendRedirect("InicioCliente.jsp");
+    response.sendRedirect("ServletInicioCliente");
     return;
 }
 %>
