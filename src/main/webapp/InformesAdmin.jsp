@@ -202,6 +202,19 @@
         }
     </style>
 </head>
+<%
+String nombreUsuario= (String)session.getAttribute("usuario");
+String tipo= (String)session.getAttribute("tipoUsuario");
+Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
+if (tipoUsuarioId == null || tipoUsuarioId == 0) {
+    response.sendRedirect("Inicio.jsp");
+    return;
+}
+if (tipoUsuarioId != 1) {
+    response.sendRedirect("ServletClientes");
+    return;
+}
+%>
 <body>
     <jsp:include page="MenuAdmin.html"></jsp:include>
     

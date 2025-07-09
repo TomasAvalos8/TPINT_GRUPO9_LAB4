@@ -9,7 +9,7 @@ if(request.getAttribute("listaCuentas") == null || request.getAttribute("tiposCu
 
 Integer tipoUsuarioId = (Integer) session.getAttribute("tipoUsuarioId");
 if (tipoUsuarioId == null || tipoUsuarioId == 0) {
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("Inicio.jsp");
     return;
 }
 if (tipoUsuarioId != 1) {

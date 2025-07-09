@@ -32,6 +32,7 @@ public class ReportesDaoImpl implements ReportesDao {
     				    + "FROM Usuarios "
     				    + "WHERE fecha_alta BETWEEN ? AND ?";
     
+    
     private static final String queryCuentasPorTipo = 
     	    "SELECT tc.id_tipo_cuenta, tc.descripcion, COUNT(c.id) AS cantidad " +
     	    "FROM TipoCuenta tc " +
