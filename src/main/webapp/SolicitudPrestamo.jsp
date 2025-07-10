@@ -141,7 +141,46 @@ position: relative;
     margin-top: 20px;
 }
 
+.datos-personales-btn {
+    
+    background-color: #e0e0e0;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+   
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    
+   
+    border: 1px solid transparent;
+  }
 
+  .datos-personales-btn:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    border-color: #b0b0b0;
+  }
+
+  .datos-personales-btn:active {
+    transform: translateY(0);
+    background-color: #c0c0c0;
+  }
+
+  .datos-personales-btn i {
+    font-size: 16px;
+    color: #555;
+  }
 </style>
 </head>
 <%
@@ -160,8 +199,10 @@ if (tipoUsuarioId != 2) {
     <jsp:include page="MenuCliente.html"></jsp:include>
     <% String usuario = (String)session.getAttribute("usuario"); %>
     <p class="userLoguedText">
-      <i class="fas fa-user"></i> <%= usuario %>
-    </p>
+  <button class="datos-personales-btn" onclick="location='DatosPersonales.jsp'">
+    <i class="fas fa-user"></i> <%= usuario != null ? usuario : "Usuario no identificado" %>
+  </button>
+</p>
     <h1 class="Titulo">Solicitud de préstamo</h1>
     
     <div class="ContenedorPrestamo">
