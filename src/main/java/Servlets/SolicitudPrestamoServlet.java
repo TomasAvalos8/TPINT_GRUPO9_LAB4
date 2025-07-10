@@ -63,7 +63,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				request.setAttribute("totalPagar", String.format("$%.2f", totalPagar));
 				request.setAttribute("importe_solicitado", importeParam);
 				request.setAttribute("cuotas", cuotasParam);
-				request.setAttribute("interes", interes);
+				request.setAttribute("interes", String.format("%.0f%% interés", interes * 100));
 
 				
 			} catch (Exception e) {
