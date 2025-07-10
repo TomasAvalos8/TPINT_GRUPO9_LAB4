@@ -85,17 +85,13 @@ public class TransferenciaServlet extends HttpServlet {
             java.util.Date fechaUtil = new java.util.Date();
             java.sql.Date fecha = new java.sql.Date(fechaUtil.getTime());
 
-            Conexion cn = new Conexion();
-            Connection conexion = cn.Open();
+            CuentaNeg cuentanegocio = new CuentaNegImpl();
 
-            CuentaDao cuentaDAO = new CuentaDaoImpl();
-            Cuenta cuentaSaliente = cuentaDAO.obtenerCuentaPorCBU(cuentaOrigen);
-            Cuenta cuentaDestinoObj = cuentaDAO.obtenerCuentaPorCBU(cuentaDestino);
+            Cuenta cuentaSaliente = cuentanegocio.obtenerCuentaPorCBU(cuentaOrigen);
+            Cuenta cuentaDestinoObj = cuentanegocio.obtenerCuentaPorCBU(cuentaDestino);
 
             if (cuentaSaliente == null) throw new Exception("Cuenta origen no encontrada.");
             if (cuentaDestinoObj == null) throw new Exception("Cuenta destino no encontrada.");
-
-            conexion.close();
 
             // Transferencia
             TransferenciaNeg negocio = new TransferenciaNegImpl();
@@ -104,8 +100,8 @@ public class TransferenciaServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             Integer idUsuario = (Integer) session.getAttribute("id_usuario");
 
-            CuentaNeg cuentaneg = new CuentaNegImpl();
-            List<Cuenta> cuentas = cuentaneg.obtenerCuentasPorIdUsuario(idUsuario);
+            // cuenta de usuario
+            List<Cuenta> cuentas = cuentanegocio.obtenerCuentasPorIdUsuario(idUsuario);
             request.setAttribute("cuentas", cuentas);
 
             switch (resultado) {
@@ -134,14 +130,15 @@ public class TransferenciaServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             Integer idUsuario = (Integer) session.getAttribute("id_usuario");
 
-            CuentaNeg cuentaneg = new CuentaNegImpl();
-            List<Cuenta> cuentas = cuentaneg.obtenerCuentasPorIdUsuario(idUsuario);
+            CuentaNeg cuentanegocio = new CuentaNegImpl();
+            List<Cuenta> cuentas = cuentanegocio.obtenerCuentasPorIdUsuario(idUsuario);
             request.setAttribute("cuentas", cuentas);
 
             request.setAttribute("mensaje", "Error en la operación: " + e.getMessage());
             request.getRequestDispatcher("TransferenciaCliente.jsp").forward(request, response);
         }
     }
+
 
 
 
