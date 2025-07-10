@@ -72,7 +72,7 @@ public class CuotaServlet extends HttpServlet {
                     movimiento.setFecha(java.time.LocalDate.now());
 
                     TipoMovimiento tipoMovimiento = new TipoMovimiento();
-                    tipoMovimiento.setIdTipoMovimiento(3); // ID para tipo de movimiento "Pago"
+                    tipoMovimiento.setIdTipoMovimiento(3); 
                     movimiento.setTipoMovimiento(tipoMovimiento);
 
                     MovimientoNeg movimientoNeg = new MovimientoNegImpl();

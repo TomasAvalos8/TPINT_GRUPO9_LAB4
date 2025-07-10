@@ -31,7 +31,6 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		cargarClienteYCuentas(request);
 
-		// Fetch user loan requests
 		Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 		Cliente cliente = null;
 		if (idUsuario != null) {
