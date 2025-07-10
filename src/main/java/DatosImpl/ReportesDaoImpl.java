@@ -13,12 +13,10 @@ public class ReportesDaoImpl implements ReportesDao {
     
 	private static final String queryPrestamos = "SELECT "
 		    + "COUNT(*) AS TotalSolicitudesPrestamo, "
-		    + "SUM(CASE WHEN estado = 'Aprobada' THEN 1 ELSE 0 END) AS total_prestamos_aprobados, "
-		    + "SUM(CASE WHEN estado = 'Rechazada' THEN 1 ELSE 0 END) AS total_prestamos_rechazados, "
-		    + "SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS total_prestamos_pendientes, "
-		    + "(SUM(CASE WHEN estado = 'Aprobada' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_aprobados, "
-		    + "(SUM(CASE WHEN estado = 'Rechazada' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_rechazados, "
-		    + "(SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_pendientes "
+		    + "SUM(CASE WHEN estado = true THEN 1 ELSE 0 END) AS total_prestamos_aprobados, "
+		    + "SUM(CASE WHEN estado = false THEN 1 ELSE 0 END) AS total_prestamos_rechazados, "
+		    + "(SUM(CASE WHEN estado = true THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_aprobados, "
+		    + "(SUM(CASE WHEN estado = false THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS porcentaje_rechazados "
 		    + "FROM SolicitudPrestamos "
 		    + "WHERE fecha_solicitud BETWEEN ? AND ?"; 
     		 
@@ -71,7 +69,6 @@ public class ReportesDaoImpl implements ReportesDao {
                 reporte.setTotalPrestamos(rs.getInt("TotalSolicitudesPrestamo"));
                 reporte.setPorcAprobados(rs.getFloat("porcentaje_aprobados"));
                 reporte.setPorcRechazados(rs.getFloat("porcentaje_rechazados"));
-                reporte.setPorcPendientes(rs.getFloat("porcentaje_pendientes"));
                 reportes.add(reporte);
         
             }
@@ -112,7 +109,6 @@ public class ReportesDaoImpl implements ReportesDao {
                 
                 reporte.setTotalUsuarios(rs.getInt("TotalUsuarios")); 
                 reporte.setPorcActivos(rs.getFloat("porcentaje_activos")); 
-                reporte.setPorcInactivos(rs.getFloat("porcentaje_inactivos")); 
                 
                 reportes.add(reporte);
             }

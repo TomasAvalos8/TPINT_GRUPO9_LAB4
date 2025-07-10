@@ -294,8 +294,7 @@ if (tipoUsuarioId != 1) {
                     <tr>
                         <th>Cantidad de Prestamos</th>
                         <th>Porcentaje prestamos Aprobados</th>
-                        <th>Porcentaje prestamos Rechazados</th>
-                        <th>Porcentaje prestamos Pendientes</th>    
+                        <th>Porcentaje prestamos Rechazados</th>   
                     </tr>
                 </thead>
                 <tbody>
@@ -304,7 +303,6 @@ if (tipoUsuarioId != 1) {
                        	<td><%= reporte.getTotalPrestamos() %></td>
 						<td><%= String.format("%.2f", reporte.getPorcAprobados()) %> %</td>
 						<td><%= String.format("%.2f", reporte.getPorcRechazados()) %> %</td>
-						<td><%= String.format("%.2f", reporte.getPorcPendientes()) %> %</td>
                     </tr>
                     <% } %>
                 </tbody>
@@ -390,25 +388,23 @@ if (tipoUsuarioId != 1) {
         Reporte rep = reportePrestamos.get(0);
         double aprobados = rep.getPorcAprobados();
         double rechazados = rep.getPorcRechazados();
-        double pendientes = rep.getPorcPendientes();
+
 %>
     const ctxPrestamos = document.getElementById('graficoPrestamos').getContext('2d');
     new Chart(ctxPrestamos, {
         type: 'pie',
         data: {
-            labels: ['Aprobados', 'Rechazados', 'Pendientes'],
+            labels: ['Aprobados', 'Rechazados'],
             datasets: [{
                 label: 'Porcentajes de Prestamos',
-                data: [<%= aprobados %>, <%= rechazados %>, <%= pendientes %>],
+                data: [<%= aprobados %>, <%= rechazados %>],
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.7)',
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(255, 206, 86, 0.7)'
+                    'rgba(255, 99, 132, 0.7)'  
                 ],
                 borderColor: [
                     'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 206, 86, 1)'
+                    'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 2
             }]
