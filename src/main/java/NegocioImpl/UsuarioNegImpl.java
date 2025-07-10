@@ -52,4 +52,8 @@ public class UsuarioNegImpl implements UsuarioNeg {
 	    return usDao.recuperarContraseñaCliente(usuario, NuevaContraseña);
 	}
 	
+	@Override
+	public Usuario login(String user, String pass) {
+	    return usDao.login(user, pass);
+	}
 }

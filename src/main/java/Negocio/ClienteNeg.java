@@ -11,4 +11,5 @@ public interface ClienteNeg {
 	public boolean actualizarCliente(Cliente cliente);
 	
 	Cliente obtenerClientePorIdUsuario(int idUsuario);
+	Cliente obtenerClienteConLocalidadProvincia(int idUsuario);
 }

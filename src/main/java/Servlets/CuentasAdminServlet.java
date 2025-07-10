@@ -13,8 +13,8 @@ import Dominio.Cuenta;
 import Dominio.TipoCuenta;
 import Excepciones.ClienteNoExisteException;
 import java.util.List;
-import Datos.TipoCuentaDao;
-import DatosImpl.TipoCuentaDaoImpl;
+import Negocio.TipoCuentaNeg;
+import NegocioImpl.TipoCuentaNegImpl;
 import Dominio.Movimiento;
 import Dominio.TipoMovimiento;
 import Negocio.MovimientoNeg;
@@ -59,8 +59,8 @@ public class CuentasAdminServlet extends HttpServlet {
         
         request.setAttribute("listaCuentas", listaCuentas);
 
-        TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
-        List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
+        TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
+        List<TipoCuenta> tiposCuenta = tipoCuentaNeg.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
 
         request.getRequestDispatcher("CuentasAdmin.jsp").forward(request, response);
@@ -71,8 +71,8 @@ public class CuentasAdminServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CuentaNeg cuentaNeg = new CuentaNegImpl();
-        TipoCuentaDao tipoCuentaDao = new TipoCuentaDaoImpl();
-        List<TipoCuenta> tiposCuenta = tipoCuentaDao.obtenerTodos();
+        TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
+        List<TipoCuenta> tiposCuenta = tipoCuentaNeg.obtenerTodos();
         request.setAttribute("tiposCuenta", tiposCuenta);
         
         String eliminarId = request.getParameter("eliminarId");

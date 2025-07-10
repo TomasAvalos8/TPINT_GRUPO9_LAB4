@@ -8,12 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import DatosImpl.UsuarioDaoImpl;
+import Negocio.UsuarioNeg;
+import NegocioImpl.UsuarioNegImpl;
 
 @WebServlet("/RecuperarPasswordServlet")
 public class RecuperarPasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
+    private UsuarioNeg usuarioNeg = new UsuarioNegImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -35,13 +36,13 @@ public class RecuperarPasswordServlet extends HttpServlet {
             boolean actualizado;
             if ("perfil".equals(contexto)) {
             	 String usuarioSesion = (String) session.getAttribute("usuario");
-                 actualizado = usuarioDao.recuperarContraseñaCliente(usuarioSesion, nuevaContraseña);
+                 actualizado = usuarioNeg.recuperarContraseñaCliente(usuarioSesion, nuevaContraseña);
             } else {
                 if (!validarCamposLogin(usuario, dni)) {
                     redirigirConError(response, contexto, "Usuario y DNI son requeridos");
                     return;
                 }
-                actualizado = usuarioDao.recuperarContraseña(usuario, dni, nuevaContraseña);
+                actualizado = usuarioNeg.recuperarContraseña(usuario, dni, nuevaContraseña);
             }
 
             if (actualizado) {

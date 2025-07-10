@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import DatosImpl.ClienteDaoImpl;
-import DatosImpl.UsuarioDaoImpl;
+import Negocio.UsuarioNeg;
+import Negocio.ClienteNeg;
+import NegocioImpl.UsuarioNegImpl;
+import NegocioImpl.ClienteNegImpl;
 import Dominio.Cliente;
 import Dominio.Usuario;
 
@@ -44,16 +46,16 @@ public class loginServlet extends HttpServlet {
 	        String pass = request.getParameter("pass").trim();
 	        
 
-	        UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
-	        Usuario usuario = usuarioDao.login(user, pass);
+	        UsuarioNeg usuarioNeg = new UsuarioNegImpl();
+	        Usuario usuario = usuarioNeg.login(user, pass);
 	        
 	        if (usuario == null) {
 	            response.sendRedirect("Inicio.jsp?error=Usuario o contraseña incorrectos");
 	            return;
 	        }
 	        
-	        ClienteDaoImpl clienteDao = new ClienteDaoImpl();
-	        Cliente cliente = clienteDao.obtenerClienteConLocalidadProvincia(usuario.getId_usuario());
+	        ClienteNeg clienteNeg = new ClienteNegImpl();
+	        Cliente cliente = clienteNeg.obtenerClienteConLocalidadProvincia(usuario.getId_usuario());
 	        request.getSession().setAttribute("clienteLogueado", cliente);
 
 
