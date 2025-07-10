@@ -121,6 +121,7 @@ if (tipoUsuarioId != 2) {
                 <tr>
                     <th class="align-center">ID</th>
                     <th class="align-center">Monto</th>
+                    <th class="align-center">Importe a Pagar</th>
                     <th class="align-center">Estado</th>
                 </tr>
             </thead>
@@ -131,12 +132,13 @@ if (tipoUsuarioId != 2) {
                     <tr>
                         <td><%= solicitud.getId_solicitud() %></td>
                         <td><%= solicitud.getImporte_solicitado() %></td>
+                        <td><%= solicitud.getImporte_pagar_intereses() %></td>
                         <td><%= solicitud.getEstadoString() != null ? solicitud.getEstadoString() : "Pendiente" %></td>
                     </tr>
                 <%   }
                    } else { %>
                     <tr>
-                        <td colspan="3">No hay solicitudes de préstamo disponibles.</td>
+                        <td colspan="4">No hay solicitudes de préstamo disponibles.</td>
                     </tr>
                 <% } %>
             </tbody>

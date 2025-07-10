@@ -78,6 +78,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				}
 				double totalPagar = importe + (importe * interes);
 				double cuotaMensual = totalPagar / cuotas;
+
 				request.setAttribute("cuotaMensual", String.format("$%.2f/mes", cuotaMensual));
 				request.setAttribute("totalPagar", String.format("$%.2f", totalPagar));
 				request.setAttribute("importe_solicitado", importeParam);
@@ -90,6 +91,7 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				request.setAttribute("totalPagar", "");
 			}
 			cargarClienteYCuentas(request);
+			cargarSolicitudesUsuario(request);
 			request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 			return;
 		}
@@ -150,8 +152,10 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				request.setAttribute("mensaje", "Ocurrió un error al solicitar el préstamo");
 			}
 			cargarClienteYCuentas(request);
+			cargarSolicitudesUsuario(request);
 		} catch (Exception e) {
 			cargarClienteYCuentas(request);
+			cargarSolicitudesUsuario(request);
 			request.setAttribute("mensaje", "Ocurrió un error al solicitar el préstamo");
 		}
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
@@ -181,5 +185,24 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			request.setAttribute("cuentasCliente", new java.util.ArrayList<Cuenta>());
 			request.setAttribute("mensajeSinCuentas", "Error al obtener cuentas del cliente.");
 		}
+	}
+
+	private void cargarSolicitudesUsuario(HttpServletRequest request) {
+	    Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
+	    Cliente cliente = null;
+	    if (idUsuario != null) {
+	        Negocio.ClienteNeg clienteNeg = new NegocioImpl.ClienteNegImpl();
+	        cliente = clienteNeg.obtenerClientePorIdUsuario(idUsuario);
+	    }
+	    if (cliente != null) {
+	        try {
+	            Negocio.SolicitudPrestamoNeg solicitudNeg = new NegocioImpl.SolicitudPrestamoNegImpl();
+	            java.util.List<Dominio.SolicitudPrestamo> solicitudesUsuario = solicitudNeg.obtenerSolicitudesPorUsuario(cliente.getDni());
+	            request.setAttribute("solicitudesUsuario", solicitudesUsuario);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            request.setAttribute("mensaje", "Error al obtener las solicitudes de préstamo del cliente.");
+	        }
+	    }
 	}
 }
