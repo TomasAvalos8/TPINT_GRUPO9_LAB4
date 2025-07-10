@@ -7,18 +7,20 @@ public class Transferencia {
     private Cuenta numeroCuentaSaliente;
     private Cuenta numeroCuentaDestino;
     private float monto;
+    private String concepto;
     private Date fecha;
     
     public Transferencia() {
     }
     
-	public Transferencia(int idTransferencia, Cuenta numeroCuentaSaliente, Cuenta numeroCuentaDestino, float monto,
-			Date fecha) {
+	public Transferencia(int idTransferencia, Cuenta numeroCuentaSaliente, Cuenta numeroCuentaDestino, float monto
+			, String concepto,Date fecha) {
 		super();
 		this.idTransferencia = idTransferencia;
 		this.numeroCuentaSaliente = numeroCuentaSaliente;
 		this.numeroCuentaDestino = numeroCuentaDestino;
 		this.monto = monto;
+		this.concepto = concepto;
 		this.fecha = fecha;
 	}
 
@@ -52,6 +54,14 @@ public class Transferencia {
 
 	public void setMonto(float monto) {
 		this.monto = monto;
+	}
+	
+	public String getConcepto() {
+		return concepto;
+	}
+
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
 	}
 
 	public Date getFecha() {

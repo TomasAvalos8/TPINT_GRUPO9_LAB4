@@ -128,6 +128,7 @@ CREATE TABLE Transferencias (
     numero_cuenta_saliente BIGINT NOT NULL,
     numero_cuenta_destino BIGINT NOT NULL,
     monto DECIMAL(15,2) NOT NULL,
+    concepto VARCHAR(100) NOT NULL,
     fecha DATETIME NOT NULL,
     FOREIGN KEY (numero_cuenta_saliente) REFERENCES Cuenta(id),
     FOREIGN KEY (numero_cuenta_destino) REFERENCES Cuenta(id)
@@ -448,10 +449,11 @@ INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha
 
 
 -- Transferencias entre cuentas
-INSERT INTO Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES
-(1, 5, 5000.00, NOW()),
-(10, 3, 2000.00, NOW()),
-(7, 13, 8000.00, NOW());
+INSERT INTO Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, concepto, fecha) VALUES
+(1, 5, 5000.00, 'Pago de alquiler', NOW()),
+(10, 3, 2000.00, 'Transferencia personal', NOW()),
+(7, 13, 8000.00, 'Compra de electrodoméstico', NOW());
+
 
 -- Movimientos asociados a las transferencias (tipo 4)
 INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES

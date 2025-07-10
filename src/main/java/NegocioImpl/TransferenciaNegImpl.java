@@ -12,9 +12,9 @@ public class TransferenciaNegImpl implements TransferenciaNeg{
 	private TransferenciaDao transferenciadao = new TransferenciaDaoImpl();
 
 	@Override
-	public int transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha) {
+	public int transferirCuenta(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, String concepto, Date fecha) {
 		
-		return transferenciadao.transferir(CuentaSaliente, CuentaDestino, monto, fecha);
+		return transferenciadao.transferir(CuentaSaliente, CuentaDestino, monto, concepto, fecha);
 	}
 	
 	

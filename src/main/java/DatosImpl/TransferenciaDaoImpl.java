@@ -11,7 +11,7 @@ import Dominio.Cuenta;
 
 public class TransferenciaDaoImpl implements TransferenciaDao {
 
-	public int transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, Date fecha) {
+	public int transferir(Cuenta CuentaSaliente, Cuenta CuentaDestino, float monto, String concepto, Date fecha) {
 	    if (CuentaSaliente.getId() == CuentaDestino.getId()) {
 	        return 2;
 	    }
@@ -24,7 +24,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	    String sqlDebito = "UPDATE Cuenta SET saldo = saldo - ? WHERE id = ?";
 	    String sqlCredito = "UPDATE Cuenta SET saldo = saldo + ? WHERE id = ?";
 	    String sqlMovimiento = "INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha) VALUES (?, ?, ?, ?, ?)";
-	    String sqlTransferencia = "INSERT INTO 	Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, fecha) VALUES (?, ?, ?, ?)";
+	    String sqlTransferencia = "INSERT INTO 	Transferencias (numero_cuenta_saliente, numero_cuenta_destino, monto, concepto, fecha) VALUES (?, ?, ?, ?, ?)";
 
 	    Conexion cn = new Conexion();
 	    Connection conexion = cn.Open();
@@ -80,7 +80,8 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 	        stmtTransferencia.setInt(1, CuentaSaliente.getId());
 	        stmtTransferencia.setInt(2, CuentaDestino.getId());
 	        stmtTransferencia.setFloat(3, monto);
-	        stmtTransferencia.setDate(4, new java.sql.Date(fecha.getTime()));
+	        stmtTransferencia.setString(4, concepto);
+	        stmtTransferencia.setDate(5, new java.sql.Date(fecha.getTime()));
 	        stmtTransferencia.executeUpdate();
 
 	        conexion.commit();

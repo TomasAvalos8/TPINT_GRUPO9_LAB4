@@ -117,6 +117,7 @@ if (tipoUsuarioId != 2) {
                         <span id="balanceText">Saldo disponible: <strong>$0</strong></span>
                     </div>
                     <hr>
+                    <!--
                      <div class="mb-3">
                         <label class="form-label">Tipo de Transferencia</label>
                         <div class=" trans-tipo">
@@ -142,6 +143,7 @@ if (tipoUsuarioId != 2) {
                             </div>
                         </div>
                     </div>
+                    -->
                     <div class="mb-3">
                         <label for="cuentadestino" class="form-label">Cuenta de Destino</label>
                         <input type="text" inputmode="numeric" pattern="\d+" maxlength="30" class="form-control" id="cuentadestino" name="cuentadestino"

@@ -78,6 +78,7 @@ public class TransferenciaServlet extends HttpServlet {
             String cuentaOrigen = request.getParameter("cuentaorigen");
             String cuentaDestino = request.getParameter("cuentadestino");
             String cantidadStr = request.getParameter("cantidad");
+            String concepto = request.getParameter("concepto");
 
             cantidadStr = cantidadStr.replace(',', '.');
             float monto = Float.parseFloat(cantidadStr);
@@ -95,7 +96,7 @@ public class TransferenciaServlet extends HttpServlet {
 
             // Transferencia
             TransferenciaNeg negocio = new TransferenciaNegImpl();
-            int resultado = negocio.transferirCuenta(cuentaSaliente, cuentaDestinoObj, monto, fecha);
+            int resultado = negocio.transferirCuenta(cuentaSaliente, cuentaDestinoObj, monto, concepto, fecha);
 
             HttpSession session = request.getSession(false);
             Integer idUsuario = (Integer) session.getAttribute("id_usuario");
