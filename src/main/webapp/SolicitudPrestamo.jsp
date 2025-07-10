@@ -68,8 +68,8 @@ if (tipoUsuarioId != 2) {
                 <div class="total-cuotas-amount">
                     <%= request.getAttribute("cuotaMensual") != null ? request.getAttribute("cuotaMensual") : "" %>
                 </div>
-                <div class="info-box">
-                    <%= (request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "") %>
+                <div class="info-box" id="cuotas-info">
+                    <%= (request.getAttribute("cuotas") != null ? request.getAttribute("cuotas") + " cuotas" : " ") %>
                 </div>
             </div>
             
@@ -84,11 +84,11 @@ if (tipoUsuarioId != 2) {
             <h3>Seleccione la cuenta de depósito</h3>
             <div class="cuota-select">
                 <select name="numero_cuenta_deposito" >
-                    <option value="" disabled <%=  request.getParameter("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
+                    <option value="" disabled <%=  request.getAttribute("numero_cuenta_deposito") == null ? "selected" : "" %>>Seleccione cuenta</option>
                     <% java.util.List<Cuenta> cuentas = (java.util.List<Cuenta>) request.getAttribute("cuentasCliente");
                        if (cuentas != null) {
                            for (Cuenta c : cuentas) { %>
-                        <option value="<%= c.getId() %>" <%= (""+c.getId()).equals(request.getParameter("numero_cuenta_deposito")) ? "selected" : "" %>>Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
+                        <option value="<%= c.getId() %>" <%= (""+c.getId()).equals(request.getAttribute("numero_cuenta_deposito")) ? "selected" : "" %>>Cuenta N° <%= c.getId() %> - CBU: <%= c.getCBU() %></option>
                     <%   }
                        }
                     %>
@@ -157,7 +157,7 @@ if (tipoUsuarioId != 2) {
         });
     </script>
     <script>
-        const cuotasSelect = document.querySelector('select[name="cuotas"]');
+        const cuotasSelect = document.getElementById('cuotas-info');
         const interesInfo = document.getElementById('interes-info');
         function getInteresText(cuotas) {
             switch (cuotas) {
@@ -173,6 +173,7 @@ if (tipoUsuarioId != 2) {
         }
         cuotasSelect.addEventListener('change', function() {
             interesInfo.textContent = getInteresText(this.value);
+
         });
     </script>
 </body>

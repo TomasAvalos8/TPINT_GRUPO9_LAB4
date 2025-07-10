@@ -106,6 +106,7 @@ if (cuotasAttribute instanceof List<?>) {
 <thead>
 <tr>
 <th>ID Préstamo</th>
+<th>ID Cuenta  </th>
 <th>Número de cuota</th>
 <th>Importe</th>
 <th>Vencimiento</th>
@@ -121,6 +122,7 @@ if (cuotasAttribute instanceof List<?>) {
            try { fechaVencimiento = java.time.LocalDate.parse(cuota.getFechaPago().toString()); } catch(Exception ex) {} %>
         <tr<%= cuota.isPagado() ? " style='background-color: #d4edda;'" : (fechaVencimiento != null && fechaVencimiento.isBefore(hoy) ? " style='background-color: #f8d7da;'" : "") %>>
         <td><%= cuota.getPrestamo().getId_prestamo() %></td>
+        <td><%= cuota.getPrestamo().getCuenta().getId() %></td>
         <td><%= cuota.getNumeroCuota() %></td>
         <td><%= cuota.getMonto() %></td>
         <td><%= cuota.getFechaPago() %></td>
@@ -139,7 +141,7 @@ if (cuotasAttribute instanceof List<?>) {
     <% } %>
 <% } else { %>
     <tr>
-    <td colspan="6">No hay cuotas disponibles.</td>
+    <td colspan="7">No hay cuotas disponibles.</td>
     </tr>
 <% } %>
 </tbody>

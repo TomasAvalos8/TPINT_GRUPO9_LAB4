@@ -190,7 +190,7 @@ public class CuentasAdminServlet extends HttpServlet {
                 try {
                     exito = cuentaNeg.crearCuenta(cuenta);
                 } catch (ClienteNoExisteException e) {
-                    request.setAttribute("mensajeServlet", "Error: DNI inexistente.");
+                    request.setAttribute("mensajeServlet", "Error: Cliente inexistente.");
                     int siguienteId = cuentaNeg.obtenerSiguienteIdCuenta();
                     request.setAttribute("siguienteIdCuenta", siguienteId);
                     List<Cuenta> listaCuentas = cuentaNeg.obtenerTodasLasCuentas();
