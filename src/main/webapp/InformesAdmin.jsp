@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
     <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .informes-container {
             max-width: 1200px;
@@ -34,7 +35,7 @@
         
         .reporte-header i {
             font-size: 24px;
-            color: #007bff;
+            color: #4CAF50;
             margin-right: 10px;
         }
         
@@ -197,8 +198,21 @@
             font-weight: bold;
             color: #495057;
         }
-        .reporte-header i{
-        color: #4CAF50;
+        
+        .grafico-container {
+            max-width: 400px;
+            margin: 40px auto 0 auto;
+        }
+        
+        .grafico-container canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+        
+        .grafico-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
         }
     </style>
 </head>
@@ -268,7 +282,6 @@ if (tipoUsuarioId != 1) {
 
         <% List<Reporte> reportePrestamos = (List<Reporte>)request.getAttribute("reportePrestamos"); %>
 
-        <%--<% if (reportePrestamos != null && !reportePrestamos.isEmpty()) { %>--%>
         <% if ("prestamos".equals(request.getAttribute("tipoReporte")) && reportePrestamos != null && !reportePrestamos.isEmpty()) { %>
             <div class="reporte-section">
                 <div class="reporte-header">
@@ -286,23 +299,24 @@ if (tipoUsuarioId != 1) {
                     </tr>
                 </thead>
                 <tbody>
-                    <% 
-
-                    
-                    for (Reporte reporte : reportePrestamos) { 
-                    %>
+                    <% for (Reporte reporte : reportePrestamos) { %>
                     <tr>
                        	<td><%= reporte.getTotalPrestamos() %></td>
 						<td><%= String.format("%.2f", reporte.getPorcAprobados()) %> %</td>
 						<td><%= String.format("%.2f", reporte.getPorcRechazados()) %> %</td>
 						<td><%= String.format("%.2f", reporte.getPorcPendientes()) %> %</td>
-                     
                     </tr>
                     <% } %>
                 </tbody>
                 </table>
+                
+                <div class="grafico-container">
+                    <h3>Distribución de Prestamos</h3>
+                    <canvas id="graficoPrestamos"></canvas>
+                </div>
             </div>
         <% } %>
+        
         <% List<Reporte> reporteUsuarios = (List<Reporte>)request.getAttribute("reporteUsuarios"); %>
 		<% if ("usuarios".equals(request.getAttribute("tipoReporte")) && reporteUsuarios != null && !reporteUsuarios.isEmpty()) { %>
     	<div class="reporte-section">
@@ -328,8 +342,14 @@ if (tipoUsuarioId != 1) {
                 <% } %>
             </tbody>
         </table>
+        
+        <div class="grafico-container">
+            <h3>Estado de Usuarios</h3>
+            <canvas id="graficoUsuarios"></canvas>
+        </div>
     </div>
 <% } %>
+
 <% List<Reporte> reporteCuentas = (List<Reporte>)request.getAttribute("reporteCuentas"); %>
 <% if ("cuentas".equals(request.getAttribute("tipoReporte")) && reporteCuentas != null && !reporteCuentas.isEmpty()) { %>
     <div class="reporte-section">
@@ -353,8 +373,151 @@ if (tipoUsuarioId != 1) {
                 <% } %>
             </tbody>
         </table>
+        
+        <div class="grafico-container">
+            <h3>Tipos de cuentas</h3>
+            <canvas id="graficoCuentas"></canvas>
+        </div>
     </div>
 <% } %>
+
 </div>
+
+<script>
+// Graficos conn Chart.js
+<%
+    if ("prestamos".equals(request.getAttribute("tipoReporte")) && reportePrestamos != null && !reportePrestamos.isEmpty()) {
+        Reporte rep = reportePrestamos.get(0);
+        double aprobados = rep.getPorcAprobados();
+        double rechazados = rep.getPorcRechazados();
+        double pendientes = rep.getPorcPendientes();
+%>
+    const ctxPrestamos = document.getElementById('graficoPrestamos').getContext('2d');
+    new Chart(ctxPrestamos, {
+        type: 'pie',
+        data: {
+            labels: ['Aprobados', 'Rechazados', 'Pendientes'],
+            datasets: [{
+                label: 'Porcentajes de Prestamos',
+                data: [<%= aprobados %>, <%= rechazados %>, <%= pendientes %>],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(255, 206, 86, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+<% } %>
+
+<%
+    if ("usuarios".equals(request.getAttribute("tipoReporte")) && reporteUsuarios != null && !reporteUsuarios.isEmpty()) {
+        Reporte repUsuarios = reporteUsuarios.get(0);
+        double activos = repUsuarios.getPorcActivos();
+        double inactivos = repUsuarios.getPorcInactivos();
+%>
+    const ctxUsuarios = document.getElementById('graficoUsuarios').getContext('2d');
+    new Chart(ctxUsuarios, {
+        type: 'pie',
+        data: {
+            labels: ['Usuarios Activos', 'Usuarios Inactivos'],
+            datasets: [{
+                label: 'Estado de Usuarios',
+                data: [<%= activos %>, <%= inactivos %>],
+                backgroundColor: [
+                	'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                	'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+<% } %>
+
+<%
+    if ("cuentas".equals(request.getAttribute("tipoReporte")) && reporteCuentas != null && !reporteCuentas.isEmpty()) {
+%>
+    const ctxCuentas = document.getElementById('graficoCuentas').getContext('2d');
+    new Chart(ctxCuentas, {
+        type: 'bar',
+        data: {
+            labels: [
+                <% for (int i = 0; i < reporteCuentas.size(); i++) { %>
+                    '<%= reporteCuentas.get(i).getDescripcionTipoCuenta() %>'<%= i < reporteCuentas.size() - 1 ? "," : "" %>
+                <% } %>
+            ],
+            datasets: [{
+                label: 'Cantidad de Cuentas',
+                data: [
+                    <% for (int i = 0; i < reporteCuentas.size(); i++) { %>
+                        <%= reporteCuentas.get(i).getCantidadCuentas() %><%= i < reporteCuentas.size() - 1 ? "," : "" %>
+                    <% } %>
+                ],
+                backgroundColor: [
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(75, 192, 192, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(75, 192, 192, 1)'
+
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+<% } %>
+</script>
+
 </body>
 </html>
