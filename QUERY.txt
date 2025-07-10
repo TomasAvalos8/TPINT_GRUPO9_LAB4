@@ -73,7 +73,7 @@ CREATE TABLE Cuenta (
     FOREIGN KEY (tipo_cuenta) REFERENCES TipoCuenta(id_tipo_cuenta)
 );
 
--- Solicitud prestamos
+-- SolicitudPrestamos
 CREATE TABLE SolicitudPrestamos (
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
     dni_cliente BIGINT NOT NULL,
@@ -83,10 +83,13 @@ CREATE TABLE SolicitudPrestamos (
     cuotas INT NOT NULL,
     fecha_solicitud DATE NOT NULL,
     autorizacion BOOLEAN,
-    estado BOOL,
+    fecha_estado DATE, 
+    estado ENUM('Pendiente', 'Aprobada', 'Rechazada') NOT NULL DEFAULT 'Pendiente',
+    comentarios TEXT,
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (numero_cuenta_deposito) REFERENCES Cuenta(id)
 );
+
 
 -- Prestamo
 CREATE TABLE Prestamo (
@@ -95,16 +98,18 @@ CREATE TABLE Prestamo (
     dni_cliente BIGINT NOT NULL,
     numero_cuenta BIGINT NOT NULL,
     fecha_alta DATE NOT NULL,
+	fecha_aprobacion DATE,
     cuotas INT,
     importe_pagar_por_mes DECIMAL(15,2),
     plazo_pago_meses INT,
     importe_solicitado DECIMAL(15,2),
     importe_pagar_intereses DECIMAL(15,2),
-    activo BOOLEAN DEFAULT TRUE,
+    activo ENUM('Activo', 'Finalizado', 'Veraz') NOT NULL DEFAULT 'Activo',
     FOREIGN KEY (id_solicitud) REFERENCES SolicitudPrestamos(id_solicitud),
     FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id)
 );
+
 
 -- Cuotas
 CREATE TABLE Cuotas (
@@ -145,8 +150,6 @@ CREATE TABLE Movimiento (
     FOREIGN KEY (numero_cuenta) REFERENCES Cuenta(id),
     FOREIGN KEY (id_tipo_movimiento) REFERENCES TipoMovimiento(id_tipo_movimiento)
 );
-
-
 INSERT INTO TipoCuenta (id_tipo_cuenta, descripcion) VALUES
 (1, 'Caja de Ahorro'),
 (2, 'Cuenta Corriente');
@@ -340,24 +343,26 @@ INSERT INTO Cuenta (id, dni_cliente, fecha_creacion, tipo_cuenta, CBU, saldo, ac
 
 
 INSERT INTO SolicitudPrestamos (
-    id_solicitud, dni_cliente, importe_solicitado, importe_a_pagar, numero_cuenta_deposito,
+    dni_cliente, importe_solicitado, importe_a_pagar, numero_cuenta_deposito,
     cuotas, fecha_solicitud, autorizacion, estado
 ) VALUES
-(1, 10000001, 100000.00, 120000.00, 1, 12, CURDATE(), 2, 1),
-(2, 10000004, 50000.00, 60000.00, 5, 6, CURDATE(), 0, 0),
-(3, 10000007, 15000.00, 18000.00, 10, 3, CURDATE(), 2, 1),
-(4, 10000010, 20000.00, 24000.00, 13, 12, CURDATE(), 2, 1),
-(5, 10000014, 30000.00, 34500.00, 18, 6, CURDATE(), 0, 0);  
+(10000001, 100000.00, 120000.00, 1, 12, CURDATE(), 1, 'Aprobada'),
+(10000004, 50000.00, 60000.00, 5, 6, CURDATE(), 0, 'Pendiente'),
+(10000007, 15000.00, 18000.00, 10, 3, CURDATE(), 1, 'Aprobada'),
+(10000010, 20000.00, 24000.00, 13, 12, CURDATE(), 1, 'Aprobada'),
+(10000014, 30000.00, 34500.00, 18, 6, CURDATE(), 0, 'Pendiente');
+ 
 
 
 INSERT INTO Prestamo (
-    id_prestamo, id_solicitud, dni_cliente, numero_cuenta,
+    id_solicitud, dni_cliente, numero_cuenta,
     fecha_alta, cuotas, importe_pagar_por_mes, plazo_pago_meses,
     importe_solicitado, importe_pagar_intereses, activo
 ) VALUES
-(1, 1, 10000001, 1, CURDATE(), 12, 10000.00, 12, 100000.00, 20000.00, 1),
-(2, 3, 10000007, 10, CURDATE(), 3, 6000.00, 3, 15000.00, 3000.00, 1),
-(3, 4, 10000010, 13, CURDATE(), 12, 2000.00, 12, 20000.00, 4000.00, 1);
+(1, 10000001, 1, CURDATE(), 12, 10000.00, 12, 100000.00, 20000.00, 'Activo'),
+(3, 10000007, 10, CURDATE(), 3, 6000.00, 3, 15000.00, 3000.00, 'Activo'),
+(4, 10000010, 13, CURDATE(), 12, 2000.00, 12, 20000.00, 4000.00, 'Activo');
+
 
 
 -- Cuotas para el préstamo 1 (12 cuotas de $10000.00)
@@ -458,4 +463,3 @@ INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha
 
 (7, 4, 'Transferencia a cuenta 13', -8000.00, NOW()),
 (13, 4, 'Transferencia desde cuenta 7', 8000.00, NOW());
-
