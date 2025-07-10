@@ -15,7 +15,9 @@ import Dominio.Cuota;
 import Dominio.Cliente;
 import Dominio.Cuenta;
 import Negocio.ClienteNeg;
+import Negocio.CuentaNeg;
 import NegocioImpl.ClienteNegImpl;
+import NegocioImpl.CuentaNegImpl;
 import Dominio.Movimiento;
 import Dominio.TipoMovimiento;
 import Negocio.MovimientoNeg;
@@ -65,10 +67,10 @@ public class CuotaServlet extends HttpServlet {
                     // Registrar el movimiento
                     Movimiento movimiento = new Movimiento();
                     Cuenta cuenta = cuota.getPrestamo().getCuenta();
-                    System.out.println("Cuenta: " + cuenta.getId());
+                    
                     movimiento.setNumeroCuenta(cuenta.getId());
                     movimiento.setDetalle("Pago de cuota " + cuota.getNumeroCuota());
-                    movimiento.setMonto((float) cuota.getMonto());
+                    movimiento.setMonto((float) -cuota.getMonto());
                     movimiento.setFecha(java.time.LocalDate.now());
 
                     TipoMovimiento tipoMovimiento = new TipoMovimiento();
@@ -77,6 +79,10 @@ public class CuotaServlet extends HttpServlet {
 
                     MovimientoNeg movimientoNeg = new MovimientoNegImpl();
                     movimientoNeg.insertarMovimiento(movimiento);
+
+                    cuenta.setSaldo((float)(cuenta.getSaldo() - cuota.getMonto()));
+                    CuentaNeg cuentaNeg = new CuentaNegImpl();
+                    boolean cuentaActualizada = cuentaNeg.actualizarCuenta(cuenta);
 
                     request.setAttribute("mensaje", "Cuota pagada exitosamente.");
                 } else {

@@ -382,7 +382,7 @@ if (tipoUsuarioId != 1) {
 </div>
 
 <script>
-// Graficos conn Chart.js
+
 <%
     if ("prestamos".equals(request.getAttribute("tipoReporte")) && reportePrestamos != null && !reportePrestamos.isEmpty()) {
         Reporte rep = reportePrestamos.get(0);
