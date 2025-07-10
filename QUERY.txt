@@ -109,12 +109,12 @@ CREATE TABLE Prestamo (
 
 -- Cuotas
 CREATE TABLE Cuotas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     id_prestamo INT NOT NULL,
     numero_cuota INT NOT NULL,
     monto DECIMAL(15,2) NOT NULL,
     fecha_pago DATE NOT NULL,
     pagado BOOLEAN,
-    PRIMARY KEY (id_prestamo, numero_cuota),
     FOREIGN KEY (id_prestamo) REFERENCES Prestamo(id_prestamo)
 );
 
@@ -462,4 +462,3 @@ INSERT INTO Movimiento (numero_cuenta, id_tipo_movimiento, detalle, monto, fecha
 
 (7, 4, 'Transferencia a cuenta 13', -8000.00, NOW()),
 (13, 4, 'Transferencia desde cuenta 7', 8000.00, NOW());
-

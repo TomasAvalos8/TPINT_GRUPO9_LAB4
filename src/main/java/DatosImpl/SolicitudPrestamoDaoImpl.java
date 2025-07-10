@@ -142,8 +142,8 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
                 String estadoString;
                 
                 estadoString = rs.getInt("autorizacion") == 0 ? "Pendiente" :
-                              rs.getInt("autorizacion") == 1 ? "Aprobada" :
-                              rs.getInt("autorizacion") == 2 ? "Rechazada" : "";
+                              rs.getInt("autorizacion") == 2 ? "Aprobada" :
+                              rs.getInt("autorizacion") == 1 ? "Rechazada" : "";
                 solicitud.setEstadoString(estadoString);
                 
                 solicitudes.add(solicitud);
