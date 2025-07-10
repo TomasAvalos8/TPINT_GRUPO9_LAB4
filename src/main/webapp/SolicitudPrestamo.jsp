@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="Dominio.Cuenta"%>
+    <%@page import="Dominio.SolicitudPrestamo" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <title>Solicitud de Préstamo</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
 
 </head>
 <%
@@ -111,11 +113,47 @@ if (tipoUsuarioId != 2) {
     <% } %>
         </form>
     </div>
-    
+
+    <h2>Historial de Préstamos</h2>
+    <div class="loan-history-container">
+        <table id="loanHistoryTable" class="display">
+            <thead>
+                <tr>
+                    <th class="align-center">ID</th>
+                    <th class="align-center">Monto</th>
+                    <th class="align-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% java.util.List<SolicitudPrestamo> solicitudes = (java.util.List<SolicitudPrestamo>) request.getAttribute("solicitudesUsuario");
+                   if (solicitudes != null && !solicitudes.isEmpty()) {
+                       for (SolicitudPrestamo solicitud : solicitudes) { %>
+                    <tr>
+                        <td><%= solicitud.getId_solicitud() %></td>
+                        <td><%= solicitud.getImporte_solicitado() %></td>
+                        <td><%= solicitud.getEstadoString() != null ? solicitud.getEstadoString() : "Pendiente" %></td>
+                    </tr>
+                <%   }
+                   } else { %>
+                    <tr>
+                        <td colspan="3">No hay solicitudes de préstamo disponibles.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
     <footer>
         <jsp:include page="Footer.html"></jsp:include>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#loanHistoryTable').DataTable();
+        });
+    </script>
     <script>
         const cuotasSelect = document.querySelector('select[name="cuotas"]');
         const interesInfo = document.getElementById('interes-info');
