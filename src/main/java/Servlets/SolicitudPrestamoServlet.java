@@ -61,6 +61,11 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 				double cuotaMensual = totalPagar / cuotas;
 				request.setAttribute("cuotaMensual", String.format("$%.2f/mes", cuotaMensual));
 				request.setAttribute("totalPagar", String.format("$%.2f", totalPagar));
+				request.setAttribute("importe_solicitado", importeParam);
+				request.setAttribute("cuotas", cuotasParam);
+				request.setAttribute("interes", interes);
+
+				
 			} catch (Exception e) {
 				request.setAttribute("cuotaMensual", "");
 				request.setAttribute("totalPagar", "");
@@ -117,6 +122,11 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			boolean exito = neg.insertar(prestamo);
 			if (exito) {
 				request.setAttribute("mensaje", "Préstamo solicitado exitosamente");
+				request.setAttribute("importe_solicitado", null);
+				request.setAttribute("cuotas", null);
+				request.setAttribute("numero_cuenta_deposito", null);
+				request.setAttribute("cuotaMensual", null);
+				request.setAttribute("totalPagar", null);
 			} else {
 				request.setAttribute("mensaje", "Ocurrió un error al solicitar el préstamo");
 			}

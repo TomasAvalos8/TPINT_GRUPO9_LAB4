@@ -8,180 +8,7 @@
 <title>Solicitud de Préstamo</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="estilos/estilos.css">
-<style>
-.Titulo {
-    padding-top: 20px;
-    text-align: center;
-    margin: 20px 0;
-}
-body{
-margin:0;
-padding:0;
-font-family: Arial, sans-serif;
-position: relative;
-}
-.ContenedorPrestamo {
-    width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
 
-.ContenedorPrestamo h3 {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.ContenedorPrestamo h2 {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.ContenedorPrestamo input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.cuotas-container, .total-cuotas-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.cuota-select, .Dias-select {
-    flex: 1;
-}
-
-.cuota-select select, .Dias-select select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 15px;
-}
-
-.info-box {
-    padding: 8px 12px;
-    background-color: #e9f7ef;
-    border: 1px solid #d4edda;
-    border-radius: 4px;
-    color: #155724;
-    font-weight: bold;
-    min-width: 100px;
-    text-align: center;
-}
-
-.total-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f0f8ff;
-    border: 1px solid #cce5ff;
-    border-radius: 4px;
-}
-
-.total-cuotas-container {
-    margin-top: 10px;
-}
-
-.total-cuotas-amount {
-    flex: 1;
-    padding: 8px 12px;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 4px;
-    color: #856404;
-    font-weight: bold;
-}
-
-.total-label {
-    font-weight: bold;
-}
-
-.total-amount {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #004085;
-}
-
-.btn-solicitar {
-    width: 100%;
-    padding: 12px;
-    margin-top: 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-solicitar:hover {
-    background-color: #218838;
-}
-
-.DiasPagar {
-    margin-top: 20px;
-}
-
-.datos-personales-btn {
-    
-    background-color: #e0e0e0;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    
-   
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    
-   
-    border: 1px solid transparent;
-  }
-
-  .datos-personales-btn:hover {
-    background-color: #d0d0d0;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    border-color: #b0b0b0;
-  }
-
-  .datos-personales-btn:active {
-    transform: translateY(0);
-    background-color: #c0c0c0;
-  }
-
-  .datos-personales-btn i {
-    font-size: 16px;
-    color: #555;
-  }
-</style>
 </head>
 <%
 String tipo= (String)session.getAttribute("tipoUsuario");
@@ -208,24 +35,24 @@ if (tipoUsuarioId != 2) {
     <div class="ContenedorPrestamo">
         <form action="SolicitudPrestamoServlet" method="post">
             <h3>Ingrese el monto</h3>
-            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required value="<%= request.getAttribute("mensajeExito") != null ? "" : (request.getParameter("importe_solicitado") != null ? request.getParameter("importe_solicitado") : "") %>">
+            <input type="number" name="importe_solicitado" placeholder="Ej: 10000" min="1" step="0.01" required value="<%= request.getAttribute("importe_solicitado") != null ? request.getAttribute("importe_solicitado") : "" %>">
             
             <h3>¿En cuántas cuotas?</h3>
             <div class="cuotas-container">
                 <div class="cuota-select">
                     <select name="cuotas" required>
-                        <option value="" disabled <%= request.getAttribute("mensajeExito") != null || request.getParameter("cuotas") == null ? "selected" : "" %>>Seleccione cuotas</option>
-                        <option value="6" <%= (request.getAttribute("mensajeExito") == null && "6".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>6 cuotas</option>
-                        <option value="12" <%= (request.getAttribute("mensajeExito") == null && "12".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>12 cuotas</option>
-                        <option value="18" <%= (request.getAttribute("mensajeExito") == null && "18".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>18 cuotas</option>
-                        <option value="24" <%= (request.getAttribute("mensajeExito") == null && "24".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>24 cuotas</option>
-                        <option value="30" <%= (request.getAttribute("mensajeExito") == null && "30".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>30 cuotas</option>
-                        <option value="36" <%= (request.getAttribute("mensajeExito") == null && "36".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>36 cuotas</option>
-                        <option value="42" <%= (request.getAttribute("mensajeExito") == null && "42".equals(request.getParameter("cuotas"))) ? "selected" : "" %>>42 cuotas</option>
+                        <option value="" disabled <%= request.getAttribute("cuotas") == null ? "selected" : "" %>>Seleccione cuotas</option>
+                        <option value="6" <%= "6".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>6 cuotas</option>
+                        <option value="12" <%= "12".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>12 cuotas</option>
+                        <option value="18" <%= "18".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>18 cuotas</option>
+                        <option value="24" <%= "24".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>24 cuotas</option>
+                        <option value="30" <%= "30".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>30 cuotas</option>
+                        <option value="36" <%= "36".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>36 cuotas</option>
+                        <option value="42" <%= "42".equals(request.getAttribute("cuotas")) ? "selected" : "" %>>42 cuotas</option>
                     </select>
                 </div>
                 <div class="info-box" id="interes-info">
-                    <%= request.getAttribute("mensajeExito") != null ? "0% interés" : (request.getAttribute("interes") != null ? request.getAttribute("interes") : "0% interés") %>
+                    <%= (request.getAttribute("interes") != null ? request.getAttribute("interes") : "0% interés") %>
                 </div>
             </div>
             
@@ -240,7 +67,7 @@ if (tipoUsuarioId != 2) {
                     <%= request.getAttribute("cuotaMensual") != null ? request.getAttribute("cuotaMensual") : "" %>
                 </div>
                 <div class="info-box">
-                    <%= request.getAttribute("mensajeExito") != null ? "0 cuotas" : (request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "") %>
+                    <%= (request.getParameter("cuotas") != null ? request.getParameter("cuotas") + " cuotas" : "") %>
                 </div>
             </div>
             
