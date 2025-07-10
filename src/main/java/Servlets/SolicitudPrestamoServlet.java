@@ -30,6 +30,25 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		cargarClienteYCuentas(request);
+
+		// Fetch user loan requests
+		Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
+		Cliente cliente = null;
+		if (idUsuario != null) {
+			Negocio.ClienteNeg clienteNeg = new NegocioImpl.ClienteNegImpl();
+			cliente = clienteNeg.obtenerClientePorIdUsuario(idUsuario);
+		}
+		if (cliente != null) {
+			try {
+				Negocio.SolicitudPrestamoNeg solicitudNeg = new NegocioImpl.SolicitudPrestamoNegImpl();
+				java.util.List<Dominio.SolicitudPrestamo> solicitudesUsuario = solicitudNeg.obtenerSolicitudesPorUsuario(cliente.getDni());
+				request.setAttribute("solicitudesUsuario", solicitudesUsuario);
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("mensaje", "Error al obtener las solicitudes de préstamo del cliente.");
+			}
+		}
+
 		request.getRequestDispatcher("SolicitudPrestamo.jsp").forward(request, response);
 	}
 
@@ -102,8 +121,8 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			prestamo.setImporte_solicitado(importe);
 			prestamo.setImporte_pagar_intereses(totalPagarConInteres); 
 
-			Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
-			Cuenta  cuentaDeposito = cuentaDao.obtenerCuentaPorId((int) cuenta); 
+			Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
+			Cuenta cuentaDeposito = cuentaNeg.obtenerCuentaPorId((int) cuenta); 
 			prestamo.setCuentaDeposito(cuentaDeposito);
 
 			prestamo.setFecha_solicitud(new java.sql.Date(System.currentTimeMillis()));
@@ -113,8 +132,8 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 			Cliente cliente = null;
 			if (idUsuario != null) {
-				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
-				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
+				Negocio.ClienteNeg clienteNeg = new NegocioImpl.ClienteNegImpl();
+				cliente = clienteNeg.obtenerClientePorIdUsuario(idUsuario);
 			}
 			prestamo.setCliente(cliente);
 
@@ -143,12 +162,12 @@ public class SolicitudPrestamoServlet extends HttpServlet {
 			Integer idUsuario = (Integer) request.getSession().getAttribute("id_usuario");
 			Cliente cliente = null;
 			if (idUsuario != null) {
-				Datos.ClienteDao clienteDao = new DatosImpl.ClienteDaoImpl();
-				cliente = clienteDao.obtenerClientePorIdUsuario(idUsuario);
+				Negocio.ClienteNeg clienteNeg = new NegocioImpl.ClienteNegImpl();
+				cliente = clienteNeg.obtenerClientePorIdUsuario(idUsuario);
 			}
 			if (cliente != null) {
-				Datos.CuentaDao cuentaDao = new DatosImpl.CuentaDaoImpl();
-				java.util.List<Cuenta> cuentas = cuentaDao.obtenerCuentasPorDni(cliente.getDni());
+				Negocio.CuentaNeg cuentaNeg = new NegocioImpl.CuentaNegImpl();
+				java.util.List<Cuenta> cuentas = cuentaNeg.obtenerCuentasPorDni(cliente.getDni());
 				request.setAttribute("cuentasCliente", cuentas);
 				if (cuentas == null || cuentas.isEmpty()) {
 					request.setAttribute("mensajeSinCuentas", "No tiene cuentas disponibles para seleccionar.");

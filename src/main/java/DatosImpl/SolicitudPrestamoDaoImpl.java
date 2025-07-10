@@ -100,7 +100,7 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
                 solicitud = new SolicitudPrestamo();
                 solicitud.setId_solicitud(rs.getInt("id_solicitud"));
                 solicitud.setCliente(new ClienteDaoImpl().obtenerClientePorDni(rs.getLong("dni_cliente")));
-                solicitud.setImporte_solicitado(rs.getLong("importe_solicitado"));
+                solicitud.setImporte_solicitado((long) rs.getDouble("importe_solicitado"));
                 solicitud.setCuotas(rs.getInt("cuotas"));
                 solicitud.setFecha_solicitud(rs.getDate("fecha_solicitud"));
                 solicitud.setAutorizacion(rs.getInt("autorizacion"));
@@ -115,5 +115,45 @@ public class SolicitudPrestamoDaoImpl implements SolicitudPrestamoDao {
             e.printStackTrace();
         }
         return solicitud;
+    }
+
+    @Override
+    public List<SolicitudPrestamo> obtenerSolicitudesPorUsuario(Integer idUsuario) {
+        List<SolicitudPrestamo> solicitudes = new ArrayList<>();
+        Conexion cn = new Conexion();
+        Connection conexion = cn.Open();
+        String sql = "SELECT * FROM SolicitudPrestamos WHERE dni_cliente = ?";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SolicitudPrestamo solicitud = new SolicitudPrestamo();
+                solicitud.setId_solicitud(rs.getInt("id_solicitud"));
+                solicitud.setCliente(new ClienteDaoImpl().obtenerClientePorDni(rs.getLong("dni_cliente")));
+                solicitud.setImporte_solicitado((long) rs.getDouble("importe_solicitado"));
+                solicitud.setCuotas(rs.getInt("cuotas"));
+                solicitud.setFecha_solicitud(rs.getDate("fecha_solicitud"));
+                solicitud.setAutorizacion(rs.getInt("autorizacion"));
+                solicitud.setEstado(rs.getBoolean("estado"));
+                solicitud.setCuentaDeposito(new DatosImpl.CuentaDaoImpl().obtenerCuentaPorId(rs.getInt("numero_cuenta_deposito")));
+                solicitud.setImporte_pagar_intereses(rs.getDouble("importe_a_pagar"));
+                
+                String estadoString;
+                
+                estadoString = rs.getInt("autorizacion") == 0 ? "Pendiente" :
+                              rs.getInt("autorizacion") == 1 ? "Aprobada" :
+                              rs.getInt("autorizacion") == 2 ? "Rechazada" : "";
+                solicitud.setEstadoString(estadoString);
+                
+                solicitudes.add(solicitud);
+            }
+            rs.close();
+            ps.close();
+            conexion.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitudes;
     }
 }

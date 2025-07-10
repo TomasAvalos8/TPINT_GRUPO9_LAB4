@@ -8,4 +8,5 @@ public interface SolicitudPrestamoDao {
     List<SolicitudPrestamo> obtenerTodos();
     boolean actualizarAutorizacion(int idSolicitud, int nuevaAutorizacion);
     SolicitudPrestamo obtenerSolicitudPorId(int idSolicitud);
+    List<SolicitudPrestamo> obtenerSolicitudesPorUsuario(Integer idUsuario);
 }

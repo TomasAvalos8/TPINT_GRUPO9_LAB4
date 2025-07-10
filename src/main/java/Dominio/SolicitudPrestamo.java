@@ -10,6 +10,7 @@ public class SolicitudPrestamo {
     private java.sql.Date fecha_solicitud;
     private int autorizacion;
     private boolean estado;
+    private String estadoString;
 
     public int getId_solicitud() {
         return id_solicitud;
@@ -65,5 +66,13 @@ public class SolicitudPrestamo {
     }
     public void setImporte_pagar_intereses(double importe_pagar_intereses) {
         this.importe_pagar_intereses = importe_pagar_intereses;
+    }
+
+    public String getEstadoString() {
+        return estadoString;
+    }
+
+    public void setEstadoString(String estadoString) {
+        this.estadoString = estadoString;
     }
 }
